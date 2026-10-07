@@ -5,18 +5,27 @@
 
     <meta charset="UTF-8">
 
-    <meta name="viewport"
+    <meta
+        name="viewport"
         content="width=device-width, initial-scale=1.0">
 
     <title>M-Pesa Payment - SNIPER ODDS</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <link rel="stylesheet" href="style.css">
 
+    <!-- Supabase JS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <!-- SNIPER ODDS Styles -->
+    <link rel="stylesheet" href="style.css">
 
 </head>
 
 
 <body>
+
+
+<!-- ==========================================
+     HEADER
+     ========================================== -->
 
 <header class="header">
 
@@ -26,6 +35,7 @@
 
     <button
         class="login-btn"
+        type="button"
         onclick="window.location.href='subscription.html'">
 
         Plans
@@ -35,15 +45,26 @@
 </header>
 
 
+<!-- ==========================================
+     PAYMENT PAGE
+     ========================================== -->
+
 <main class="auth-page">
 
     <div class="auth-box">
+
+
+        <!-- PAGE TITLE -->
 
         <p class="small-title">
             SNIPER ODDS PREMIUM
         </p>
 
-        <h1>M-Pesa Payment</h1>
+
+        <h1>
+            M-Pesa Payment
+        </h1>
+
 
         <p class="auth-text">
             Complete your payment to unlock
@@ -51,18 +72,27 @@
         </p>
 
 
+        <!-- ======================================
+             SELECTED PLAN
+             ====================================== -->
+
         <div class="account-card">
 
             <p>
-                <strong>Selected Plan:</strong>
+                <strong>
+                    Selected Plan:
+                </strong>
             </p>
 
             <h2 id="selectedPlan">
                 Loading...
             </h2>
 
+
             <p>
-                <strong>Amount:</strong>
+                <strong>
+                    Amount:
+                </strong>
             </p>
 
             <h2 id="selectedAmount">
@@ -72,19 +102,34 @@
         </div>
 
 
+        <!-- ======================================
+             PHONE NUMBER
+             ====================================== -->
+
         <label for="mpesaPhone">
+
             M-Pesa Phone Number
+
         </label>
+
 
         <input
             type="tel"
             id="mpesaPhone"
             placeholder="07XXXXXXXX"
-            maxlength="10">
+            maxlength="10"
+            inputmode="numeric"
+            autocomplete="tel">
 
+
+        <!-- ======================================
+             PAYMENT BUTTON
+             ====================================== -->
 
         <button
+            id="payButton"
             class="primary-btn full-btn"
+            type="button"
             onclick="startPayment()">
 
             Pay with M-Pesa
@@ -92,26 +137,43 @@
         </button>
 
 
+        <!-- ======================================
+             PAYMENT MESSAGE
+             ====================================== -->
+
         <p
             id="paymentMessage"
-            class="form-message">
+            class="form-message"
+            aria-live="polite">
         </p>
 
+
+        <!-- ======================================
+             BACK TO PLANS
+             ====================================== -->
 
         <p class="switch-auth">
 
             <a href="subscription.html">
+
                 ← Back to Plans
+
             </a>
 
         </p>
+
 
     </div>
 
 </main>
 
 
+<!-- ==========================================
+     MAIN SNIPER ODDS SCRIPT
+     ========================================== -->
+
 <script src="script.js"></script>
+
 
 </body>
 
