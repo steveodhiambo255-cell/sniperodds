@@ -1,8 +1,14 @@
 // ==========================================
 // SNIPER ODDS - MAIN SCRIPT
-// Used by: login, signup, forgot/reset password,
-// payment, subscription, account pages.
-// Load AFTER the Supabase library script.
+// ==========================================
+// Used by:
+// login, signup, payment, subscription,
+// account and premium prediction pages.
+//
+// IMPORTANT:
+// M-Pesa payment amount is NOT trusted from
+// the browser. The Edge Function obtains the
+// official price from Supabase.
 // ==========================================
 
 
@@ -29,28 +35,43 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
+
 if (!window.supabase) {
+
     console.error(
-        "Supabase library did not load. Check the <script> tag " +
-        "above script.js and your internet connection."
+        "Supabase library did not load. Check the script tag."
     );
+
+} else {
+
+    window.supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_PUBLISHABLE_KEY
+        );
 }
 
+
 const supabaseClient =
-    window.supabase.createClient(
-        SUPABASE_URL,
-        SUPABASE_PUBLISHABLE_KEY
-    );
+    window.supabaseClient;
 
 
-// Small helper: stops text from being treated as HTML
+// ==========================================
+// HTML ESCAPE HELPER
+// ==========================================
+
 function escapeHtml(value) {
-    return String(value === null || value === undefined ? "" : value)
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#39;");
+
+    return String(
+        value === null || value === undefined
+            ? ""
+            : value
+    )
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
 }
 
 
@@ -58,13 +79,17 @@ function escapeHtml(value) {
 // PAYMENT PAGE - DISPLAY SELECTED PLAN
 // ==========================================
 
-const selectedPlan =
+const selectedPlanElement =
     document.getElementById("selectedPlan");
 
-const selectedAmount =
+const selectedAmountElement =
     document.getElementById("selectedAmount");
 
-if (selectedPlan && selectedAmount) {
+
+if (
+    selectedPlanElement &&
+    selectedAmountElement
+) {
 
     const plan =
         localStorage.getItem("selectedPlan");
@@ -72,15 +97,23 @@ if (selectedPlan && selectedAmount) {
     const amount =
         localStorage.getItem("selectedAmount");
 
+
     if (plan && amount) {
 
-        selectedPlan.textContent = plan;
-        selectedAmount.textContent = "KSh " + amount;
+        selectedPlanElement.textContent =
+            plan;
+
+        selectedAmountElement.textContent =
+            "KSh " +
+            Number(amount).toLocaleString();
 
     } else {
 
-        selectedPlan.textContent = "No plan selected";
-        selectedAmount.textContent = "KSh 0";
+        selectedPlanElement.textContent =
+            "No plan selected";
+
+        selectedAmountElement.textContent =
+            "KSh 0";
     }
 }
 
@@ -89,7 +122,23 @@ if (selectedPlan && selectedAmount) {
 // M-PESA PAYMENT
 // ==========================================
 
+let paymentInProgress = false;
+
+
 window.startPayment = async function () {
+
+    /*
+     * HARD DUPLICATE PROTECTION
+     *
+     * If the customer taps the button several
+     * times while the first request is running,
+     * only the first request is allowed through.
+     */
+
+    if (paymentInProgress) {
+        return;
+    }
+
 
     const phoneInput =
         document.getElementById("mpesaPhone");
@@ -100,162 +149,399 @@ window.startPayment = async function () {
     const payButton =
         document.getElementById("payButton");
 
+
     if (!phoneInput || !message) {
         return;
     }
 
-    const phone =
-        phoneInput.value.trim();
 
-    const amount =
-        Number(localStorage.getItem("selectedAmount"));
+    const phone =
+        phoneInput.value
+            .trim()
+            .replace(/\D/g, "");
+
 
     const plan =
         localStorage.getItem("selectedPlan");
 
-    // Check plan
-    if (!plan || !amount) {
+
+    // ------------------------------------------
+    // CHECK PLAN
+    // ------------------------------------------
+
+    if (!plan) {
+
         message.textContent =
             "Please select a subscription plan first.";
+
         return;
     }
 
-    // Check phone
+
+    // ------------------------------------------
+    // CHECK PHONE
+    // ------------------------------------------
+
     if (!/^07\d{8}$/.test(phone)) {
+
         message.textContent =
             "Enter a valid M-Pesa number, e.g. 0712345678.";
+
         return;
     }
 
-    // Convert 07XXXXXXXX to 2547XXXXXXXX
+
+    // ------------------------------------------
+    // CHECK SUPABASE
+    // ------------------------------------------
+
+    if (!supabaseClient) {
+
+        message.textContent =
+            "Unable to connect to Supabase. Please refresh the page.";
+
+        return;
+    }
+
+
+    /*
+     * Convert:
+     *
+     * 0712345678
+     *
+     * into:
+     *
+     * 254712345678
+     */
+
     const mpesaPhone =
         "254" + phone.substring(1);
 
-    // Disable button (prevents double payments)
+
+    // ------------------------------------------
+    // LOCK PAYMENT BUTTON
+    // ------------------------------------------
+
+    paymentInProgress = true;
+
+
     if (payButton) {
+
         payButton.disabled = true;
-        payButton.textContent = "Sending...";
+
+        payButton.textContent =
+            "Sending M-Pesa Prompt...";
     }
 
+
     message.textContent =
-        "Sending M-Pesa payment request...";
+        "Please wait. Connecting to M-Pesa...";
+
 
     try {
 
-        const { data, error } =
-            await supabaseClient.functions.invoke(
-                "mpesa-payment",
-                {
-                    body: {
-                        phone: mpesaPhone,
-                        amount: amount,
-                        plan: plan
-                    }
-                }
+        // --------------------------------------
+        // VERIFY LOGIN SESSION
+        // --------------------------------------
+
+        const {
+            data: {
+                session
+            },
+            error: sessionError
+        } =
+            await supabaseClient.auth.getSession();
+
+
+        if (sessionError) {
+
+            throw new Error(
+                "Unable to verify your account."
             );
+        }
 
-        if (error) {
 
-            let detail = error.message;
+        if (!session) {
 
-            try {
-                detail = JSON.stringify(await error.context.json());
-            } catch (e) {}
-
-            console.error("M-Pesa function error:", detail);
-
-            message.textContent =
-                "Payment failed: " + detail;
+            window.location.href =
+                "login.html";
 
             return;
         }
 
-        console.log("M-Pesa response:", data);
+
+        // --------------------------------------
+        // CALL EDGE FUNCTION
+        // --------------------------------------
+        //
+        // IMPORTANT:
+        // We deliberately DO NOT send amount.
+        //
+        // The Edge Function gets the official
+        // price from public.plans.
+        // --------------------------------------
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient.functions.invoke(
+                "mpesa-payment",
+                {
+                    body: {
+
+                        phone: mpesaPhone,
+
+                        plan: plan
+
+                    }
+                }
+            );
+
+
+        // --------------------------------------
+        // HANDLE FUNCTION ERROR
+        // --------------------------------------
+
+        if (error) {
+
+            console.error(
+                "M-Pesa function error:",
+                error
+            );
+
+
+            let detail =
+                error.message ||
+                "Payment request failed.";
+
+
+            try {
+
+                if (error.context) {
+
+                    const responseBody =
+                        await error.context.json();
+
+                    if (responseBody?.error) {
+
+                        detail =
+                            responseBody.error;
+                    }
+                }
+
+            } catch (e) {
+
+                console.warn(
+                    "Could not read function error body."
+                );
+            }
+
+
+            message.textContent =
+                "Payment failed: " + detail;
+
+
+            paymentInProgress = false;
+
+
+            if (payButton) {
+
+                payButton.disabled = false;
+
+                payButton.textContent =
+                    "Pay with M-Pesa";
+            }
+
+
+            return;
+        }
+
+
+        // --------------------------------------
+        // LOG RESPONSE FOR DEBUGGING
+        // --------------------------------------
+
+        console.log(
+            "SNIPER ODDS M-Pesa response:",
+            data
+        );
+
+
+        // --------------------------------------
+        // SUCCESS
+        // --------------------------------------
 
         if (
             data &&
-            data.success === true &&
-            data.data &&
-            data.data.ResponseCode === "0"
+            data.success === true
         ) {
+
+            if (payButton) {
+
+                payButton.disabled = true;
+
+                payButton.textContent =
+                    "M-Pesa Prompt Sent ✓";
+            }
+
 
             message.textContent =
                 "M-Pesa prompt sent. Check your phone and enter your M-Pesa PIN.";
 
-        } else {
 
-            message.textContent =
-                "M-Pesa request was not accepted. Please try again.";
+            /*
+             * IMPORTANT:
+             *
+             * Do NOT unlock premium here.
+             *
+             * Premium access should only be granted
+             * after the Safaricom callback confirms
+             * successful payment on the server.
+             */
+
+            return;
         }
+
+
+        // --------------------------------------
+        // UNSUCCESSFUL RESPONSE
+        // --------------------------------------
+
+        message.textContent =
+            data?.error ||
+            "M-Pesa request was not accepted. Please try again.";
+
+
+        paymentInProgress = false;
+
+
+        if (payButton) {
+
+            payButton.disabled = false;
+
+            payButton.textContent =
+                "Pay with M-Pesa";
+        }
+
 
     } catch (error) {
 
-        console.error("Payment error:", error);
+        console.error(
+            "SNIPER ODDS payment error:",
+            error
+        );
+
 
         message.textContent =
+            error?.message ||
             "System error. Please try again.";
 
-    } finally {
+
+        paymentInProgress = false;
+
 
         if (payButton) {
+
             payButton.disabled = false;
-            payButton.textContent = "Pay with M-Pesa";
+
+            payButton.textContent =
+                "Pay with M-Pesa";
         }
     }
+
 };
 
 
 // ==========================================
-// SUPABASE LOGIN
+// LOGIN
 // ==========================================
 
-const loginForm = document.getElementById("loginForm");
+const loginForm =
+    document.getElementById("loginForm");
+
 
 if (loginForm) {
 
-    loginForm.addEventListener("submit", async function (event) {
+    loginForm.addEventListener(
+        "submit",
+        async function (event) {
 
-        event.preventDefault();
+            event.preventDefault();
 
-        const email =
-            document.getElementById("loginEmail").value.trim();
 
-        const password =
-            document.getElementById("loginPassword").value;
+            const email =
+                document
+                    .getElementById("loginEmail")
+                    .value
+                    .trim();
 
-        const message =
-            document.getElementById("loginMessage");
 
-        message.textContent = "Logging in...";
+            const password =
+                document
+                    .getElementById("loginPassword")
+                    .value;
 
-        try {
 
-            const { error } =
-                await supabaseClient.auth.signInWithPassword({
-                    email: email,
-                    password: password
-                });
+            const message =
+                document
+                    .getElementById("loginMessage");
 
-            if (error) {
+
+            message.textContent =
+                "Logging in...";
+
+
+            try {
+
+                const {
+                    error
+                } =
+                    await supabaseClient.auth
+                        .signInWithPassword({
+
+                            email: email,
+
+                            password: password
+
+                        });
+
+
+                if (error) {
+
+                    message.textContent =
+                        "Login failed: " +
+                        error.message;
+
+                    return;
+                }
+
+
                 message.textContent =
-                    "Login failed: " + error.message;
-                return;
+                    "Login successful! Redirecting...";
+
+
+                setTimeout(
+                    function () {
+
+                        window.location.replace(
+                            "account.html"
+                        );
+
+                    },
+                    300
+                );
+
+
+            } catch (error) {
+
+                message.textContent =
+                    "System error: " +
+                    error.message;
             }
 
-            message.textContent =
-    "Login successful! Redirecting...";
-
-setTimeout(function () {
-    window.location.replace("account.html");
-}, 300);
-
-        } catch (error) {
-
-            message.textContent =
-                "System error: " + error.message;
         }
-
-    });
+    );
 
 }
 
@@ -281,153 +567,304 @@ async function loadAccount() {
     const upgradeButton =
         document.getElementById("upgradeButton");
 
-    // Not the account page: nothing to do
-    if (!accountName || !accountEmail) {
+
+    if (
+        !accountName ||
+        !accountEmail
+    ) {
         return;
     }
 
+
     try {
 
-        // Read the saved login. If it is not there yet,
-        // wait a moment and check once more before giving up.
         let session = null;
-try {
-    const result = await Promise.race([
-        supabaseClient.auth.getSession(),
-        new Promise(function (_, reject) {
-            setTimeout(function () { reject(new Error("timeout")); }, 4000);
-        })
-    ]);
-    session = result.data.session;
-} catch (e) {
-    console.warn("Session check slow:", e.message);
-}
 
-        if (!session) {
-            await new Promise(function (resolve) {
-                setTimeout(resolve, 800);
-            });
-            ({ data: { session } } =
-                await supabaseClient.auth.getSession());
+
+        try {
+
+            const result =
+                await Promise.race([
+
+                    supabaseClient.auth
+                        .getSession(),
+
+                    new Promise(
+                        function (_, reject) {
+
+                            setTimeout(
+                                function () {
+
+                                    reject(
+                                        new Error(
+                                            "timeout"
+                                        )
+                                    );
+
+                                },
+                                4000
+                            );
+
+                        }
+                    )
+
+                ]);
+
+
+            session =
+                result.data.session;
+
+
+        } catch (e) {
+
+            console.warn(
+                "Session check slow:",
+                e.message
+            );
         }
 
-        const user = session ? session.user : null;
+
+        if (!session) {
+
+            await new Promise(
+                function (resolve) {
+
+                    setTimeout(
+                        resolve,
+                        800
+                    );
+
+                }
+            );
+
+
+            ({
+                data: {
+                    session
+                }
+            } =
+                await supabaseClient.auth
+                    .getSession());
+        }
+
+
+        const user =
+            session
+                ? session.user
+                : null;
+
 
         if (!user) {
-            window.location.href = "login.html";
+
+            window.location.href =
+                "login.html";
+
             return;
         }
 
-        // Display account information
+
+        // --------------------------------------
+        // ACCOUNT INFORMATION
+        // --------------------------------------
+
         accountEmail.textContent =
-            user.email || "Not available";
+            user.email ||
+            "Not available";
+
 
         accountName.textContent =
-            (user.user_metadata && user.user_metadata.name) ||
+            (
+                user.user_metadata &&
+                user.user_metadata.name
+            ) ||
             "Member";
 
 
-        // ----------------------------------
-        // CHECK ACTIVE SUBSCRIPTION
-        // ----------------------------------
+        // --------------------------------------
+        // ACTIVE SUBSCRIPTION
+        // --------------------------------------
 
         const {
             data: subscription,
             error: subscriptionError
-        } = await supabaseClient
-            .from("subscriptions")
-            .select("plan, amount, status, started_at, expires_at")
-            .eq("user_id", user.id)
-            .eq("status", "active")
-            .gt("expires_at", new Date().toISOString())
-            .order("expires_at", { ascending: false })
-            .limit(1)
-            .maybeSingle();
+        } =
+            await supabaseClient
+                .from("subscriptions")
+                .select(
+                    "plan, amount, status, started_at, expires_at"
+                )
+                .eq(
+                    "user_id",
+                    user.id
+                )
+                .eq(
+                    "status",
+                    "active"
+                )
+                .gt(
+                    "expires_at",
+                    new Date().toISOString()
+                )
+                .order(
+                    "expires_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(1)
+                .maybeSingle();
+
 
         if (subscriptionError) {
-            console.error("Subscription error:", subscriptionError);
+
+            console.error(
+                "Subscription error:",
+                subscriptionError
+            );
+
             return;
         }
 
+
         if (subscription) {
 
-            // ACTIVE SUBSCRIPTION: unlock premium
+            // ----------------------------------
+            // ACTIVE
+            // ----------------------------------
 
             if (upgradeButton) {
-                upgradeButton.style.display = "none";
+
+                upgradeButton.style.display =
+                    "none";
             }
 
+
             const premiumTitle =
-                document.getElementById("premiumTitle");
+                document.getElementById(
+                    "premiumTitle"
+                );
+
 
             const premiumMessage =
-                document.getElementById("premiumMessage");
+                document.getElementById(
+                    "premiumMessage"
+                );
+
 
             const premiumButton =
-                document.getElementById("premiumButton");
+                document.getElementById(
+                    "premiumButton"
+                );
+
 
             const premiumContent =
-                document.getElementById("premiumContent");
+                document.getElementById(
+                    "premiumContent"
+                );
+
 
             if (premiumTitle) {
+
                 premiumTitle.textContent =
                     "Premium Picks Unlocked";
             }
 
+
             if (premiumMessage) {
+
                 premiumMessage.textContent =
                     "Your subscription is active. Premium football selections are now unlocked.";
             }
 
+
             if (premiumButton) {
-                premiumButton.style.display = "none";
+
+                premiumButton.style.display =
+                    "none";
             }
+
 
             if (premiumContent) {
-                premiumContent.classList.remove("premium-locked");
+
+                premiumContent.classList.remove(
+                    "premium-locked"
+                );
             }
+
 
             if (subscriptionPlan) {
-                subscriptionPlan.textContent = subscription.plan;
+
+                subscriptionPlan.textContent =
+                    subscription.plan;
             }
+
 
             if (subscriptionBadge) {
-                subscriptionBadge.textContent = "ACTIVE";
+
+                subscriptionBadge.textContent =
+                    "ACTIVE";
             }
 
+
             const subscriptionText =
-                document.querySelector(".subscription-text");
+                document.querySelector(
+                    ".subscription-text"
+                );
+
 
             if (subscriptionText) {
+
                 subscriptionText.textContent =
                     "Your premium subscription is active.";
             }
 
-            console.log("Active subscription:", subscription);
+
+            console.log(
+                "Active subscription:",
+                subscription
+            );
+
 
         } else {
 
-            // No active subscription
+            // ----------------------------------
+            // FREE
+            // ----------------------------------
 
             if (subscriptionPlan) {
-                subscriptionPlan.textContent = "Free";
+
+                subscriptionPlan.textContent =
+                    "Free";
             }
 
+
             if (subscriptionBadge) {
-                subscriptionBadge.textContent = "FREE";
+
+                subscriptionBadge.textContent =
+                    "FREE";
             }
         }
 
+
     } catch (error) {
 
-        console.error("Account loading error:", error);
+        console.error(
+            "Account loading error:",
+            error
+        );
 
-        accountName.textContent = "Unable to load";
-        accountEmail.textContent = "Unable to load";
+
+        accountName.textContent =
+            "Unable to load";
+
+
+        accountEmail.textContent =
+            "Unable to load";
     }
+
 }
 
-// Load account information
+
 loadAccount();
 
 
@@ -438,77 +875,196 @@ loadAccount();
 async function loadPremiumPredictions() {
 
     const premiumContent =
-        document.getElementById("premiumContent");
+        document.getElementById(
+            "premiumContent"
+        );
 
-    if (!premiumContent) return;
+
+    if (!premiumContent) {
+        return;
+    }
+
 
     try {
 
         const {
             data: predictions,
             error
-        } = await supabaseClient
-            .from("premium_predictions")
-            .select(
-                "id, match_date, home_team, away_team, market, player, prediction, odds, analysis"
-            )
-            .order("match_date", { ascending: true });
+        } =
+            await supabaseClient
+                .from("premium_predictions")
+                .select(
+                    "id, match_date, home_team, away_team, market, player, prediction, odds, analysis"
+                )
+                .order(
+                    "match_date",
+                    {
+                        ascending: true
+                    }
+                );
+
 
         if (error) {
-            console.error("Premium predictions error:", error);
+
+            console.error(
+                "Premium predictions error:",
+                error
+            );
+
             return;
         }
 
-        if (!predictions || predictions.length === 0) {
+
+        if (
+            !predictions ||
+            predictions.length === 0
+        ) {
 
             premiumContent.innerHTML = `
-                <div class="big-lock">🎯</div>
-                <h3>Premium Predictions</h3>
-                <p>No premium selections have been published yet.</p>
+
+                <div class="big-lock">
+                    🎯
+                </div>
+
+                <h3>
+                    Premium Predictions
+                </h3>
+
+                <p>
+                    No premium selections have
+                    been published yet.
+                </p>
+
             `;
 
             return;
         }
+
 
         premiumContent.innerHTML = "";
 
-        predictions.forEach(function (prediction) {
 
-            const card = document.createElement("div");
-            card.className = "prediction-card";
+        predictions.forEach(
+            function (prediction) {
 
-            const marketHtml = prediction.market
-                ? `<div class="prediction-market">${escapeHtml(prediction.market)}</div>`
-                : "";
+                const card =
+                    document.createElement(
+                        "div"
+                    );
 
-            const titleHtml = prediction.player
-                ? `<h3>👤 ${escapeHtml(prediction.player)}</h3>`
-                : `<h3>⚽ ${escapeHtml(prediction.home_team)} vs ${escapeHtml(prediction.away_team)}</h3>`;
 
-            const oddsHtml = prediction.odds
-                ? `<p><strong>💰 Odds:</strong> ${escapeHtml(prediction.odds)}</p>`
-                : "";
+                card.className =
+                    "prediction-card";
 
-            const analysisHtml = prediction.analysis
-                ? `<p class="prediction-analysis">📊 ${escapeHtml(prediction.analysis)}</p>`
-                : "";
 
-            card.innerHTML = `
-                <div class="prediction-date">${escapeHtml(prediction.match_date)}</div>
-                ${marketHtml}
-                ${titleHtml}
-                <p><strong>🎯 Prediction:</strong> ${escapeHtml(prediction.prediction)}</p>
-                ${oddsHtml}
-                ${analysisHtml}
-            `;
+                const marketHtml =
+                    prediction.market
+                        ? `
+                            <div class="prediction-market">
+                                ${escapeHtml(
+                                    prediction.market
+                                )}
+                            </div>
+                          `
+                        : "";
 
-            premiumContent.appendChild(card);
-        });
+
+                const titleHtml =
+                    prediction.player
+                        ? `
+                            <h3>
+                                👤
+                                ${escapeHtml(
+                                    prediction.player
+                                )}
+                            </h3>
+                          `
+                        : `
+                            <h3>
+                                ⚽
+                                ${escapeHtml(
+                                    prediction.home_team
+                                )}
+                                vs
+                                ${escapeHtml(
+                                    prediction.away_team
+                                )}
+                            </h3>
+                          `;
+
+
+                const oddsHtml =
+                    prediction.odds
+                        ? `
+                            <p>
+                                <strong>
+                                    💰 Odds:
+                                </strong>
+                                ${escapeHtml(
+                                    prediction.odds
+                                )}
+                            </p>
+                          `
+                        : "";
+
+
+                const analysisHtml =
+                    prediction.analysis
+                        ? `
+                            <p class="prediction-analysis">
+                                📊
+                                ${escapeHtml(
+                                    prediction.analysis
+                                )}
+                            </p>
+                          `
+                        : "";
+
+
+                card.innerHTML = `
+
+                    <div class="prediction-date">
+                        ${escapeHtml(
+                            prediction.match_date
+                        )}
+                    </div>
+
+                    ${marketHtml}
+
+                    ${titleHtml}
+
+                    <p>
+                        <strong>
+                            🎯 Prediction:
+                        </strong>
+                        ${escapeHtml(
+                            prediction.prediction
+                        )}
+                    </p>
+
+                    ${oddsHtml}
+
+                    ${analysisHtml}
+
+                `;
+
+
+                premiumContent.appendChild(
+                    card
+                );
+
+            }
+        );
+
 
     } catch (error) {
 
-        console.error("Premium prediction loading error:", error);
+        console.error(
+            "Premium prediction loading error:",
+            error
+        );
     }
 }
+
 
 loadPremiumPredictions();
