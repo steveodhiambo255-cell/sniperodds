@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>M-Pesa Payment - SNIPER ODDS</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+
+
+</head>
+
+
+<body>
+
+<header class="header">
+
+    <div class="logo">
+        SNIPER <span>ODDS</span>
+    </div>
+
+    <button
+        class="login-btn"
+        onclick="window.location.href='subscription.html'">
+
+        Plans
+
+    </button>
+
+</header>
+
+
+<main class="auth-page">
+
+    <div class="auth-box">
+
+        <p class="small-title">
+            SNIPER ODDS PREMIUM
+        </p>
+
+        <h1>M-Pesa Payment</h1>
+
+        <p class="auth-text">
+            Complete your payment to unlock
+            premium football predictions.
+        </p>
+
+
+        <div class="account-card">
+
+            <p>
+                <strong>Selected Plan:</strong>
+            </p>
+
+            <h2 id="selectedPlan">
+                Loading...
+            </h2>
+
+            <p>
+                <strong>Amount:</strong>
+            </p>
+
+            <h2 id="selectedAmount">
+                KSh 0
+            </h2>
+
+        </div>
+
+
+        <label for="mpesaPhone">
+            M-Pesa Phone Number
+        </label>
+
+        <input
+            type="tel"
+            id="mpesaPhone"
+            placeholder="07XXXXXXXX"
+            maxlength="10">
+
+
+        <button
+            class="primary-btn full-btn"
+            onclick="startPayment()">
+
+            Pay with M-Pesa
+
+        </button>
+
+
+        <p
+            id="paymentMessage"
+            class="form-message">
+        </p>
+
+
+        <p class="switch-auth">
+
+            <a href="subscription.html">
+                ← Back to Plans
+            </a>
+
+        </p>
+
+    </div>
+
+</main>
+
+
+<script src="script.js"></script>
+
+</body>
+
+</html>
