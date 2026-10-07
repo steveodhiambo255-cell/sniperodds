@@ -1,0 +1,612 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>SNIPER ODDS — Referral Dashboard</title>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="config.js"></script>
+<script src="auth.js"></script>
+
+<style>
+:root{
+    --bg:#07110d;
+    --panel:#0d1b15;
+    --panel2:#12251d;
+    --line:#244536;
+    --green:#25d366;
+    --gold:#f4c95d;
+    --text:#f4f7f5;
+    --muted:#91a69c;
+}
+
+*{
+    box-sizing:border-box;
+}
+
+body{
+    margin:0;
+    background:
+        radial-gradient(circle at 80% 0,#173b2b 0,transparent 35%),
+        var(--bg);
+    color:var(--text);
+    font-family:Arial,sans-serif;
+}
+
+.container{
+    width:min(900px,92%);
+    margin:auto;
+}
+
+header{
+    border-bottom:1px solid var(--line);
+    padding:18px 0;
+}
+
+.nav{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:10px;
+}
+
+.logo{
+    font-size:21px;
+    font-weight:900;
+}
+
+.logo span{
+    color:var(--green);
+}
+
+.nav-buttons{
+    display:flex;
+    gap:8px;
+}
+
+.nav-buttons a{
+    text-decoration:none;
+    color:var(--text);
+    border:1px solid var(--line);
+    padding:9px 13px;
+    border-radius:9px;
+    font-size:13px;
+}
+
+main{
+    padding:45px 0 70px;
+}
+
+.hero{
+    text-align:center;
+    margin-bottom:30px;
+}
+
+.badge{
+    display:inline-block;
+    padding:7px 12px;
+    border-radius:20px;
+    background:#153526;
+    color:#8cf2b3;
+    font-size:11px;
+    font-weight:bold;
+}
+
+h1{
+    font-size:38px;
+    margin:16px 0 10px;
+}
+
+.hero p{
+    color:var(--muted);
+    line-height:1.6;
+}
+
+.card{
+    background:linear-gradient(145deg,var(--panel2),var(--panel));
+    border:1px solid var(--line);
+    border-radius:18px;
+    padding:24px;
+    margin-bottom:18px;
+}
+
+.card h2{
+    margin-top:0;
+}
+
+.referral-code{
+    font-size:34px;
+    font-weight:900;
+    letter-spacing:4px;
+    text-align:center;
+    margin:20px 0;
+    color:var(--green);
+}
+
+.link-box{
+    background:#07110d;
+    border:1px solid var(--line);
+    border-radius:10px;
+    padding:13px;
+    word-break:break-all;
+    color:var(--muted);
+    font-size:13px;
+}
+
+.buttons{
+    display:flex;
+    gap:10px;
+    margin-top:15px;
+}
+
+button{
+    border:0;
+    border-radius:10px;
+    padding:12px 17px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.primary{
+    background:var(--green);
+    color:#041009;
+}
+
+.secondary{
+    background:#193127;
+    color:white;
+    border:1px solid var(--line);
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:12px;
+}
+
+.stat{
+    text-align:center;
+    background:#091712;
+    border:1px solid var(--line);
+    border-radius:14px;
+    padding:20px 10px;
+}
+
+.stat strong{
+    display:block;
+    font-size:30px;
+    color:var(--green);
+}
+
+.stat span{
+    display:block;
+    color:var(--muted);
+    font-size:12px;
+    margin-top:5px;
+}
+
+.steps{
+    padding-left:20px;
+    color:#c9d6d0;
+    line-height:2;
+}
+
+.message{
+    color:var(--muted);
+    text-align:center;
+}
+
+footer{
+    border-top:1px solid var(--line);
+    padding:25px 0;
+    color:var(--muted);
+    font-size:12px;
+    text-align:center;
+}
+
+@media(max-width:650px){
+    h1{
+        font-size:30px;
+    }
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .buttons{
+        flex-direction:column;
+    }
+
+    .nav-buttons a{
+        font-size:11px;
+        padding:8px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<header>
+<div class="container nav">
+
+    <div class="logo">
+        SNIPER <span>ODDS</span>
+    </div>
+
+    <div class="nav-buttons">
+        <a href="index.html">🏠 Home</a>
+        <a href="account.html">👤 Account</a>
+    </div>
+
+</div>
+</header>
+
+<main class="container">
+
+<section class="hero">
+
+    <div class="badge">SNIPER ODDS REFERRAL PROGRAM</div>
+
+    <h1>Invite. Qualify. Earn.</h1>
+
+    <p>
+        Refer new SNIPER ODDS customers and earn free premium access
+        when your referrals complete the qualification process.
+    </p>
+
+</section>
+
+<section class="card">
+
+    <h2>🔗 Your Referral Code</h2>
+
+    <div id="referralCode" class="referral-code">
+        Loading...
+    </div>
+
+    <div id="referralLink" class="link-box">
+        Creating your referral link...
+    </div>
+
+    <div class="buttons">
+
+        <button
+            id="copyCodeBtn"
+            class="secondary">
+            Copy Code
+        </button>
+
+        <button
+            id="copyLinkBtn"
+            class="primary">
+            Copy Referral Link
+        </button>
+
+    </div>
+
+    <p id="referralMessage" class="message"></p>
+
+</section>
+
+<section class="card">
+
+    <h2>📊 Referral Progress</h2>
+
+    <div class="stats">
+
+        <div class="stat">
+            <strong id="qualifiedCount">0</strong>
+            <span>Qualified Referrals</span>
+        </div>
+
+        <div class="stat">
+            <strong>3</strong>
+            <span>Required</span>
+        </div>
+
+        <div class="stat">
+            <strong id="rewardDays">0</strong>
+            <span>Free Days Earned</span>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="card">
+
+    <h2>🎁 How It Works</h2>
+
+    <ol class="steps">
+
+        <li>Share your unique SNIPER ODDS referral link.</li>
+
+        <li>A new customer creates an account using your link.</li>
+
+        <li>The customer subscribes to the Weekly Pass.</li>
+
+        <li>The Weekly subscription is successfully verified.</li>
+
+        <li>That referral becomes qualified.</li>
+
+        <li>After 3 qualified referrals, your reward is automatically processed.</li>
+
+    </ol>
+
+    <p class="message">
+        Referral rewards are based on completed and verified subscriptions,
+        not simply account registrations.
+    </p>
+
+</section>
+
+<section class="card">
+
+    <h2>👥 Your Referrals</h2>
+
+    <div id="referralsList">
+        <p class="message">Loading referrals...</p>
+    </div>
+
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        © 2026 SNIPER ODDS. Football analysis for adults 18+.
+    </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const SUPABASE_URL =
+    "https://gddyhbjslwcgtqdtbzvu.supabase.co";
+
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_3uoDL_R8ylwHiJLTGenA_geIrsFxW";
+
+const referralSupabase =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+let currentCode = "";
+let currentLink = "";
+
+async function loadReferralDashboard(){
+
+    const message =
+        document.getElementById("referralMessage");
+
+    try{
+
+        const {
+            data: {
+                user
+            },
+            error: userError
+        } =
+            await referralSupabase.auth.getUser();
+
+        if(userError || !user){
+
+            window.location.href =
+                "login.html";
+
+            return;
+        }
+
+        const {
+            data: code,
+            error: codeError
+        } =
+            await referralSupabase.rpc(
+                "generate_referral_code"
+            );
+
+        if(codeError){
+
+            throw codeError;
+        }
+
+        currentCode = code;
+
+        document.getElementById(
+            "referralCode"
+        ).textContent = code;
+
+        currentLink =
+            window.location.origin +
+            window.location.pathname
+                .replace(
+                    "referrals.html",
+                    "signup.html"
+                ) +
+            "?ref=" +
+            encodeURIComponent(code);
+
+        document.getElementById(
+            "referralLink"
+        ).textContent = currentLink;
+
+        await loadReferrals(user.id);
+
+        message.textContent = "";
+
+    }catch(error){
+
+        console.error(error);
+
+        message.textContent =
+            "Unable to load referral information.";
+
+    }
+}
+
+async function loadReferrals(userId){
+
+    const list =
+        document.getElementById(
+            "referralsList"
+        );
+
+    const {
+        data,
+        error
+    } =
+        await referralSupabase
+            .from("referrals")
+            .select(
+                "id,referred_id,status,created_at,qualified_at"
+            )
+            .eq(
+                "referrer_id",
+                userId
+            )
+            .order(
+                "created_at",
+                {
+                    ascending:false
+                }
+            );
+
+    if(error){
+
+        list.innerHTML =
+            '<p class="message">Referral activity will appear here.</p>';
+
+        return;
+    }
+
+    const referrals = data || [];
+
+    const qualified =
+        referrals.filter(
+            item =>
+                item.status === "qualified" ||
+                item.status === "rewarded"
+        ).length;
+
+    const rewarded =
+        referrals.filter(
+            item =>
+                item.status === "rewarded"
+        ).length;
+
+    document.getElementById(
+        "qualifiedCount"
+    ).textContent = qualified;
+
+    document.getElementById(
+        "rewardDays"
+    ).textContent = rewarded * 3;
+
+    if(!referrals.length){
+
+        list.innerHTML =
+            '<p class="message">No referrals yet. Share your referral link to get started.</p>';
+
+        return;
+    }
+
+    list.innerHTML =
+        referrals.map(item => {
+
+            let statusText =
+                "Pending";
+
+            if(item.status === "qualified"){
+                statusText =
+                    "Qualified";
+            }
+
+            if(item.status === "rewarded"){
+                statusText =
+                    "Rewarded";
+            }
+
+            const date =
+                new Date(
+                    item.created_at
+                ).toLocaleDateString();
+
+            return `
+                <div style="
+                    border-top:1px solid var(--line);
+                    padding:15px 0;
+                ">
+                    <strong>
+                        Referral
+                    </strong>
+
+                    <div style="
+                        color:var(--muted);
+                        font-size:12px;
+                        margin-top:5px;
+                    ">
+                        Joined: ${date}
+                    </div>
+
+                    <div style="
+                        margin-top:8px;
+                        color:var(--green);
+                        font-weight:bold;
+                    ">
+                        ${statusText}
+                    </div>
+                </div>
+            `;
+
+        }).join("");
+}
+
+document.getElementById(
+    "copyCodeBtn"
+).addEventListener(
+    "click",
+    async function(){
+
+        if(!currentCode) return;
+
+        await navigator.clipboard.writeText(
+            currentCode
+        );
+
+        document.getElementById(
+            "referralMessage"
+        ).textContent =
+            "Referral code copied.";
+
+    }
+);
+
+document.getElementById(
+    "copyLinkBtn"
+).addEventListener(
+    "click",
+    async function(){
+
+        if(!currentLink) return;
+
+        await navigator.clipboard.writeText(
+            currentLink
+        );
+
+        document.getElementById(
+            "referralMessage"
+        ).textContent =
+            "Referral link copied.";
+
+    }
+);
+
+loadReferralDashboard();
+</script>
+
+</body>
+</html>
