@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SNIPER ODDS | My Account</title>
+<style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #07111f;
+            color: #f5f7fa;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 900px;
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        header {
+            background: #07111f;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav {
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #32d583;
+        }
+
+        .nav-actions {
+            display: flex;
+            gap: 8px;
+        }
+
+        .nav-btn {
+            border: 1px solid rgba(255,255,255,0.15);
+            background: transparent;
+            color: #dce5ef;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+
+        .logout-btn {
+            background: #d64545;
+            color: white;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 700;
+        }
+
+        /* PAGE */
+
+        main {
+            padding: 35px 0 60px;
+        }
+
+        .welcome {
+            margin-bottom: 25px;
+        }
+
+        .welcome h1 {
+            font-size: 30px;
+            margin-bottom: 5px;
+        }
+
+        .welcome p {
+            color: #94a3b8;
+        }
+
+        /* CARDS */
+
+        .account-card {
+            background: #0c1929;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 15px;
+            padding: 23px;
+            margin-bottom: 18px;
+        }
+
+        .card-title {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .card-title span {
+            font-size: 23px;
+        }
+
+        .card-title h2 {
+            font-size: 20px;
+        }
+
+        .info-row {
+            padding: 11px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.06);
+        }
+
+        .info-row:last-child {
+            border-bottom: none;
+        }
+
+        .info-label {
+            color: #8190a3;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .7px;
+        }
+
+        .info-value {
+            color: #f4f7fa;
+            font-weight: 700;
+            margin-top: 2px;
+            word-break: break-word;
+        }
+
+        /* SUBSCRIPTION */
+
+        .subscription-box {
+            background: rgba(50,213,131,0.07);
+            border: 1px solid rgba(50,213,131,0.18);
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .current-plan {
+            color: #32d583;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        #subscriptionPlan {
+            font-size: 25px;
+            margin: 3px 0 5px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            background: rgba(50,213,131,0.15);
+            color: #32d583;
+            border-radius: 20px;
+            padding: 4px 10px;
+            font-size: 11px;
+            font-weight: 900;
+        }
+
+        .subscription-text {
+            color: #9eabba;
+            font-size: 14px;
+            margin: 13px 0 18px;
+        }
+
+        /* BUTTONS */
+
+        .primary-btn,
+        .secondary-btn {
+            border-radius: 9px;
+            padding: 12px 17px;
+            font-weight: 800;
+            border: none;
+        }
+
+        .primary-btn {
+            background: #32d583;
+            color: #06110d;
+        }
+
+        .secondary-btn {
+            background: transparent;
+            border: 1px solid rgba(255,255,255,0.18);
+            color: white;
+        }
+
+        .full-btn {
+            width: 100%;
+        }
+
+        /* PREMIUM */
+
+        #premiumContent {
+            text-align: center;
+            padding: 15px 5px;
+        }
+
+        .big-lock {
+            font-size: 44px;
+            margin-bottom: 8px;
+        }
+
+        #premiumTitle {
+            font-size: 21px;
+            margin-bottom: 8px;
+        }
+
+        #premiumMessage {
+            color: #98a6b7;
+            font-size: 14px;
+            margin-bottom: 18px;
+        }
+
+        /* QUICK ACTIONS */
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 11px;
+        }
+
+        .quick-btn {
+            display: block;
+            text-align: center;
+            padding: 14px 10px;
+            border-radius: 10px;
+            background: #101f31;
+            border: 1px solid rgba(255,255,255,0.07);
+            color: #dce5ef;
+            font-weight: 700;
+            font-size: 14px;
+        }
+
+        .quick-btn:hover {
+            border-color: rgba(50,213,131,0.4);
+        }
+
+        /* FOOTER */
+
+        footer {
+            padding: 25px 0;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            text-align: center;
+        }
+
+        footer p {
+            color: #66768a;
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 600px) {
+
+            .nav-actions {
+                gap: 5px;
+            }
+
+            .nav-btn,
+            .logout-btn {
+                padding: 7px 9px;
+                font-size: 12px;
+            }
+
+            .welcome h1 {
+                font-size: 26px;
+            }
+
+            .account-card {
+                padding: 19px;
+            }
+
+            .quick-actions {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+
+        <a href="index.html" class="logo">
+            SNIPER <span>ODDS</span>
+        </a>
+
+        <div class="nav-actions">
+
+            <button
+                class="nav-btn"
+                type="button"
+                onclick="window.location.href='index.html'">
+                🏠 Home
+            </button>
+
+            <button
+                class="logout-btn"
+                type="button"
+                id="logoutBtn">
+                Logout
+            </button>
+
+        </div>
+
+    </div>
+</header>
+
+<main>
+    <div class="container">
+
+        <div class="welcome">
+            <h1>My Account</h1>
+            <p>Manage your SNIPER ODDS account and premium access.</p>
+        </div>
+
+        <!-- ACCOUNT INFORMATION -->
+
+        <section class="account-card">
+
+            <div class="card-title">
+                <span>👤</span>
+                <h2>Account Information</h2>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Name</div>
+                <div
+                    class="info-value"
+                    id="accountName">
+                    Loading...
+                </div>
+            </div>
+
+            <div class="info-row">
+                <div class="info-label">Email</div>
+                <div
+                    class="info-value"
+                    id="accountEmail">
+                    Loading...
+                </div>
+            </div>
+
+        </section>
+
+
+        <!-- SUBSCRIPTION -->
+
+        <section class="account-card">
+
+            <div class="card-title">
+                <span>💳</span>
+                <h2>Subscription</h2>
+            </div>
+
+            <div class="subscription-box">
+
+                <div class="current-plan">
+                    CURRENT PLAN
+                </div>
+
+                <h3 id="subscriptionPlan">
+                    Free
+                </h3>
+
+                <span
+                    id="subscriptionBadge"
+                    class="status-badge">
+                    ACTIVE
+                </span>
+
+                <p
+                    id="subscriptionText"
+                    class="subscription-text">
+                    Upgrade your account to access premium football analysis.
+                </p>
+
+                <button
+                    id="upgradeButton"
+                    class="primary-btn full-btn"
+                    type="button"
+                    onclick="window.location.href='subscription.html'">
+                    Upgrade to Premium
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- PREMIUM PREDICTIONS -->
+
+        <section class="account-card">
+
+            <div class="card-title">
+                <span>🎯</span>
+                <h2>Premium Analysis</h2>
+            </div>
+
+            <div id="premiumContent">
+
+                <div class="big-lock">
+                    🔒
+                </div>
+
+                <h3 id="premiumTitle">
+                    Premium Analysis Locked
+                </h3>
+
+                <p id="premiumMessage">
+                    Subscribe to access premium football selections
+                    and detailed analysis.
+                </p>
+
+                <button
+                    id="premiumButton"
+                    class="secondary-btn"
+                    type="button"
+                    onclick="window.location.href='subscription.html'">
+                    Unlock Premium Analysis
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK ACTIONS -->
+
+        <section class="account-card">
+
+            <div class="card-title">
+                <span>⚡</span>
+                <h2>Quick Actions</h2>
+            </div>
+
+            <div class="quick-actions">
+
+                <a
+                    href="index.html"
+                    class="quick-btn">
+                    🏠 Home
+                </a>
+
+                <a
+                    href="subscription.html"
+                    class="quick-btn">
+                    💳 Subscription
+                </a>
+
+                <a
+                    href="results.html"
+                    class="quick-btn">
+                    📊 Results
+                </a>
+
+                <a
+                    href="contact.html"
+                    class="quick-btn">
+                    📩 Contact
+                </a>
+
+            </div>
+
+        </section>
+
+    </div>
+</main>
+
+
+<footer>
+    <div class="container">
+        <p>
+            SNIPER ODDS • Football Analysis • Statistics • Insights
+        </p>
+    </div>
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+
+<!-- Existing project JavaScript -->
+<script src="script.js"></script>
+
+<script>
+    /*
+     * Logout button
+     *
+     * Uses the same Supabase project already configured
+     * in script.js.
+     */
+
+    document.addEventListener("DOMContentLoaded", function () {
+
+        const logoutBtn =
+            document.getElementById("logoutBtn");
+
+        if (logoutBtn) {
+
+            logoutBtn.addEventListener("click", async function () {
+
+                logoutBtn.disabled = true;
+                logoutBtn.textContent = "Logging out...";
+
+                try {
+
+                    if (
+                        typeof supabaseClient !== "undefined" &&
+                        supabaseClient.auth
+                    ) {
+
+                        const { error } =
+                            await supabaseClient.auth.signOut({ scope: "local" });
+
+                        if (error) {
+                            console.error(
+                                "Logout error:",
+                                error
+                            );
+                        }
+
+                    } else if (
+                        window.supabase
+                    ) {
+
+                        /*
+                         * Safety fallback.
+                         * This does not change your existing
+                         * Supabase configuration.
+                         */
+
+                        const client =
+                            window.supabase.createClient(
+                                "https://gddyhbjslwcgtqdtbzvu.supabase.co",
+                                "sb_publishable_3uoDL_R8ylwHiJLTGenA_geIrsFxW"
+                            );
+
+                        await client.auth.signOut();
+                    }
+
+                } catch (error) {
+
+                    console.error(
+                        "System logout error:",
+                        error
+                    );
+
+                } finally {
+
+                    window.location.href =
+                        "index.html";
+                }
+            });
+        }
+
+    });
+</script>
+
+</body>
+</html>
