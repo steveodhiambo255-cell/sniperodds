@@ -1,0 +1,2207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SNIPER ODDS — Admin Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+ 
+  <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #0b1220;
+            color: #ffffff;
+            line-height: 1.5;
+        }
+
+        a {
+            color: inherit;
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+        header {
+            background: #111a2d;
+            border-bottom: 1px solid #26344f;
+            padding: 15px 18px;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .header-inner {
+            max-width: 1200px;
+            margin: auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .brand {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .admin-label {
+            font-size: 12px;
+            color: #9fb0ca;
+            margin-top: 2px;
+        }
+
+        .header-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .top-btn {
+            border: 1px solid #344563;
+            background: #18243b;
+            color: #ffffff;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 13px;
+            cursor: pointer;
+        }
+
+        .top-btn:hover {
+            background: #22314f;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+            padding: 24px 16px 50px;
+        }
+
+        .page-heading {
+            margin-bottom: 22px;
+        }
+
+        .page-heading h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+        }
+
+        .page-heading p {
+            color: #9fb0ca;
+            font-size: 14px;
+        }
+
+        .loading {
+            text-align: center;
+            padding: 50px 20px;
+            color: #9fb0ca;
+        }
+
+        .dashboard {
+            display: none;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 22px;
+        }
+
+        .stat-card {
+            background: #111a2d;
+            border: 1px solid #26344f;
+            border-radius: 14px;
+            padding: 18px;
+        }
+
+        .stat-icon {
+            font-size: 23px;
+            margin-bottom: 10px;
+        }
+
+        .stat-title {
+            color: #9fb0ca;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: .5px;
+        }
+
+        .stat-value {
+            font-size: 26px;
+            font-weight: 800;
+            margin-top: 5px;
+        }
+
+        .section {
+            background: #111a2d;
+            border: 1px solid #26344f;
+            border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            gap: 9px;
+            margin-bottom: 17px;
+        }
+
+        .section-title h2 {
+            font-size: 19px;
+        }
+
+        .section-description {
+            color: #9fb0ca;
+            font-size: 13px;
+            margin-bottom: 18px;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 14px;
+        }
+
+        .field {
+            margin-bottom: 13px;
+        }
+
+        .field.full {
+            grid-column: 1 / -1;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            margin-bottom: 6px;
+            color: #c8d3e5;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            background: #0b1220;
+            color: #ffffff;
+            border: 1px solid #344563;
+            border-radius: 8px;
+            padding: 11px 12px;
+            font-size: 14px;
+            outline: none;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            border-color: #5d7fb8;
+        }
+
+        textarea {
+            min-height: 120px;
+            resize: vertical;
+        }
+
+        .primary-btn {
+            border: none;
+            background: #2563eb;
+            color: #ffffff;
+            padding: 12px 18px;
+            border-radius: 9px;
+            font-weight: 700;
+            cursor: pointer;
+        }
+
+        .primary-btn:hover {
+            background: #1d4ed8;
+        }
+
+        .primary-btn:disabled {
+            opacity: .6;
+            cursor: not-allowed;
+        }
+
+        .secondary-btn {
+            border: 1px solid #344563;
+            background: #18243b;
+            color: #ffffff;
+            padding: 10px 15px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .danger-btn {
+            border: 1px solid #71343b;
+            background: #321b21;
+            color: #ffb8bf;
+            padding: 8px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+        }
+
+        .message {
+            margin-top: 12px;
+            font-size: 13px;
+            color: #9fb0ca;
+        }
+
+        .success {
+            color: #72e0a5;
+        }
+
+        .error {
+            color: #ff8f9b;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 10px;
+            border-bottom: 1px solid #26344f;
+            font-size: 13px;
+        }
+
+        th {
+            color: #9fb0ca;
+            font-size: 11px;
+            text-transform: uppercase;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 20px;
+            background: #18243b;
+            color: #c8d3e5;
+            font-size: 11px;
+        }
+
+        .status.active {
+            color: #72e0a5;
+        }
+
+        .status.paid {
+            color: #72e0a5;
+        }
+
+        .status.failed {
+            color: #ff8f9b;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 30px 15px;
+            color: #8495b0;
+        }
+
+        .empty-state strong {
+            display: block;
+            color: #ffffff;
+            margin-bottom: 5px;
+        }
+
+        .toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        .last-updated {
+            color: #71829d;
+            font-size: 12px;
+        }
+
+        .quick-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 12px;
+        }
+
+        .quick-card {
+            background: #0b1220;
+            border: 1px solid #26344f;
+            border-radius: 10px;
+            padding: 15px;
+        }
+
+        .quick-card h3 {
+            font-size: 15px;
+            margin-bottom: 5px;
+        }
+
+        .quick-card p {
+            color: #8fa0ba;
+            font-size: 12px;
+        }
+
+        .login-box {
+            max-width: 430px;
+            margin: 50px auto;
+            background: #111a2d;
+            border: 1px solid #26344f;
+            border-radius: 14px;
+            padding: 25px;
+            display: none;
+        }
+
+        .login-box h2 {
+            margin-bottom: 8px;
+        }
+
+        .login-box p {
+            color: #9fb0ca;
+            font-size: 13px;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            border-top: 1px solid #26344f;
+            padding: 22px 15px;
+            color: #71829d;
+            font-size: 12px;
+        }
+
+        @media (max-width: 900px) {
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .header-inner {
+                align-items: flex-start;
+            }
+
+            .header-buttons {
+                flex-direction: column;
+            }
+
+            .page-heading h1 {
+                font-size: 24px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr 1fr;
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 14px;
+            }
+
+            .stat-value {
+                font-size: 21px;
+            }
+
+            .form-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .field.full {
+                grid-column: auto;
+            }
+
+            .quick-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .section {
+                padding: 16px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="header-inner">
+
+        <div>
+            <div class="brand">SNIPER ODDS</div>
+            <div class="admin-label">ADMIN DASHBOARD</div>
+        </div>
+
+        <div class="header-buttons">
+            <a href="index.html" class="top-btn">🏠 Home</a>
+            <a href="account.html" class="top-btn">👤 Account</a>
+            <button class="top-btn" onclick="refreshDashboard()">🔄 Refresh</button>
+            <button class="top-btn" onclick="logout()">Logout</button>
+        </div>
+
+    </div>
+</header>
+
+
+<main>
+
+    <div id="loadingScreen" class="loading">
+        Checking administrator access...
+    </div>
+
+
+    <div id="loginBox" class="login-box">
+
+        <h2>Admin Login</h2>
+
+        <p>
+            Sign in with your SNIPER ODDS administrator account.
+        </p>
+
+        <form id="loginForm">
+
+            <div class="field">
+                <label>Email</label>
+                <input
+                    type="email"
+                    id="adminEmail"
+                    placeholder="Admin email"
+                    required
+                >
+            </div>
+
+            <div class="field">
+                <label>Password</label>
+                <input
+                    type="password"
+                    id="adminPassword"
+                    placeholder="Password"
+                    required
+                >
+            </div>
+
+            <button class="primary-btn" type="submit">
+                Sign In
+            </button>
+
+            <div id="loginMessage" class="message"></div>
+
+        </form>
+
+    </div>
+
+
+    <div id="dashboard" class="dashboard">
+
+        <div class="page-heading">
+
+            <h1>Admin Dashboard</h1>
+
+            <p>
+                Manage premium analysis, subscribers, payments and the SNIPER ODDS platform.
+            </p>
+
+        </div>
+
+
+        <!-- STATISTICS -->
+
+        <section class="stats-grid">
+
+            <div class="stat-card">
+                <div class="stat-icon">👥</div>
+                <div class="stat-title">New Subscribers</div>
+                <div class="stat-value" id="newSubscribers">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">💰</div>
+                <div class="stat-title">Today's Revenue</div>
+                <div class="stat-value" id="todayRevenue">KSh 0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📈</div>
+                <div class="stat-title">Monthly Revenue</div>
+                <div class="stat-value" id="monthlyRevenue">KSh 0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">📊</div>
+                <div class="stat-title">Annual Revenue</div>
+                <div class="stat-value" id="annualRevenue">KSh 0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🟢</div>
+                <div class="stat-title">Active Subscribers</div>
+                <div class="stat-value" id="activeSubscribers">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">👤</div>
+                <div class="stat-title">Total Subscribers</div>
+                <div class="stat-value" id="totalSubscribers">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">⏳</div>
+                <div class="stat-title">Expired</div>
+                <div class="stat-value" id="expiredSubscribers">0</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon">🔗</div>
+                <div class="stat-title">Referrals</div>
+                <div class="stat-value" id="totalReferrals">0</div>
+            </div>
+
+        </section>
+
+
+        <!-- PUBLISH PREMIUM ANALYSIS -->
+
+        <section class="section">
+
+            <div class="section-title">
+                <span>🎯</span>
+                <h2>Publish Premium Analysis</h2>
+            </div>
+
+            <p class="section-description">
+                Publish a football selection for active premium subscribers.
+            </p>
+
+            <form id="predictionForm">
+
+                <div class="form-grid">
+
+                    <div class="field">
+                        <label>Match Date</label>
+                        <input type="date" id="matchDate" required>
+                    </div>
+
+                    <div class="field">
+                        <label>Market</label>
+
+                        <select id="market" required>
+
+                            <option value="1X2">1X2</option>
+                            <option value="Double Chance">Double Chance</option>
+                            <option value="GG / NG">GG / NG</option>
+                            <option value="Over / Under">Over / Under</option>
+                            <option value="Corners">Corners</option>
+                            <option value="Bookings / Cards">Bookings / Cards</option>
+                            <option value="Player Goals">Player Goals</option>
+                            <option value="Player Assists">Player Assists</option>
+                            <option value="Player Shots">Player Shots</option>
+                            <option value="Shots on Target">Shots on Target</option>
+
+                        </select>
+
+                    </div>
+
+                    <div class="field">
+                        <label>Home Team</label>
+                        <input
+                            type="text"
+                            id="homeTeam"
+                            placeholder="Home team"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label>Away Team</label>
+                        <input
+                            type="text"
+                            id="awayTeam"
+                            placeholder="Away team"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label>Prediction</label>
+                        <input
+                            type="text"
+                            id="prediction"
+                            placeholder="Example: Home Win"
+                            required
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label>Odds</label>
+                        <input
+                            type="number"
+                            id="odds"
+                            step="0.01"
+                            min="1"
+                            placeholder="Example: 1.80"
+                        >
+                    </div>
+
+                    <div class="field">
+                        <label>Player (optional)</label>
+                        <input
+                            type="text"
+                            id="player"
+                            placeholder="Player market only"
+                        >
+                    </div>
+
+                    <div class="field full">
+                        <label>Analysis</label>
+
+                        <textarea
+                            id="analysis"
+                            placeholder="Write the reasoning behind the selection..."
+                        ></textarea>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="primary-btn"
+                    id="publishBtn"
+                    type="submit"
+                >
+                    Publish Analysis
+                </button>
+
+                <div id="publishMessage" class="message"></div>
+
+            </form>
+
+        </section>
+
+
+        <!-- PUBLISHED PREDICTIONS -->
+
+        <section class="section">
+
+            <div class="toolbar">
+
+                <div class="section-title" style="margin-bottom:0;">
+                    <span>📋</span>
+                    <h2>Published Analysis</h2>
+                </div>
+
+                <div class="last-updated" id="predictionUpdated">
+                    Loading...
+                </div>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Match</th>
+                            <th>Market</th>
+                            <th>Prediction</th>
+                            <th>Odds</th>
+                            <th>Action</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="predictionsTable">
+
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    Loading predictions...
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- SUBSCRIBERS -->
+
+        <section class="section">
+
+            <div class="toolbar">
+
+                <div class="section-title" style="margin-bottom:0;">
+                    <span>👥</span>
+                    <h2>Subscriber Management</h2>
+                </div>
+
+                <div class="last-updated">
+                    Subscription records
+                </div>
+
+            </div>
+
+            <p class="section-description">
+                Monitor subscription plans, payment status and expiry dates.
+            </p>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>User ID</th>
+                            <th>Plan</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Started</th>
+                            <th>Expires</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="subscriptionsTable">
+
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    Loading subscribers...
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- PAYMENTS -->
+
+        <section class="section">
+
+            <div class="toolbar">
+
+                <div class="section-title" style="margin-bottom:0;">
+                    <span>💳</span>
+                    <h2>Payment Activity</h2>
+                </div>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Date</th>
+                            <th>Phone</th>
+                            <th>Amount</th>
+                            <th>Plan</th>
+                            <th>Status</th>
+                            <th>M-Pesa Receipt</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="paymentsTable">
+
+                        <tr>
+                            <td colspan="6">
+                                <div class="empty-state">
+                                    Loading payments...
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- REFERRALS -->
+
+        <section class="section">
+
+            <div class="toolbar">
+
+                <div class="section-title" style="margin-bottom:0;">
+                    <span>🔗</span>
+                    <h2>Referral Activity</h2>
+                </div>
+
+            </div>
+
+            <div class="table-wrap">
+
+                <table>
+
+                    <thead>
+
+                        <tr>
+                            <th>Referrer ID</th>
+                            <th>Customer ID</th>
+                            <th>Status</th>
+                            <th>Created</th>
+                            <th>Qualified</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody id="referralsTable">
+
+                        <tr>
+                            <td colspan="5">
+                                <div class="empty-state">
+                                    Loading referrals...
+                                </div>
+                            </td>
+                        </tr>
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </section>
+
+
+        <!-- QUICK MANAGEMENT -->
+
+        <section class="section">
+
+            <div class="section-title">
+                <span>⚙️</span>
+                <h2>Quick Management</h2>
+            </div>
+
+            <div class="quick-grid">
+
+                <div class="quick-card">
+                    <h3>🎯 Premium Analysis</h3>
+                    <p>
+                        Publish premium football selections directly to Supabase.
+                    </p>
+                </div>
+
+                <div class="quick-card">
+                    <h3>🏆 Results</h3>
+                    <p>
+                        Prediction result management can be added when the result field is introduced.
+                    </p>
+                </div>
+
+                <div class="quick-card">
+                    <h3>👥 Subscribers</h3>
+                    <p>
+                        View subscription records, plans and expiry dates.
+                    </p>
+                </div>
+
+                <div class="quick-card">
+                    <h3>🔗 Referrals</h3>
+                    <p>
+                        Monitor referral records and qualification status.
+                    </p>
+                </div>
+
+                <div class="quick-card">
+                    <h3>💰 Revenue</h3>
+                    <p>
+                        Revenue figures are calculated from successful payment records.
+                    </p>
+                </div>
+
+                <div class="quick-card">
+                    <h3>💬 Support</h3>
+                    <p>
+                        Customer support functionality can be connected when its database table is created.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<footer>
+    © 2026 SNIPER ODDS. Football analysis platform.
+</footer>
+
+
+<script>
+
+    /* =========================================
+       SUPABASE CONFIGURATION
+       ========================================= */
+
+    const SUPABASE_URL =
+        "https://gddyhbjslwcgtqdtbzvu.supabase.co";
+
+    const SUPABASE_KEY =
+        "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
+
+    const supabaseClient =
+        window.supabase.createClient(
+            SUPABASE_URL,
+            SUPABASE_KEY
+        );
+
+
+    /* =========================================
+       ELEMENTS
+       ========================================= */
+
+    const loadingScreen =
+        document.getElementById("loadingScreen");
+
+    const loginBox =
+        document.getElementById("loginBox");
+
+    const dashboard =
+        document.getElementById("dashboard");
+
+    const loginForm =
+        document.getElementById("loginForm");
+
+    const predictionForm =
+        document.getElementById("predictionForm");
+
+
+    /* =========================================
+       FORMATTERS
+       ========================================= */
+
+    function formatMoney(value) {
+
+        const number =
+            Number(value || 0);
+
+        return "KSh " +
+            number.toLocaleString(
+                "en-KE",
+                {
+                    maximumFractionDigits: 0
+                }
+            );
+    }
+
+
+    function formatDate(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        const date =
+            new Date(value);
+
+        if (isNaN(date.getTime())) {
+            return "—";
+        }
+
+        return date.toLocaleDateString(
+            "en-KE",
+            {
+                year: "numeric",
+                month: "short",
+                day: "numeric"
+            }
+        );
+    }
+
+
+    function shortId(value) {
+
+        if (!value) {
+            return "—";
+        }
+
+        if (value.length <= 12) {
+            return value;
+        }
+
+        return value.substring(0, 8) + "...";
+    }
+
+
+    /* =========================================
+       ADMIN ACCESS
+       ========================================= */
+
+    async function checkAdminAccess() {
+
+        loadingScreen.style.display = "block";
+        loginBox.style.display = "none";
+        dashboard.style.display = "none";
+
+        const {
+            data: {
+                session
+            }
+        } = await supabaseClient.auth.getSession();
+
+
+        if (!session) {
+
+            loadingScreen.style.display = "none";
+            loginBox.style.display = "block";
+
+            return;
+        }
+
+
+        const {
+            data: adminRecord,
+            error
+        } = await supabaseClient
+            .from("admin_users")
+            .select("user_id")
+            .eq("user_id", session.user.id)
+            .maybeSingle();
+
+
+        if (error) {
+
+            console.error(error);
+
+            loadingScreen.innerHTML =
+                "Unable to verify: " + error.message;
+
+            return;
+        }
+
+
+        if (!adminRecord) {
+
+            loadingScreen.innerHTML =
+                "Access denied. This account is not an administrator.";
+
+            return;
+        }
+
+
+        loadingScreen.style.display = "none";
+        dashboard.style.display = "block";
+
+        await loadDashboard();
+
+    }
+
+
+    /* =========================================
+       LOGIN
+       ========================================= */
+
+    loginForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+            const email =
+                document.getElementById("adminEmail").value.trim();
+
+            const password =
+                document.getElementById("adminPassword").value;
+
+            const message =
+                document.getElementById("loginMessage");
+
+
+            message.textContent =
+                "Signing in...";
+
+            message.className =
+                "message";
+
+
+            const {
+                error
+            } =
+                await supabaseClient.auth.signInWithPassword({
+                    email: email,
+                    password: password
+                });
+
+
+            if (error) {
+
+                message.textContent =
+                    error.message;
+
+                message.className =
+                    "message error";
+
+                return;
+            }
+
+
+            message.textContent =
+                "Login successful.";
+
+            message.className =
+                "message success";
+
+
+            await checkAdminAccess();
+
+        }
+    );
+
+
+    /* =========================================
+       LOGOUT
+       ========================================= */
+
+    async function logout() {
+
+        await supabaseClient.auth.signOut();
+
+        window.location.reload();
+
+    }
+
+
+    /* =========================================
+       LOAD DASHBOARD
+       ========================================= */
+
+    async function loadDashboard() {
+
+        await Promise.all([
+            loadStatistics(),
+            loadPredictions(),
+            loadSubscriptions(),
+            loadPayments(),
+            loadReferrals()
+        ]);
+
+    }
+
+
+    /* =========================================
+       REFRESH
+       ========================================= */
+
+    async function refreshDashboard() {
+
+        const button =
+            document.querySelector(
+                'button[onclick="refreshDashboard()"]'
+            );
+
+        if (button) {
+            button.textContent = "⏳ Loading...";
+            button.disabled = true;
+        }
+
+
+        await loadDashboard();
+
+
+        if (button) {
+            button.textContent = "🔄 Refresh";
+            button.disabled = false;
+        }
+
+    }
+
+
+    /* =========================================
+       STATISTICS
+       ========================================= */
+
+    async function loadStatistics() {
+
+        const [
+            subscriptionsResponse,
+            paymentsResponse,
+            referralsResponse
+        ] = await Promise.all([
+
+            supabaseClient
+                .from("subscriptions")
+                .select(
+                    "user_id,plan,amount,status,created_at,expires_at"
+                ),
+
+            supabaseClient
+                .from("payments")
+                .select(
+                    "amount,status,created_at"
+                ),
+
+            supabaseClient
+                .from("referrals")
+                .select(
+                    "id,status,created_at"
+                )
+
+        ]);
+
+
+        if (subscriptionsResponse.error) {
+
+            console.error(
+                "Subscriptions:",
+                subscriptionsResponse.error
+            );
+
+        }
+
+
+        if (paymentsResponse.error) {
+
+            console.error(
+                "Payments:",
+                paymentsResponse.error
+            );
+
+        }
+
+
+        if (referralsResponse.error) {
+
+            console.error(
+                "Referrals:",
+                referralsResponse.error
+            );
+
+        }
+
+
+        const subscriptions =
+            subscriptionsResponse.data || [];
+
+        const payments =
+            paymentsResponse.data || [];
+
+        const referrals =
+            referralsResponse.data || [];
+
+
+        const now =
+            new Date();
+
+
+        const todayStart =
+            new Date();
+
+        todayStart.setHours(
+            0, 0, 0, 0
+        );
+
+
+        const monthStart =
+            new Date(
+                now.getFullYear(),
+                now.getMonth(),
+                1
+            );
+
+
+        const yearStart =
+            new Date(
+                now.getFullYear(),
+                0,
+                1
+            );
+
+
+        const active =
+            subscriptions.filter(function(item) {
+
+                if (item.status !== "active") {
+                    return false;
+                }
+
+                if (!item.expires_at) {
+                    return true;
+                }
+
+                return new Date(item.expires_at) > now;
+
+            });
+
+
+        const expired =
+            subscriptions.filter(function(item) {
+
+                if (!item.expires_at) {
+                    return false;
+                }
+
+                return new Date(item.expires_at) <= now;
+
+            });
+
+
+        const successfulPayments =
+            payments.filter(function(item) {
+
+                return (
+                    item.status === "paid" ||
+                    item.status === "successful"
+                );
+
+            });
+
+
+        const todayRevenue =
+            successfulPayments
+                .filter(function(item) {
+
+                    return new Date(item.created_at) >= todayStart;
+
+                })
+                .reduce(function(total, item) {
+
+                    return total + Number(item.amount || 0);
+
+                }, 0);
+
+
+        const monthlyRevenue =
+            successfulPayments
+                .filter(function(item) {
+
+                    return new Date(item.created_at) >= monthStart;
+
+                })
+                .reduce(function(total, item) {
+
+                    return total + Number(item.amount || 0);
+
+                }, 0);
+
+
+        const annualRevenue =
+            successfulPayments
+                .filter(function(item) {
+
+                    return new Date(item.created_at) >= yearStart;
+
+                })
+                .reduce(function(total, item) {
+
+                    return total + Number(item.amount || 0);
+
+                }, 0);
+
+
+        const newSubscribers =
+            subscriptions.filter(function(item) {
+
+                return new Date(item.created_at) >= todayStart;
+
+            });
+
+
+        document.getElementById(
+            "newSubscribers"
+        ).textContent =
+            newSubscribers.length;
+
+
+        document.getElementById(
+            "todayRevenue"
+        ).textContent =
+            formatMoney(todayRevenue);
+
+
+        document.getElementById(
+            "monthlyRevenue"
+        ).textContent =
+            formatMoney(monthlyRevenue);
+
+
+        document.getElementById(
+            "annualRevenue"
+        ).textContent =
+            formatMoney(annualRevenue);
+
+
+        document.getElementById(
+            "activeSubscribers"
+        ).textContent =
+            active.length;
+
+
+        document.getElementById(
+            "totalSubscribers"
+        ).textContent =
+            subscriptions.length;
+
+
+        document.getElementById(
+            "expiredSubscribers"
+        ).textContent =
+            expired.length;
+
+
+        document.getElementById(
+            "totalReferrals"
+        ).textContent =
+            referrals.length;
+
+    }
+
+
+    /* =========================================
+       PUBLISH PREDICTION
+       ========================================= */
+
+    predictionForm.addEventListener(
+        "submit",
+        async function(event) {
+
+            event.preventDefault();
+
+
+            const publishButton =
+                document.getElementById("publishBtn");
+
+            const message =
+                document.getElementById("publishMessage");
+
+
+            publishButton.disabled = true;
+            publishButton.textContent =
+                "Publishing...";
+
+
+            message.textContent =
+                "";
+
+
+            const matchDate =
+                document.getElementById("matchDate").value;
+
+            const market =
+                document.getElementById("market").value;
+
+            const homeTeam =
+                document.getElementById("homeTeam").value.trim();
+
+            const awayTeam =
+                document.getElementById("awayTeam").value.trim();
+
+            const prediction =
+                document.getElementById("prediction").value.trim();
+
+            const oddsValue =
+                document.getElementById("odds").value;
+
+            const player =
+                document.getElementById("player").value.trim();
+
+            const analysis =
+                document.getElementById("analysis").value.trim();
+
+
+            const odds =
+                oddsValue === ""
+                    ? null
+                    : Number(oddsValue);
+
+
+            const {
+                error
+            } =
+                await supabaseClient
+                    .from("premium_predictions")
+                    .insert({
+
+                        match_date: matchDate,
+
+                        home_team: homeTeam,
+
+                        away_team: awayTeam,
+
+                        prediction: prediction,
+
+                        odds: odds,
+
+                        analysis: analysis,
+
+                        market: market,
+
+                        player:
+                            player || null
+
+                    });
+
+
+            if (error) {
+
+                console.error(error);
+
+                message.textContent =
+                    "Publishing failed: " +
+                    error.message;
+
+                message.className =
+                    "message error";
+
+                publishButton.disabled = false;
+
+                publishButton.textContent =
+                    "Publish Analysis";
+
+                return;
+            }
+
+
+            message.textContent =
+                "✓ Premium analysis published successfully.";
+
+            message.className =
+                "message success";
+
+
+            predictionForm.reset();
+
+
+            await loadPredictions();
+
+            await loadStatistics();
+
+
+            publishButton.disabled = false;
+
+            publishButton.textContent =
+                "Publish Analysis";
+
+        }
+    );
+
+
+    /* =========================================
+       LOAD PREDICTIONS
+       ========================================= */
+
+    async function loadPredictions() {
+
+        const table =
+            document.getElementById(
+                "predictionsTable"
+            );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("premium_predictions")
+                .select(
+                    "id,match_date,home_team,away_team,market,prediction,odds"
+                )
+                .order(
+                    "match_date",
+                    {
+                        ascending: false
+                    }
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state error">
+                            Unable to load predictions.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            console.error(error);
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <strong>No published analysis</strong>
+                            Publish your first premium selection above.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            document.getElementById(
+                "predictionUpdated"
+            ).textContent =
+                "No predictions";
+
+            return;
+        }
+
+
+        table.innerHTML =
+            data.map(function(item) {
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${formatDate(item.match_date)}
+                        </td>
+
+                        <td>
+                            <strong>
+                                ${escapeHtml(item.home_team)}
+                            </strong>
+                            <br>
+                            <span style="color:#8495b0;">
+                                vs
+                            </span>
+                            <br>
+                            <strong>
+                                ${escapeHtml(item.away_team)}
+                            </strong>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(item.market || "—")}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(item.prediction)}
+                        </td>
+
+                        <td>
+                            ${
+                                item.odds !== null &&
+                                item.odds !== undefined
+                                    ? Number(item.odds).toFixed(2)
+                                    : "—"
+                            }
+                        </td>
+
+                        <td>
+                            <button
+                                class="danger-btn"
+                                onclick="deletePrediction('${item.id}')"
+                            >
+                                Delete
+                            </button>
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+
+        document.getElementById(
+            "predictionUpdated"
+        ).textContent =
+            data.length +
+            " published selection" +
+            (data.length === 1 ? "" : "s");
+
+    }
+
+
+    /* =========================================
+       DELETE PREDICTION
+       ========================================= */
+
+    async function deletePrediction(id) {
+
+        const confirmed =
+            confirm(
+                "Delete this premium prediction?"
+            );
+
+
+        if (!confirmed) {
+            return;
+        }
+
+
+        const {
+            error
+        } =
+            await supabaseClient
+                .from("premium_predictions")
+                .delete()
+                .eq("id", id);
+
+
+        if (error) {
+
+            alert(
+                "Unable to delete prediction: " +
+                error.message
+            );
+
+            console.error(error);
+
+            return;
+        }
+
+
+        await loadPredictions();
+
+    }
+
+
+    /* =========================================
+       LOAD SUBSCRIPTIONS
+       ========================================= */
+
+    async function loadSubscriptions() {
+
+        const table =
+            document.getElementById(
+                "subscriptionsTable"
+            );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("subscriptions")
+                .select(
+                    "user_id,plan,amount,status,started_at,expires_at"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state error">
+                            Unable to load subscribers.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <strong>No subscribers available</strong>
+                            Subscription records will appear here.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        table.innerHTML =
+            data.map(function(item) {
+
+                let statusClass = "";
+
+                if (item.status === "active") {
+                    statusClass = "active";
+                }
+
+                if (item.status === "failed") {
+                    statusClass = "failed";
+                }
+
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(
+                                shortId(item.user_id)
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(item.plan || "—")}
+                        </td>
+
+                        <td>
+                            ${formatMoney(item.amount)}
+                        </td>
+
+                        <td>
+                            <span class="status ${statusClass}">
+                                ${escapeHtml(
+                                    item.status || "pending"
+                                )}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${formatDate(item.started_at)}
+                        </td>
+
+                        <td>
+                            ${formatDate(item.expires_at)}
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       LOAD PAYMENTS
+       ========================================= */
+
+    async function loadPayments() {
+
+        const table =
+            document.getElementById(
+                "paymentsTable"
+            );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("payments")
+                .select(
+                    "created_at,phone,amount,plan,status,mpesa_receipt"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                )
+                .limit(100);
+
+
+        if (error) {
+
+            console.error(error);
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state error">
+                            Unable to load payments.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="6">
+                        <div class="empty-state">
+                            <strong>No payments available</strong>
+                            M-Pesa payment records will appear here.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        table.innerHTML =
+            data.map(function(item) {
+
+                let statusClass = "";
+
+                if (
+                    item.status === "paid" ||
+                    item.status === "successful"
+                ) {
+                    statusClass = "paid";
+                }
+
+                if (item.status === "failed") {
+                    statusClass = "failed";
+                }
+
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${formatDate(item.created_at)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(item.phone || "—")}
+                        </td>
+
+                        <td>
+                            ${formatMoney(item.amount)}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(item.plan || "—")}
+                        </td>
+
+                        <td>
+                            <span class="status ${statusClass}">
+                                ${escapeHtml(
+                                    item.status || "pending"
+                                )}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                item.mpesa_receipt || "—"
+                            )}
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       LOAD REFERRALS
+       ========================================= */
+
+    async function loadReferrals() {
+
+        const table =
+            document.getElementById(
+                "referralsTable"
+            );
+
+
+        const {
+            data,
+            error
+        } =
+            await supabaseClient
+                .from("referrals")
+                .select(
+                    "referrer_id,referred_id,status,created_at,qualified_at"
+                )
+                .order(
+                    "created_at",
+                    {
+                        ascending: false
+                    }
+                );
+
+
+        if (error) {
+
+            console.error(error);
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state error">
+                            Unable to load referrals.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        if (!data || data.length === 0) {
+
+            table.innerHTML = `
+                <tr>
+                    <td colspan="5">
+                        <div class="empty-state">
+                            <strong>No referral activity</strong>
+                            Referral records will appear here.
+                        </div>
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
+
+
+        table.innerHTML =
+            data.map(function(item) {
+
+                return `
+                    <tr>
+
+                        <td>
+                            ${escapeHtml(
+                                shortId(item.referrer_id)
+                            )}
+                        </td>
+
+                        <td>
+                            ${escapeHtml(
+                                shortId(item.referred_id)
+                            )}
+                        </td>
+
+                        <td>
+                            <span class="status">
+                                ${escapeHtml(
+                                    item.status || "pending"
+                                )}
+                            </span>
+                        </td>
+
+                        <td>
+                            ${formatDate(item.created_at)}
+                        </td>
+
+                        <td>
+                            ${formatDate(item.qualified_at)}
+                        </td>
+
+                    </tr>
+                `;
+
+            }).join("");
+
+    }
+
+
+    /* =========================================
+       HTML ESCAPING
+       ========================================= */
+
+    function escapeHtml(value) {
+
+        if (value === null || value === undefined) {
+            return "";
+        }
+
+        return String(value)
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+
+    }
+
+
+    /* =========================================
+       AUTH STATE
+       ========================================= */
+
+    supabaseClient.auth.onAuthStateChange(
+        function(event, session) {
+
+            if (!session) {
+
+                dashboard.style.display = "none";
+
+                loadingScreen.style.display = "none";
+
+                loginBox.style.display = "block";
+
+            }
+
+        }
+    );
+
+
+    /* =========================================
+       START
+       ========================================= */
+
+    checkAdminAccess();
+
+</script>
+
+</body>
+</html>
