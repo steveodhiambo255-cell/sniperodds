@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SNIPER ODDS | Create Account</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Arial,Helvetica,sans-serif;background:#07111f;color:#f5f7fa;min-height:100vh;display:flex;flex-direction:column}
+a{color:inherit;text-decoration:none}
+header{border-bottom:1px solid rgba(255,255,255,.08)}
+.nav{width:92%;max-width:850px;margin:auto;min-height:68px;display:flex;align-items:center;justify-content:space-between}
+.logo{font-size:20px;font-weight:900;letter-spacing:1px}
+.logo span{color:#32d583}
+.home-btn{background:#32d583;color:#06110d;padding:8px 13px;border-radius:8px;font-size:13px;font-weight:800}
+main{flex:1;display:flex;align-items:center;padding:40px 0}
+.container{width:92%;max-width:470px;margin:auto}
+.card{background:#0c1929;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:27px}
+.heading{text-align:center;margin-bottom:24px}
+.heading h1{font-size:29px;margin-bottom:7px}
+.heading p{color:#8f9eaf;font-size:14px}
+.field{margin-bottom:16px}
+label{display:block;margin-bottom:6px;color:#cbd5e1;font-size:13px;font-weight:700}
+input[type="text"],input[type="email"],input[type="password"]{width:100%;padding:13px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#081423;color:#fff;outline:none;font-size:16px}
+input:focus{border-color:#32d583}
+.age-check{display:flex;align-items:flex-start;gap:10px;margin:18px 0;color:#aab6c5;font-size:13px}
+.age-check input{margin-top:4px;accent-color:#32d583}
+.age-check label{margin:0;font-weight:400;color:#aab6c5}
+.primary-btn{width:100%;border:none;background:#32d583;color:#06110d;padding:13px;border-radius:9px;font-weight:900;font-size:16px}
+.primary-btn:disabled{opacity:.55;cursor:not-allowed}
+.message{min-height:20px;margin-top:13px;text-align:center;color:#ff9a9a;font-size:13px}
+.bottom-link{text-align:center;margin-top:18px;color:#8997a8;font-size:13px}
+.bottom-link a{color:#32d583;font-weight:700}
+footer{padding:22px;border-top:1px solid rgba(255,255,255,.08);text-align:center}
+footer p{color:#5e6e82;font-size:12px}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="nav">
+    <a href="index.html" class="logo">SNIPER <span>ODDS</span></a>
+    <a href="index.html" class="home-btn">🏠 Home</a>
+  </div>
+</header>
+
+<main>
+  <div class="container">
+    <div class="card">
+      <div class="heading">
+        <h1>Create Account</h1>
+        <p>Create your SNIPER ODDS account to continue.</p>
+      </div>
+
+      <form id="signupForm">
+        <div class="field">
+          <label for="signupName">Full Name</label>
+          <input type="text" id="signupName" placeholder="Enter your name" required>
+        </div>
+
+        <div class="field">
+          <label for="signupEmail">Email Address</label>
+          <input type="email" id="signupEmail" placeholder="Enter your email" required>
+        </div>
+
+        <div class="field">
+          <label for="signupPassword">Password</label>
+          <input type="password" id="signupPassword" placeholder="Create a password" minlength="6" required>
+        </div>
+
+        <div class="age-check">
+          <input type="checkbox" id="ageConfirm" required>
+          <label for="ageConfirm">
+            I confirm that I am <strong>18 years or older</strong>
+            and legally permitted to use betting-related
+            services in my jurisdiction.
+          </label>
+        </div>
+
+        <button type="submit" class="primary-btn" id="signupButton">Create Account</button>
+        <p id="signupMessage" class="message"></p>
+      </form>
+
+      <div class="bottom-link">
+        Already have an account? <a href="login.html">Login</a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <p>© 2026 SNIPER ODDS. 18+ only.</p>
+</footer>
+
+<!-- Existing project JavaScript (provides supabaseClient) -->
+<script src="script.js"></script>
+
+<script>
+try {
+  var urlRef = new URLSearchParams(location.search).get("ref");
+  if (urlRef) localStorage.setItem("so_ref", urlRef.trim());
+} catch (e) {}
+
+document.getElementById("signupForm").addEventListener("submit", async function (event) {
+  event.preventDefault();
+
+  var name = document.getElementById("signupName").value.trim();
+  var email = document.getElementById("signupEmail").value.trim();
+  var password = document.getElementById("signupPassword").value;
+  var message = document.getElementById("signupMessage");
+  var button = document.getElementById("signupButton");
+
+  if (!document.getElementById("ageConfirm").checked) {
+    message.textContent = "You must confirm that you are 18 or older.";
+    return;
+  }
+
+  var ref = null;
+  try { ref = localStorage.getItem("so_ref"); } catch (e) {}
+
+  button.disabled = true;
+  button.textContent = "Creating Account...";
+  message.style.color = "#ff9a9a";
+  message.textContent = "";
+
+  try {
+    var result = await supabaseClient.auth.signUp({
+      email: email,
+      password: password,
+      options: { data: { name: name, age_confirmed: true, referral_code: ref } }
+    });
+
+    if (result.error) {
+      message.textContent = result.error.message;
+    } else {
+      message.style.color = "#32d583";
+      message.textContent = "Account created. Check your email if confirmation is required.";
+      setTimeout(function () { window.location.href = "login.html"; }, 1800);
+    }
+  } catch (err) {
+    console.error(err);
+    message.textContent = "System error. Please try again.";
+  }
+
+  button.disabled = false;
+  button.textContent = "Create Account";
+});
+</script>
+
+</body>
+</html>
