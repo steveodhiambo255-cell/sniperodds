@@ -1,0 +1,649 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>SNIPER ODDS | Results</title>
+
+    <meta
+        name="description"
+        content="SNIPER ODDS football analysis results and historical performance."
+    >
+
+  
+  <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #07111f;
+            color: #f5f7fa;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        button {
+            font: inherit;
+            cursor: pointer;
+        }
+
+        .container {
+            width: 92%;
+            max-width: 1050px;
+            margin: auto;
+        }
+
+        /* HEADER */
+
+        header {
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            background: rgba(7,17,31,0.97);
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+            backdrop-filter: blur(12px);
+        }
+
+        .nav {
+            min-height: 68px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .logo {
+            font-size: 20px;
+            font-weight: 900;
+            letter-spacing: 1px;
+        }
+
+        .logo span {
+            color: #32d583;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            font-size: 14px;
+        }
+
+        .nav-links a {
+            color: #bdc8d5;
+        }
+
+        .nav-links a:hover {
+            color: #32d583;
+        }
+
+        .account-btn {
+            background: #32d583;
+            color: #06110d !important;
+            padding: 9px 13px;
+            border-radius: 8px;
+            font-weight: 800;
+        }
+
+        /* PAGE */
+
+        main {
+            padding: 45px 0 70px;
+        }
+
+        .page-heading {
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto 35px;
+        }
+
+        .eyebrow {
+            color: #32d583;
+            font-size: 12px;
+            font-weight: 900;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            margin-bottom: 9px;
+        }
+
+        .page-heading h1 {
+            font-size: clamp(31px, 8vw, 48px);
+            line-height: 1.1;
+            margin-bottom: 12px;
+        }
+
+        .page-heading p {
+            color: #96a4b5;
+        }
+
+        /* SUMMARY */
+
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 14px;
+            margin-bottom: 35px;
+        }
+
+        .summary-card {
+            background: #0c1929;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 14px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .summary-number {
+            font-size: 28px;
+            font-weight: 900;
+            margin-bottom: 2px;
+        }
+
+        .summary-label {
+            color: #8998aa;
+            font-size: 13px;
+        }
+
+        /* SECTION */
+
+        .section {
+            margin-bottom: 35px;
+        }
+
+        .section-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .section-title h2 {
+            font-size: 22px;
+        }
+
+        .section-title span {
+            color: #7f8da0;
+            font-size: 12px;
+        }
+
+        /* RESULT CARD */
+
+        .results-list {
+            display: grid;
+            gap: 12px;
+        }
+
+        .result-card {
+            background: #0c1929;
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 13px;
+            padding: 18px;
+        }
+
+        .result-top {
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 10px;
+        }
+
+        .result-date {
+            color: #8190a2;
+            font-size: 12px;
+        }
+
+        .status {
+            padding: 4px 9px;
+            border-radius: 20px;
+            font-size: 10px;
+            font-weight: 900;
+        }
+
+        .status-won {
+            background: rgba(50,213,131,0.13);
+            color: #32d583;
+        }
+
+        .status-lost {
+            background: rgba(214,69,69,0.13);
+            color: #ff7676;
+        }
+
+        .status-pending {
+            background: rgba(255,193,7,0.12);
+            color: #ffc857;
+        }
+
+        .teams {
+            font-size: 17px;
+            font-weight: 800;
+            margin-bottom: 5px;
+        }
+
+        .market {
+            color: #32d583;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 7px;
+        }
+
+        .prediction {
+            color: #c6d0dc;
+            font-size: 14px;
+        }
+
+        .result-note {
+            color: #758397;
+            font-size: 12px;
+            margin-top: 9px;
+        }
+
+        /* EMPTY STATE */
+
+        .empty-state {
+            background: #0c1929;
+            border: 1px dashed rgba(255,255,255,0.13);
+            border-radius: 13px;
+            padding: 30px 20px;
+            text-align: center;
+        }
+
+        .empty-icon {
+            font-size: 36px;
+            margin-bottom: 8px;
+        }
+
+        .empty-state h3 {
+            margin-bottom: 5px;
+        }
+
+        .empty-state p {
+            color: #8795a7;
+            font-size: 14px;
+        }
+
+        /* PREMIUM */
+
+        .premium-box {
+            background:
+                linear-gradient(
+                    135deg,
+                    rgba(50,213,131,0.10),
+                    rgba(255,255,255,0.025)
+                );
+
+            border: 1px solid rgba(50,213,131,0.20);
+            border-radius: 15px;
+            padding: 27px;
+            text-align: center;
+        }
+
+        .premium-lock {
+            font-size: 40px;
+            margin-bottom: 8px;
+        }
+
+        .premium-box h2 {
+            margin-bottom: 7px;
+        }
+
+        .premium-box p {
+            color: #98a6b7;
+            font-size: 14px;
+            max-width: 620px;
+            margin: 0 auto 18px;
+        }
+
+        .primary-btn {
+            border: none;
+            background: #32d583;
+            color: #06110d;
+            padding: 12px 19px;
+            border-radius: 9px;
+            font-weight: 900;
+        }
+
+        /* DISCLAIMER */
+
+        .notice {
+            background: rgba(255,255,255,0.035);
+            border-left: 3px solid #32d583;
+            border-radius: 8px;
+            padding: 17px;
+            color: #99a7b8;
+            font-size: 13px;
+        }
+
+        /* FOOTER */
+
+        footer {
+            background: #050d18;
+            border-top: 1px solid rgba(255,255,255,0.08);
+            padding: 30px 0;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 13px;
+        }
+
+        .footer-links a {
+            color: #8593a5;
+            font-size: 13px;
+        }
+
+        .copyright {
+            color: #59697d;
+            font-size: 12px;
+        }
+
+        /* MOBILE */
+
+        @media (max-width: 700px) {
+
+            .nav-links {
+                gap: 8px;
+            }
+
+            .nav-links a {
+                display: none;
+            }
+
+            .nav-links a[href="index.html"],
+            .nav-links a[href="account.html"] {
+                display: inline-block;
+            }
+
+            .summary-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .summary-card {
+                padding: 15px;
+            }
+
+            .result-top {
+                align-items: flex-start;
+            }
+
+            .premium-box {
+                padding: 22px 17px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="container nav">
+
+        <a href="index.html" class="logo">
+            SNIPER <span>ODDS</span>
+        </a>
+
+        <nav class="nav-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="results.html">
+                Results
+            </a>
+
+            <a href="subscription.html">
+                Plans
+            </a>
+
+            <a
+                href="account.html"
+                class="account-btn">
+                My Account
+            </a>
+
+        </nav>
+
+    </div>
+</header>
+
+
+<main>
+
+    <div class="container">
+
+        <!-- PAGE INTRO -->
+
+        <div class="page-heading">
+
+            <div class="eyebrow">
+                Performance & History
+            </div>
+
+            <h1>
+                SNIPER ODDS Results
+            </h1>
+
+            <p>
+                Review published football analysis and recorded outcomes.
+                Results are presented for transparency and historical review.
+            </p>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <div class="summary-grid">
+
+            <div class="summary-card">
+
+                <div
+                    class="summary-number"
+                    id="totalResults">
+                    —
+                </div>
+
+                <div class="summary-label">
+                    Recorded Results
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div
+                    class="summary-number"
+                    id="wonResults">
+                    —
+                </div>
+
+                <div class="summary-label">
+                    Won
+                </div>
+
+            </div>
+
+
+            <div class="summary-card">
+
+                <div
+                    class="summary-number"
+                    id="lostResults">
+                    —
+                </div>
+
+                <div class="summary-label">
+                    Lost
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RECENT RESULTS -->
+
+        <section class="section">
+
+            <div class="section-title">
+
+                <h2>
+                    📊 Recent Results
+                </h2>
+
+                <span>
+                    Recorded outcomes
+                </span>
+
+            </div>
+
+
+            <div
+                class="results-list"
+                id="resultsList">
+
+                <div class="empty-state">
+
+                    <div class="empty-icon">
+                        📋
+                    </div>
+
+                    <h3>
+                        No results published yet
+                    </h3>
+
+                    <p>
+                        Published results will appear here once
+                        SNIPER ODDS records them.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PREMIUM HISTORY -->
+
+        <section class="section">
+
+            <div class="premium-box">
+
+                <div class="premium-lock">
+                    🔒
+                </div>
+
+                <h2>
+                    Premium Results History
+                </h2>
+
+                <p>
+                    Detailed premium history will be available to
+                    authenticated subscribers. This section will include
+                    previous premium selections and their recorded outcomes.
+                </p>
+
+                <button
+                    class="primary-btn"
+                    type="button"
+                    onclick="window.location.href='login.html'">
+                    Login to Continue
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- RESPONSIBLE USE -->
+
+        <section class="section">
+
+            <div class="notice">
+
+                <strong>Important:</strong>
+                Historical results do not guarantee future outcomes.
+                SNIPER ODDS provides football analysis and information;
+                users should make their own decisions and use any betting
+                services responsibly.
+
+            </div>
+
+        </section>
+
+    </div>
+
+</main>
+
+
+<footer>
+
+    <div class="container">
+
+        <div class="footer-links">
+
+            <a href="index.html">
+                Home
+            </a>
+
+            <a href="results.html">
+                Results
+            </a>
+
+            <a href="subscription.html">
+                Plans
+            </a>
+
+            <a href="account.html">
+                Account
+            </a>
+
+            <a href="contact.html">
+                Contact
+            </a>
+
+            <a href="responsible_gambling.html">
+                Responsible Gambling
+            </a>
+
+        </div>
+
+        <div class="copyright">
+            © 2026 SNIPER ODDS. All rights reserved.
+        </div>
+
+    </div>
+
+</footer>
+
+
+<!-- Supabase -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<!-- Existing project JavaScript -->
+<script src="script.js"></script>
+
+</body>
+</html>
