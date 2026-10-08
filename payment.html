@@ -1,180 +1,563 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
     <meta charset="UTF-8">
 
     <meta
         name="viewport"
-        content="width=device-width, initial-scale=1.0">
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    <title>M-Pesa Payment - SNIPER ODDS</title>
+    <title>SNIPER ODDS — M-Pesa Payment</title>
 
-    <!-- Supabase JS -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
-    <!-- SNIPER ODDS Styles -->
-    <link rel="stylesheet" href="style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background: #07110d;
+            color: #f4f7f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 430px;
+            background: #0d1b15;
+            border: 1px solid #244536;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: 0 20px 50px rgba(0,0,0,.35);
+        }
+
+        .logo {
+            text-align: center;
+            font-size: 25px;
+            font-weight: 900;
+            margin-bottom: 8px;
+        }
+
+        .logo span {
+            color: #32d583;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #91a69c;
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .summary {
+            background: #12251d;
+            border: 1px solid #244536;
+            border-radius: 14px;
+            padding: 18px;
+            margin-bottom: 20px;
+        }
+
+        .row {
+            display: flex;
+            justify-content: space-between;
+            gap: 15px;
+            padding: 7px 0;
+        }
+
+        .label {
+            color: #91a69c;
+        }
+
+        .value {
+            font-weight: 800;
+            text-align: right;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #244536;
+            background: #07110d;
+            color: white;
+            font-size: 16px;
+            outline: none;
+            margin-top: 8px;
+        }
+
+        input:focus {
+            border-color: #32d583;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 18px;
+            padding: 15px;
+            border: 0;
+            border-radius: 10px;
+            background: #32d583;
+            color: #041009;
+            font-size: 16px;
+            font-weight: 900;
+            cursor: pointer;
+        }
+
+        button:disabled {
+            opacity: .6;
+        }
+
+        .message {
+            margin-top: 16px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #91a69c;
+            text-decoration: none;
+            font-size: 14px;
+        }
+
+        .back:hover {
+            color: #32d583;
+        }
+    </style>
 </head>
-
 
 <body>
 
-
-<!-- ==========================================
-     HEADER
-     ========================================== -->
-
-<header class="header">
+<div class="box">
 
     <div class="logo">
         SNIPER <span>ODDS</span>
     </div>
 
-    <button
-        class="login-btn"
-        type="button"
-        onclick="window.location.href='subscription.html'">
+    <div class="subtitle">
+        Secure M-Pesa Premium Subscription
+    </div>
 
-        Plans
+    <div class="summary">
 
-    </button>
-
-</header>
-
-
-<!-- ==========================================
-     PAYMENT PAGE
-     ========================================== -->
-
-<main class="auth-page">
-
-    <div class="auth-box">
-
-
-        <!-- PAGE TITLE -->
-
-        <p class="small-title">
-            SNIPER ODDS PREMIUM
-        </p>
-
-
-        <h1>
-            M-Pesa Payment
-        </h1>
-
-
-        <p class="auth-text">
-            Complete your payment to unlock
-            premium football predictions.
-        </p>
-
-
-        <!-- ======================================
-             SELECTED PLAN
-             ====================================== -->
-
-        <div class="account-card">
-
-            <p>
-                <strong>
-                    Selected Plan:
-                </strong>
-            </p>
-
-            <h2 id="selectedPlan">
-                Loading...
-            </h2>
-
-
-            <p>
-                <strong>
-                    Amount:
-                </strong>
-            </p>
-
-            <h2 id="selectedAmount">
-                KSh 0
-            </h2>
-
+        <div class="row">
+            <span class="label">Selected Plan</span>
+            <span
+                class="value"
+                id="selectedPlan"
+            >Loading...</span>
         </div>
 
-
-        <!-- ======================================
-             PHONE NUMBER
-             ====================================== -->
-
-        <label for="mpesaPhone">
-
-            M-Pesa Phone Number
-
-        </label>
-
-
-        <input
-            type="tel"
-            id="mpesaPhone"
-            placeholder="07XXXXXXXX"
-            maxlength="10"
-            inputmode="numeric"
-            autocomplete="tel">
-
-
-        <!-- ======================================
-             PAYMENT BUTTON
-             ====================================== -->
-
-        <button
-            id="payButton"
-            class="primary-btn full-btn"
-            type="button"
-            onclick="startPayment()">
-
-            Pay with M-Pesa
-
-        </button>
-
-
-        <!-- ======================================
-             PAYMENT MESSAGE
-             ====================================== -->
-
-        <p
-            id="paymentMessage"
-            class="form-message"
-            aria-live="polite">
-        </p>
-
-
-        <!-- ======================================
-             BACK TO PLANS
-             ====================================== -->
-
-        <p class="switch-auth">
-
-            <a href="subscription.html">
-
-                ← Back to Plans
-
-            </a>
-
-        </p>
-
+        <div class="row">
+            <span class="label">Amount</span>
+            <span
+                class="value"
+                id="selectedAmount"
+            >KSh 0</span>
+        </div>
 
     </div>
 
-</main>
+    <label for="phone">
+        M-Pesa Phone Number
+    </label>
+
+    <input
+        type="tel"
+        id="phone"
+        placeholder="0712345678"
+        maxlength="13"
+        autocomplete="tel"
+    >
+
+    <button
+        id="payButton"
+        type="button"
+    >
+        Pay with M-Pesa
+    </button>
+
+    <div
+        id="message"
+        class="message"
+    ></div>
+
+    <a
+        href="subscription.html"
+        class="back"
+    >
+        ← Back to Plans
+    </a>
+
+</div>
 
 
-<!-- ==========================================
-     MAIN SNIPER ODDS SCRIPT
-     ========================================== -->
+<script>
 
-<script src="script.js"></script>
+const SUPABASE_URL =
+    "https://gddyhbjslwcgtqdtbzvu.supabase.co";
 
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
+
+
+const supabaseClient =
+    window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+
+const planElement =
+    document.getElementById("selectedPlan");
+
+const amountElement =
+    document.getElementById("selectedAmount");
+
+const phoneElement =
+    document.getElementById("phone");
+
+const payButton =
+    document.getElementById("payButton");
+
+const messageElement =
+    document.getElementById("message");
+
+
+/* -----------------------------------------
+   LOAD SELECTED PLAN
+----------------------------------------- */
+
+const savedPlan =
+    localStorage.getItem("selectedPlan");
+
+const savedAmount =
+    localStorage.getItem("selectedAmount");
+
+
+if (savedPlan) {
+
+    planElement.textContent =
+        savedPlan;
+
+} else {
+
+    planElement.textContent =
+        "Daily Pass";
+
+    localStorage.setItem(
+        "selectedPlan",
+        "Daily Pass"
+    );
+
+}
+
+
+if (savedAmount) {
+
+    amountElement.textContent =
+        "KSh " + savedAmount;
+
+} else {
+
+    amountElement.textContent =
+        "KSh 100";
+
+    localStorage.setItem(
+        "selectedAmount",
+        "100"
+    );
+
+}
+
+
+/* -----------------------------------------
+   SHOW MESSAGE
+----------------------------------------- */
+
+function showMessage(
+    text,
+    success = false
+) {
+
+    messageElement.textContent =
+        text;
+
+    messageElement.style.color =
+        success
+            ? "#32d583"
+            : "#ff7777";
+}
+
+
+/* -----------------------------------------
+   NORMALIZE KENYAN PHONE
+----------------------------------------- */
+
+function normalizePhone(phone) {
+
+    phone =
+        phone.replace(/\s+/g, "");
+
+    if (
+        phone.startsWith("07") ||
+        phone.startsWith("01")
+    ) {
+
+        return "254" + phone.substring(1);
+
+    }
+
+    if (
+        phone.startsWith("+254")
+    ) {
+
+        return phone.substring(1);
+
+    }
+
+    if (
+        phone.startsWith("254")
+    ) {
+
+        return phone;
+
+    }
+
+    return null;
+}
+
+
+/* -----------------------------------------
+   PAYMENT
+----------------------------------------- */
+
+payButton.addEventListener(
+    "click",
+    async function () {
+
+        payButton.disabled = true;
+
+        showMessage(
+            "Checking your login session..."
+        );
+
+
+        try {
+
+            /* GET CURRENT SUPABASE SESSION */
+
+            const {
+                data: sessionData,
+                error: sessionError
+            } =
+                await supabaseClient.auth.getSession();
+
+
+            if (sessionError) {
+
+                throw new Error(
+                    "Could not read your login session."
+                );
+
+            }
+
+
+            const session =
+                sessionData.session;
+
+
+            if (!session) {
+
+                showMessage(
+                    "Your login session has expired. Please log in again."
+                );
+
+                payButton.disabled = false;
+
+                setTimeout(
+                    function () {
+
+                        window.location.href =
+                            "login.html";
+
+                    },
+                    1800
+                );
+
+                return;
+
+            }
+
+
+            /* CHECK USER */
+
+            const {
+                data: userData,
+                error: userError
+            } =
+                await supabaseClient.auth.getUser(
+                    session.access_token
+                );
+
+
+            if (
+                userError ||
+                !userData.user
+            ) {
+
+                throw new Error(
+                    "Your account could not be verified."
+                );
+
+            }
+
+
+            /* PHONE */
+
+            const phone =
+                normalizePhone(
+                    phoneElement.value.trim()
+                );
+
+
+            if (!phone) {
+
+                showMessage(
+                    "Enter a valid Kenyan M-Pesa number."
+                );
+
+                payButton.disabled = false;
+
+                return;
+
+            }
+
+
+            if (
+                !/^254(7|1)\d{8}$/.test(phone)
+            ) {
+
+                showMessage(
+                    "Enter a valid Kenyan number, e.g. 0712345678."
+                );
+
+                payButton.disabled = false;
+
+                return;
+
+            }
+
+
+            const plan =
+                localStorage.getItem(
+                    "selectedPlan"
+                ) || "Daily Pass";
+
+
+            showMessage(
+                "Sending M-Pesa STK Push..."
+            );
+
+
+            /* CALL EDGE FUNCTION */
+
+            const response =
+                await fetch(
+                    SUPABASE_URL +
+                    "/functions/v1/mpesa-payment",
+                    {
+                        method: "POST",
+
+                        headers: {
+                            "Content-Type":
+                                "application/json",
+
+                            "Authorization":
+                                "Bearer " +
+                                session.access_token,
+
+                            "apikey":
+                                SUPABASE_PUBLISHABLE_KEY
+                        },
+
+                        body: JSON.stringify({
+                            phone: phone,
+                            plan: plan
+                        })
+                    }
+                );
+
+
+            const result =
+                await response.json();
+
+
+            if (!response.ok) {
+
+                throw new Error(
+                    result.error ||
+                    result.message ||
+                    "Payment request failed."
+                );
+
+            }
+
+
+            if (
+                result.success === true
+            ) {
+
+                showMessage(
+                    "M-Pesa prompt sent. Check your phone and enter your M-Pesa PIN.",
+                    true
+                );
+
+                payButton.textContent =
+                    "M-Pesa Prompt Sent";
+
+                return;
+
+            }
+
+
+            throw new Error(
+                result.error ||
+                result.message ||
+                "M-Pesa request was not accepted."
+            );
+
+
+        } catch (error) {
+
+            console.error(
+                "PAYMENT ERROR:",
+                error
+            );
+
+            showMessage(
+                error.message ||
+                "Payment failed."
+            );
+
+            payButton.disabled = false;
+
+        }
+
+    }
+);
+
+</script>
 
 </body>
-
 </html>

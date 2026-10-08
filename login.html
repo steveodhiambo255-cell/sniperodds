@@ -1,57 +1,143 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>SNIPER ODDS — Login</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<style>
-:root{--bg:#07110d;--panel:#0d1b15;--line:#244536;--green:#25d366;--text:#f4f7f5;--muted:#91a69c}
-*{box-sizing:border-box}
-body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
-.card{width:min(420px,92%);background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:26px}
-h1{margin:0 0 6px;font-size:24px}
-p.sub{margin:0 0 20px;color:var(--muted)}
-label{display:block;margin:12px 0 6px;font-size:14px;color:var(--muted)}
-input{width:100%;padding:13px;border-radius:8px;border:1px solid var(--line);background:#07110d;color:var(--text);font-size:16px}
-button{width:100%;margin-top:20px;padding:14px;border:0;border-radius:8px;background:var(--green);color:#04210f;font-size:16px;font-weight:bold}
-.links{margin-top:16px;display:flex;justify-content:space-between;font-size:14px}
-a{color:var(--green);text-decoration:none}
-#loginMessage{margin-top:14px;font-size:14px;color:#ff7b7b;min-height:18px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>SNIPER ODDS — Login</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+    <style>
+        :root {
+            --bg: #07110d;
+            --panel: #0d1b15;
+            --line: #244536;
+            --green: #25d366;
+            --text: #f4f7f5;
+            --muted: #91a69c;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            background: var(--bg);
+            color: var(--text);
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card {
+            width: min(420px, 92%);
+            background: var(--panel);
+            border: 1px solid var(--line);
+            border-radius: 14px;
+            padding: 26px;
+        }
+
+        h1 {
+            margin: 0 0 6px;
+            font-size: 24px;
+        }
+
+        .sub {
+            margin: 0 0 20px;
+            color: var(--muted);
+        }
+
+        label {
+            display: block;
+            margin: 12px 0 6px;
+            font-size: 14px;
+            color: var(--muted);
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border-radius: 8px;
+            border: 1px solid var(--line);
+            background: #07110d;
+            color: var(--text);
+            font-size: 16px;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 20px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            background: var(--green);
+            color: #04210f;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        .links {
+            margin-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            gap: 12px;
+            font-size: 14px;
+        }
+
+        a {
+            color: var(--green);
+            text-decoration: none;
+        }
+
+        #loginMessage {
+            margin-top: 14px;
+            font-size: 14px;
+            overflow-wrap: anywhere;
+        }
+    </style>
 </head>
+
 <body>
-<div class="card">
-  <h1>Welcome back</h1>
-  <p class="sub">Log in to your SNIPER ODDS account</p>
+    <div class="card">
+        <h1>Welcome back</h1>
+        <p class="sub">Log in to your SNIPER ODDS account</p>
 
-  <form id="loginForm">
-    <label for="loginEmail">Email</label>
-    <input id="loginEmail" type="email" autocomplete="email" required>
+        <form id="loginForm">
+            <label for="loginEmail">Email</label>
+            <input
+                id="loginEmail"
+                type="email"
+                autocomplete="email"
+                required
+            >
 
-    <label for="loginPassword">Password</label>
-    <input id="loginPassword" type="password" autocomplete="current-password" required>
+            <label for="loginPassword">Password</label>
+            <input
+                id="loginPassword"
+                type="password"
+                autocomplete="current-password"
+                required
+            >
 
-    <button type="submit">Log in</button>
-    <div id="loginMessage"></div>
-<a id="goAccount" href="account.html" style="display:none;margin-top:12px;color:#25d366;font-weight:bold;">Continue to my account →</a>
-<script>
-setInterval(function () {
-  var m = document.getElementById("loginMessage");
-  if (m && /successful/i.test(m.textContent)) {
-    document.getElementById("goAccount").style.display = "block";
-  }
-}, 400);
-</script>
-  </form>
+            <button type="submit">Log in</button>
 
-  <div class="links">
-    <a href="forgot_password.html">Forgot password?</a>
-    <a href="signup.html">Create account</a>
-  </div>
-</div>
+            <div id="loginMessage" role="status"></div>
+        </form>
 
-<!-- Your existing script.js handles the login -->
-<script src="script.js"></script>
+        <div class="links">
+            <a href="forgot_password.html">Forgot password?</a>
+            <a href="signup.html">Create account</a>
+        </div>
+
+        <p style="margin-top:20px;">
+            <a href="index.html">← Back to Home</a>
+        </p>
+    </div>
+
+    <script src="./script.js"></script>
 </body>
 </html>
