@@ -281,23 +281,34 @@ window.startPayment = async function () {
         // price from public.plans.
         // --------------------------------------
 
-        const {
-            data,
-            error
-        } =
-            await supabaseClient.functions.invoke(
-                "mpesa-payment",
-                {
-                    body: {
+        
+const response = await fetch(
+    `${SUPABASE_URL}/functions/v1/mpesa-payment`,
+    {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "apikey": SUPABASE_PUBLISHABLE_KEY,
+            "Authorization": "Bearer " + session.access_token
+        },
+        body: JSON.stringify({
+            phone: mpesaPhone,
+            plan: plan
+        })
+    }
+);
 
-                        phone: mpesaPhone,
+const data = await response.json();
 
-                        plan: plan
+if (!response.ok) {
+    throw new Error(
+        data.message ||
+        data.error ||
+        `HTTP ${response.status}`
+    );
+}
 
-                    }
-                }
-            );
-
+const error = null;
 
         // --------------------------------------
         // HANDLE FUNCTION ERROR

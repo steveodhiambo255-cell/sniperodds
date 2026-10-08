@@ -1,11 +1,9 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>SNIPER ODDS | Create Account</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script>
-<style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script><style>
 *{box-sizing:border-box;margin:0;padding:0}
 body{font-family:Arial,Helvetica,sans-serif;background:#07111f;color:#f5f7fa;min-height:100vh;display:flex;flex-direction:column}
 a{color:inherit;text-decoration:none}
@@ -34,119 +32,241 @@ input:focus{border-color:#32d583}
 .bottom-link a{color:#32d583;font-weight:700}
 footer{padding:22px;border-top:1px solid rgba(255,255,255,.08);text-align:center}
 footer p{color:#5e6e82;font-size:12px}
-</style>
-</head>
-<body>
-
-<header>
+</style></head><body><header>
   <div class="nav">
     <a href="index.html" class="logo">SNIPER <span>ODDS</span></a>
     <a href="index.html" class="home-btn">🏠 Home</a>
   </div>
-</header>
-
-<main>
+</header><main>
   <div class="container">
-    <div class="card">
-      <div class="heading">
-        <h1>Create Account</h1>
-        <p>Create your SNIPER ODDS account to continue.</p>
-      </div>
-
-      <form id="signupForm">
-        <div class="field">
-          <label for="signupName">Full Name</label>
-          <input type="text" id="signupName" placeholder="Enter your name" required>
-        </div>
-
-        <div class="field">
-          <label for="signupEmail">Email Address</label>
-          <input type="email" id="signupEmail" placeholder="Enter your email" required>
-        </div>
-
-        <div class="field">
-          <label for="signupPassword">Password</label>
-          <input type="password" id="signupPassword" placeholder="Create a password" minlength="6" required>
-        </div>
-
-        <div class="age-check">
-          <input type="checkbox" id="ageConfirm" required>
-          <label for="ageConfirm">
-            I confirm that I am <strong>18 years or older</strong>
-            and legally permitted to use betting-related
-            services in my jurisdiction.
-          </label>
-        </div>
-
-        <button type="submit" class="primary-btn" id="signupButton">Create Account</button>
-        <p id="signupMessage" class="message"></p>
-      </form>
-
-      <div class="bottom-link">
-        Already have an account? <a href="login.html">Login</a>
-      </div>
-    </div>
+    <div class="card">  <div class="heading">
+    <h1>Create Account</h1>
+    <p>Create your SNIPER ODDS account to continue.</p>
   </div>
-</main>
 
-<footer>
+  <form id="signupForm">
+
+    <div class="field">
+      <label for="signupName">Full Name</label>
+      <input
+        type="text"
+        id="signupName"
+        placeholder="Enter your name"
+        required>
+    </div>
+
+    <div class="field">
+      <label for="signupEmail">Email Address</label>
+      <input
+        type="email"
+        id="signupEmail"
+        placeholder="Enter your email"
+        required>
+    </div>
+
+    <div class="field">
+      <label for="signupPassword">Password</label>
+      <input
+        type="password"
+        id="signupPassword"
+        placeholder="Create a password"
+        minlength="6"
+        required>
+    </div>
+
+    <div class="age-check">
+      <input type="checkbox" id="ageConfirm" required>
+
+      <label for="ageConfirm">
+        I confirm that I am <strong>18 years or older</strong>
+        and legally permitted to use betting-related
+        services in my jurisdiction.
+      </label>
+    </div>
+
+    <button
+      type="submit"
+      class="primary-btn"
+      id="signupButton">
+      Create Account
+    </button>
+
+    <p id="signupMessage" class="message"></p>
+
+  </form>
+
+  <div class="bottom-link">
+    Already have an account?
+    <a href="login.html">Login</a>
+  </div>
+
+</div>
+
+  </div>
+</main><footer>
   <p>© 2026 SNIPER ODDS. 18+ only.</p>
-</footer>
+</footer><script src="script.js"></script><script>
 
-<!-- Existing project JavaScript (provides supabaseClient) -->
-<script src="script.js"></script>
-
-<script>
 try {
-  var urlRef = new URLSearchParams(location.search).get("ref");
-  if (urlRef) localStorage.setItem("so_ref", urlRef.trim());
+
+  var urlRef =
+    new URLSearchParams(location.search).get("ref");
+
+  if (urlRef) {
+    localStorage.setItem(
+      "so_ref",
+      urlRef.trim()
+    );
+  }
+
 } catch (e) {}
 
-document.getElementById("signupForm").addEventListener("submit", async function (event) {
-  event.preventDefault();
 
-  var name = document.getElementById("signupName").value.trim();
-  var email = document.getElementById("signupEmail").value.trim();
-  var password = document.getElementById("signupPassword").value;
-  var message = document.getElementById("signupMessage");
-  var button = document.getElementById("signupButton");
+document
+  .getElementById("signupForm")
+  .addEventListener(
+    "submit",
+    async function (event) {
 
-  if (!document.getElementById("ageConfirm").checked) {
-    message.textContent = "You must confirm that you are 18 or older.";
-    return;
-  }
+      event.preventDefault();
 
-  var ref = null;
-  try { ref = localStorage.getItem("so_ref"); } catch (e) {}
 
-  button.disabled = true;
-  button.textContent = "Creating Account...";
-  message.style.color = "#ff9a9a";
-  message.textContent = "";
+      var name =
+        document
+          .getElementById("signupName")
+          .value
+          .trim();
 
-  try {
-    var result = await supabaseClient.auth.signUp({
-      email: email,
-      password: password,
-      options: { data: { name: name, age_confirmed: true, referral_code: ref } }
-    });
 
-    if (result.error) {
-      message.textContent = result.error.message;
-    } else {
-      message.style.color = "#32d583";
-      message.textContent = "Account created. Check your email if confirmation is required.";
-      setTimeout(function () { window.location.href = "login.html"; }, 1800);
+      var email =
+        document
+          .getElementById("signupEmail")
+          .value
+          .trim();
+
+
+      var password =
+        document
+          .getElementById("signupPassword")
+          .value;
+
+
+      var message =
+        document
+          .getElementById("signupMessage");
+
+
+      var button =
+        document
+          .getElementById("signupButton");
+
+
+      if (
+        !document
+          .getElementById("ageConfirm")
+          .checked
+      ) {
+
+        message.textContent =
+          "You must confirm that you are 18 or older.";
+
+        return;
+      }
+
+
+      var ref = null;
+
+      try {
+
+        ref =
+          localStorage.getItem("so_ref");
+
+      } catch (e) {}
+
+
+      button.disabled = true;
+
+      button.textContent =
+        "Creating Account...";
+
+      message.style.color =
+        "#ff9a9a";
+
+      message.textContent =
+        "";
+
+
+      try {
+
+        var result =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+
+              data: {
+
+                name: name,
+
+                age_confirmed: true,
+
+                referral_code: ref
+
+              },
+
+              emailRedirectTo:
+                "https://steveodhiambo255-cell.github.io/sniperodds/"
+
+            }
+
+          });
+
+
+        if (result.error) {
+
+          message.textContent =
+            result.error.message;
+
+          button.disabled = false;
+
+          button.textContent =
+            "Create Account";
+
+          return;
+        }
+
+
+        message.style.color =
+          "#32d583";
+
+        message.textContent =
+          "Account created successfully. Please check your email and click the verification link to activate your account.";
+
+
+      } catch (err) {
+
+        console.error(err);
+
+        message.style.color =
+          "#ff9a9a";
+
+        message.textContent =
+          "System error. Please try again.";
+
+      }
+
+
+      button.disabled = false;
+
+      button.textContent =
+        "Create Account";
+
     }
-  } catch (err) {
-    console.error(err);
-    message.textContent = "System error. Please try again.";
-  }
 
-  button.disabled = false;
-  button.textContent = "Create Account";
-});
-</script>
+  );
 
-</body>
+</script></body>
 </html>
