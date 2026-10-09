@@ -1,192 +1,597 @@
 <!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SNIPER ODDS | Referral Dashboard</title><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
-:root {
-    --bg:#07110d;
-    --panel:#0d1b15;
-    --panel2:#12251d;
-    --line:#244536;
-    --green:#25d366;
-    --text:#f4f7f5;
-    --muted:#91a69c;
-}
-* { box-sizing:border-box; }
-body {
-    margin:0;
-    background:radial-gradient(circle at 80% 0,#173b2b 0,transparent 35%),var(--bg);
-    color:var(--text);
-    font-family:Arial,sans-serif;
-}
-.container { width:min(900px,92%); margin:auto; }
-header { border-bottom:1px solid var(--line); padding:18px 0; }
-.nav { display:flex; justify-content:space-between; align-items:center; gap:10px; }
-.logo { font-size:21px; font-weight:900; }
-.logo span { color:var(--green); }
-.nav-buttons { display:flex; gap:8px; }
-.nav-buttons a {
-    text-decoration:none;
-    color:var(--text);
-    border:1px solid var(--line);
-    padding:9px 13px;
-    border-radius:9px;
-    font-size:13px;
-}
-main { padding:45px 0 70px; }
-.hero { text-align:center; margin-bottom:30px; }
-.badge {
-    display:inline-block;
-    padding:7px 12px;
-    border-radius:20px;
-    background:#153526;
-    color:#8cf2b3;
-    font-size:11px;
-    font-weight:bold;
-}
-h1 { font-size:38px; margin:16px 0 10px; }
-.hero p { color:var(--muted); line-height:1.6; }
-.card {
-    background:linear-gradient(145deg,var(--panel2),var(--panel));
-    border:1px solid var(--line);
-    border-radius:18px;
-    padding:24px;
-    margin-bottom:18px;
-}
-.card h2 { margin-top:0; }
-.referral-code {
-    font-size:34px;
-    font-weight:900;
-    letter-spacing:4px;
-    text-align:center;
-    margin:20px 0;
-    color:var(--green);
-    overflow-wrap:anywhere;
-}
-.link-box {
-    background:#07110d;
-    border:1px solid var(--line);
-    border-radius:10px;
-    padding:13px;
-    overflow-wrap:anywhere;
-    color:var(--muted);
-    font-size:13px;
-}
-.buttons { display:flex; gap:10px; margin-top:15px; }
-button {
-    border:0;
-    border-radius:10px;
-    padding:12px 17px;
-    font-weight:bold;
-    cursor:pointer;
-}
-button:disabled { opacity:.55; cursor:not-allowed; }
-.primary { background:var(--green); color:#041009; }
-.secondary { background:#193127; color:white; border:1px solid var(--line); }
-.stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; }
-.stat {
-    text-align:center;
-    background:#091712;
-    border:1px solid var(--line);
-    border-radius:14px;
-    padding:20px 10px;
-}
-.stat strong { display:block; font-size:30px; color:var(--green); }
-.stat span { display:block; color:var(--muted); font-size:12px; margin-top:5px; }
-.steps { padding-left:20px; color:#c9d6d0; line-height:2; }
-.message { color:var(--muted); text-align:center; line-height:1.5; }
-.error { color:#ff9a9a; }
-footer {
-    border-top:1px solid var(--line);
-    padding:25px 0;
-    color:var(--muted);
-    font-size:12px;
-    text-align:center;
-}
-.referral-row { border-top:1px solid var(--line); padding:15px 0; }
-.row-meta { color:var(--muted); font-size:12px; margin-top:5px; }
-.row-status { margin-top:8px; color:var(--green); font-weight:bold; }
-@media(max-width:650px) {
-    h1 { font-size:30px; }
-    .stats { grid-template-columns:1fr; }
-    .buttons { flex-direction:column; }
-    .nav-buttons a { font-size:11px; padding:8px; }
-}
-</style></head><body>
-<header>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Referral Dashboard | SNIPER ODDS</title>
+<meta name="description" content="Track referrals, share your SNIPER ODDS referral link and monitor your premium membership rewards.">
+<meta name="theme-color" content="#07111f">
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+    :root {
+        --bg: #07111f;
+        --panel: #0e1b2c;
+        --panel-light: #14263a;
+        --border: #26394d;
+        --green: #32d583;
+        --green-dark: #123c2b;
+        --text: #f4f7fb;
+        --muted: #9bacc1;
+        --red: #ff8585;
+        --gold: #f5c76b;
+    }
+
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        background:
+            radial-gradient(ellipse at 80% 0, rgba(50, 213, 131, .10), transparent 35%),
+            var(--bg);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+    }
+
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    .container {
+        width: min(1000px, 92%);
+        margin: 0 auto;
+    }
+
+    header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        border-bottom: 1px solid var(--border);
+        background: rgba(7, 17, 31, .96);
+        backdrop-filter: blur(12px);
+    }
+
+    .nav {
+        min-height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 15px;
+    }
+
+    .logo {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 21px;
+        font-weight: 900;
+        letter-spacing: 1px;
+        white-space: nowrap;
+    }
+
+    .logo span {
+        color: var(--green);
+    }
+
+    .nav-buttons {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 9px;
+    }
+
+    .nav-buttons a {
+        padding: 9px 12px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        color: var(--text);
+        font-size: 12px;
+        text-decoration: none;
+    }
+
+    .nav-buttons a:hover {
+        border-color: var(--green);
+        color: var(--green);
+    }
+
+    main {
+        padding: 38px 0 60px;
+    }
+
+    .hero {
+        position: relative;
+        overflow: hidden;
+        margin-bottom: 25px;
+        padding: 32px 22px;
+        border: 1px solid #28543f;
+        border-radius: 20px;
+        background:
+            radial-gradient(ellipse at top right, rgba(50, 213, 131, .14), transparent 55%),
+            linear-gradient(145deg, #10251f, #0d1b2c);
+        text-align: center;
+    }
+
+    .eyebrow {
+        display: inline-block;
+        padding: 6px 11px;
+        border: 1px solid #28543f;
+        border-radius: 30px;
+        background: var(--green-dark);
+        color: var(--green);
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+    }
+
+    h1 {
+        margin: 17px 0 10px;
+        font-size: clamp(28px, 5vw, 40px);
+        line-height: 1.2;
+    }
+
+    .hero p {
+        max-width: 620px;
+        margin: 0 auto;
+        color: #b1c0d0;
+        font-size: 14px;
+    }
+
+    .card {
+        margin-bottom: 20px;
+        padding: 24px;
+        border: 1px solid var(--border);
+        border-radius: 17px;
+        background: linear-gradient(145deg, #122238, #0d1a2a);
+        box-shadow: 0 12px 32px rgba(0, 0, 0, .12);
+    }
+
+    .card-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        margin-bottom: 17px;
+    }
+
+    .card h2 {
+        margin: 0;
+        font-size: 19px;
+    }
+
+    .icon {
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #28543f;
+        border-radius: 11px;
+        background: var(--green-dark);
+        color: var(--green);
+        font-size: 18px;
+    }
+
+    .muted {
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    .referral-code {
+        margin: 18px 0;
+        padding: 17px 12px;
+        border: 1px dashed #347c56;
+        border-radius: 13px;
+        background: #091711;
+        color: var(--green);
+        font-size: clamp(24px, 6vw, 34px);
+        font-weight: 900;
+        letter-spacing: 3px;
+        text-align: center;
+        overflow-wrap: anywhere;
+    }
+
+    .link-label {
+        display: block;
+        margin-bottom: 7px;
+        color: var(--muted);
+        font-size: 12px;
+        font-weight: 700;
+    }
+
+    .link-box {
+        padding: 13px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: #081421;
+        color: #c0ccda;
+        font-size: 12px;
+        overflow-wrap: anywhere;
+        word-break: break-word;
+    }
+
+    .buttons {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 16px;
+    }
+
+    button,
+    .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        min-height: 44px;
+        padding: 11px 16px;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        font-size: 13px;
+        font-weight: 800;
+        text-align: center;
+        text-decoration: none;
+        cursor: pointer;
+        transition: transform .18s ease, filter .18s ease;
+    }
+
+    button:hover,
+    .btn:hover {
+        filter: brightness(1.06);
+        transform: translateY(-1px);
+    }
+
+    button:disabled {
+        opacity: .55;
+        cursor: wait;
+        transform: none;
+    }
+
+    button:focus-visible,
+    a:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
+    }
+
+    .primary {
+        background: var(--green);
+        color: #06140c;
+    }
+
+    .secondary {
+        border-color: var(--border);
+        background: var(--panel-light);
+        color: var(--text);
+    }
+
+    .message {
+        min-height: 20px;
+        margin: 13px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .message.error {
+        color: var(--red);
+    }
+
+    .message.success {
+        color: var(--green);
+    }
+
+    .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 13px;
+    }
+
+    .stat {
+        min-width: 0;
+        padding: 20px 10px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        background: #091625;
+        text-align: center;
+    }
+
+    .stat strong {
+        display: block;
+        color: var(--green);
+        font-size: clamp(25px, 4vw, 32px);
+        line-height: 1.3;
+        overflow-wrap: anywhere;
+    }
+
+    .stat span {
+        display: block;
+        margin-top: 6px;
+        color: var(--muted);
+        font-size: 11px;
+    }
+
+    .progress-track {
+        height: 8px;
+        margin-top: 17px;
+        overflow: hidden;
+        border-radius: 20px;
+        background: #243447;
+    }
+
+    .progress-bar {
+        width: 0;
+        height: 100%;
+        border-radius: inherit;
+        background: var(--green);
+        transition: width .3s ease;
+    }
+
+    .steps {
+        margin: 0;
+        padding-left: 22px;
+        color: #c9d6e2;
+        font-size: 13px;
+    }
+
+    .steps li {
+        padding: 5px 0 5px 3px;
+    }
+
+    .reward-note {
+        margin-top: 17px;
+        padding: 13px;
+        border: 1px solid #584a29;
+        border-radius: 10px;
+        background: #211e15;
+        color: #e9d8a8;
+        font-size: 12px;
+    }
+
+    .referral-row {
+        padding: 15px 0;
+        border-top: 1px solid var(--border);
+    }
+
+    .referral-row:first-child {
+        border-top: 0;
+    }
+
+    .row-title {
+        font-size: 13px;
+        font-weight: 800;
+    }
+
+    .row-meta {
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 11px;
+    }
+
+    .row-status {
+        display: inline-block;
+        margin-top: 8px;
+        padding: 4px 9px;
+        border-radius: 20px;
+        background: #192a3c;
+        color: #b7c6d8;
+        font-size: 10px;
+        font-weight: 800;
+        text-transform: uppercase;
+    }
+
+    .row-status.qualified,
+    .row-status.rewarded {
+        background: #123c2b;
+        color: var(--green);
+    }
+
+    .empty-state {
+        padding: 18px 8px;
+        color: var(--muted);
+        font-size: 13px;
+        text-align: center;
+    }
+
+    footer {
+        padding: 24px 0;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 12px;
+        text-align: center;
+    }
+
+    @media (max-width: 650px) {
+        .nav {
+            padding: 13px 0;
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .nav-buttons {
+            width: 100%;
+        }
+
+        main {
+            padding-top: 25px;
+        }
+
+        .hero {
+            padding: 26px 17px;
+        }
+
+        .card {
+            padding: 19px;
+        }
+
+        .stats {
+            grid-template-columns: 1fr;
+        }
+
+        .stat {
+            padding: 15px 10px;
+        }
+
+        .buttons {
+            flex-direction: column;
+        }
+
+        .buttons button {
+            width: 100%;
+        }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        *,
+        *::before,
+        *::after {
+            transition: none !important;
+        }
+    }
+</style>
+
+</head><body><header>
     <div class="container nav">
-        <div class="logo">SNIPER <span>ODDS</span></div>
-        <div class="nav-buttons">
-            <a href="index.html">🏠 Home</a>
-            <a href="account.html">👤 Account</a>
-        </div>
+        <a href="./index.html" class="logo">SNIPER <span>ODDS</span></a>    <nav class="nav-buttons" aria-label="Main navigation">
+        <a href="./index.html">Home</a>
+        <a href="./account.html">My Account</a>
+        <a href="./subscription.html">Premium Plans</a>
+    </nav>
+</div>
+
+</header><main class="container"><section class="hero">
+    <span class="eyebrow">MEMBER REFERRAL PROGRAM</span>
+    <h1>Invite. Qualify. Earn.</h1>
+    <p>
+        Share your personal referral link with new customers.
+        Track qualifying referrals and the rewards recorded on your account.
+    </p>
+</section>
+
+<section class="card">
+    <div class="card-heading">
+        <h2>Your Referral Link</h2>
+        <div class="icon" aria-hidden="true">↗</div>
     </div>
-</header><main class="container">
-    <section class="hero">
-        <div class="badge">SNIPER ODDS REFERRAL PROGRAM</div>
-        <h1>Invite. Qualify. Earn.</h1>
-        <p>Invite new customers and earn free premium access when three referrals complete the qualifying payment process.</p>
-    </section><section class="card">
-    <h2>🔗 Your Referral Code</h2>
+
+    <p class="muted">
+        Share your unique code or link so new customers can register through you.
+    </p>
+
     <div id="referralCode" class="referral-code">Loading...</div>
-    <div id="referralLink" class="link-box">Creating your referral link...</div>
+
+    <span class="link-label">YOUR PERSONAL INVITATION LINK</span>
+    <div id="referralLink" class="link-box" aria-live="polite">
+        Preparing your referral link...
+    </div>
 
     <div class="buttons">
-        <button id="copyCodeBtn" class="secondary" type="button">Copy Code</button>
-        <button id="copyLinkBtn" class="primary" type="button">Copy Referral Link</button>
+        <button id="copyCodeBtn" class="secondary" type="button" disabled>
+            Copy Referral Code
+        </button>
+
+        <button id="copyLinkBtn" class="primary" type="button" disabled>
+            Copy Referral Link
+        </button>
     </div>
+
     <p id="referralMessage" class="message" role="status" aria-live="polite"></p>
 </section>
 
 <section class="card">
-    <h2>📊 Referral Progress</h2>
+    <div class="card-heading">
+        <h2>Your Referral Progress</h2>
+        <div class="icon" aria-hidden="true">▥</div>
+    </div>
+
     <div class="stats">
         <div class="stat">
-            <strong id="qualifiedCount">0</strong>
+            <strong id="qualifiedCount">—</strong>
             <span>Qualified Referrals</span>
         </div>
+
         <div class="stat">
             <strong>3</strong>
             <span>Required Per Reward</span>
         </div>
+
         <div class="stat">
-            <strong id="rewardDays">0</strong>
+            <strong id="rewardDays">—</strong>
             <span>Free Days Earned</span>
         </div>
     </div>
-    <p id="progressMessage" class="message"></p>
+
+    <p id="progressMessage" class="message">
+        Loading your referral progress...
+    </p>
+
+    <div class="progress-track" aria-label="Progress toward the next referral reward">
+        <div id="progressBar" class="progress-bar"></div>
+    </div>
 </section>
 
 <section class="card">
-    <h2>🎁 How It Works</h2>
+    <div class="card-heading">
+        <h2>How It Works</h2>
+        <div class="icon" aria-hidden="true">✦</div>
+    </div>
+
     <ol class="steps">
-        <li>Share your unique referral link.</li>
-        <li>A new customer creates an account using your link.</li>
-        <li>The customer purchases the Weekly Pass for KSh 500.</li>
+        <li>Share your personal referral link.</li>
+        <li>Your friend creates an account using your referral link.</li>
+        <li>Your friend purchases the qualifying Weekly Pass for KSh 500.</li>
         <li>The payment must be successfully verified.</li>
-        <li>After three qualified referrals, three free premium days are awarded automatically.</li>
+        <li>Three qualified referrals make you eligible for three free premium days, subject to successful reward processing.</li>
     </ol>
-    <p class="message">Registrations alone do not qualify. Rewards depend on verified payments and successful database processing.</p>
+
+    <div class="reward-note">
+        <strong>Reward conditions:</strong> Signing up alone does not qualify.
+        Referral qualification and rewards depend on verified payments and
+        the referral system's database rules. This page displays recorded
+        information; it does not itself issue rewards.
+    </div>
 </section>
 
 <section class="card">
-    <h2>👥 Your Referrals</h2>
-    <div id="referralsList">
-        <p class="message">Loading referrals...</p>
+    <div class="card-heading">
+        <h2>Referral Activity</h2>
+        <div class="icon" aria-hidden="true">♙</div>
+    </div>
+
+    <p class="muted">
+        Review the status of people who registered through your referral link.
+    </p>
+
+    <div id="referralsList" aria-live="polite">
+        <div class="empty-state">Loading referral activity...</div>
     </div>
 </section>
 
 </main><footer>
-    <div class="container">© 2026 SNIPER ODDS. Football analysis for adults 18+.</div>
+    <div class="container">
+        &copy; 2026 SNIPER ODDS. Football analysis for adults 18+.
+    </div>
 </footer><script>
 "use strict";
 
 const SUPABASE_URL = "https://gddyhbjslwcgtqdtbzvu.supabase.co";
-const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_3uoDL_R8ylwHiJLTGenA_geIrsFxW";
+
+/* Corrected to match the publishable key used in the other site files. */
+const SUPABASE_PUBLISHABLE_KEY =
+    "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
 const referralSupabase = window.supabase.createClient(
     SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
+    SUPABASE_PUBLISHABLE_KEY,
+    {
+        auth: {
+            persistSession: true,
+            autoRefreshToken: true,
+            detectSessionInUrl: true,
+            storage: window.localStorage
+        }
+    }
 );
 
 let currentCode = "";
@@ -194,15 +599,36 @@ let currentLink = "";
 
 const byId = id => document.getElementById(id);
 
-function showMessage(text, isError = false) {
-    const el = byId("referralMessage");
-    el.textContent = text;
-    el.classList.toggle("error", isError);
+function showMessage(message, type = "") {
+    const element = byId("referralMessage");
+
+    element.textContent = message;
+    element.className = "message";
+
+    if (type) {
+        element.classList.add(type);
+    }
+}
+
+function showPageError(message) {
+    byId("referralCode").textContent = "Unavailable";
+    byId("referralLink").textContent = message;
+
+    byId("referralsList").replaceChildren();
+
+    const error = document.createElement("p");
+    error.className = "empty-state";
+    error.textContent = message;
+
+    byId("referralsList").appendChild(error);
+
+    byId("copyCodeBtn").disabled = true;
+    byId("copyLinkBtn").disabled = true;
 }
 
 async function copyText(value, successMessage) {
     if (!value) {
-        showMessage("The information is not ready yet. Please wait.", true);
+        showMessage("Your referral information is not ready yet.", "error");
         return;
     }
 
@@ -211,22 +637,31 @@ async function copyText(value, successMessage) {
             await navigator.clipboard.writeText(value);
         } else {
             const field = document.createElement("textarea");
+
             field.value = value;
+            field.setAttribute("readonly", "");
             field.style.position = "fixed";
-            field.style.opacity = "0";
+            field.style.left = "-9999px";
+
             document.body.appendChild(field);
             field.select();
 
             const copied = document.execCommand("copy");
             field.remove();
 
-            if (!copied) throw new Error("Copy was not successful");
+            if (!copied) {
+                throw new Error("Copy command failed.");
+            }
         }
 
-        showMessage(successMessage);
+        showMessage(successMessage, "success");
     } catch (error) {
         console.error("Copy failed:", error);
-        showMessage("Copy failed. Please select and copy the text manually.", true);
+
+        showMessage(
+            "Automatic copying failed. Please select and copy the text manually.",
+            "error"
+        );
     }
 }
 
@@ -235,31 +670,52 @@ async function loadReferralDashboard() {
     byId("copyLinkBtn").disabled = true;
 
     try {
-        const { data: userData, error: userError } =
-            await referralSupabase.auth.getUser();
+        const {
+            data: sessionData,
+            error: sessionError
+        } = await referralSupabase.auth.getSession();
+
+        if (sessionError) {
+            throw sessionError;
+        }
+
+        if (!sessionData.session) {
+            window.location.replace("./login.html");
+            return;
+        }
+
+        const {
+            data: userData,
+            error: userError
+        } = await referralSupabase.auth.getUser();
 
         if (userError || !userData.user) {
-window.location.href = "./login.html?next=referrals.html";
-return;
+            window.location.replace("./login.html");
+            return;
         }
 
         const user = userData.user;
 
-        const { data: code, error: codeError } =
-            await referralSupabase.rpc("generate_referral_code");
+        const {
+            data: code,
+            error: codeError
+        } = await referralSupabase.rpc("generate_referral_code");
 
-        if (codeError) throw codeError;
-
-        if (!code || typeof code !== "string") {
-            throw new Error("Referral code was not returned.");
+        if (codeError) {
+            throw codeError;
         }
 
-        currentCode = code;
+        if (typeof code !== "string" || !code.trim()) {
+            throw new Error("The referral code was not returned.");
+        }
+
+        currentCode = code.trim();
 
         byId("referralCode").textContent = currentCode;
 
         const signupUrl = new URL("signup.html", window.location.href);
         signupUrl.searchParams.set("ref", currentCode);
+
         currentLink = signupUrl.toString();
 
         byId("referralLink").textContent = currentLink;
@@ -271,19 +727,46 @@ return;
             loadRewards(user.id)
         ]);
 
-        showMessage("");
+        showMessage("Your referral dashboard is ready.", "success");
+
     } catch (error) {
         console.error("Referral dashboard error:", error);
-        showMessage("Unable to load referral information. Refresh the page or sign in again.", true);
-        byId("referralsList").innerHTML =
-            '<p class="message">Referral information could not be loaded.</p>';
+
+        showMessage(
+            "We could not load your referral information. Refresh the page or sign in again.",
+            "error"
+        );
+
+        byId("referralCode").textContent = "Unavailable";
+        byId("referralLink").textContent =
+            "Your referral link could not be loaded.";
+
+        byId("copyCodeBtn").disabled = true;
+        byId("copyLinkBtn").disabled = true;
+
+        byId("referralsList").replaceChildren();
+
+        const errorMessage = document.createElement("p");
+        errorMessage.className = "empty-state";
+        errorMessage.textContent =
+            "Referral activity is temporarily unavailable.";
+
+        byId("referralsList").appendChild(errorMessage);
+
+        byId("qualifiedCount").textContent = "—";
+        byId("rewardDays").textContent = "—";
+        byId("progressMessage").textContent =
+            "Referral progress is currently unavailable.";
     }
 }
 
 async function loadReferrals(userId) {
     const list = byId("referralsList");
 
-    const { data, error } = await referralSupabase
+    const {
+        data,
+        error
+    } = await referralSupabase
         .from("referrals")
         .select("id,status,created_at,qualified_at")
         .eq("referrer_id", userId)
@@ -291,23 +774,52 @@ async function loadReferrals(userId) {
 
     if (error) {
         console.error("Could not load referrals:", error);
-        list.innerHTML =
-            '<p class="message">Referral activity could not be loaded.</p>';
+
+        list.replaceChildren();
+
+        const message = document.createElement("p");
+        message.className = "empty-state";
+        message.textContent =
+            "Referral activity could not be loaded. Check the database permissions.";
+
+        list.appendChild(message);
+        byId("qualifiedCount").textContent = "—";
+        byId("progressMessage").textContent =
+            "Referral progress could not be calculated.";
+
         return;
     }
 
     const referrals = data || [];
+
     const qualified = referrals.filter(item =>
         item.status === "qualified" || item.status === "rewarded"
     ).length;
 
     byId("qualifiedCount").textContent = String(qualified);
-    byId("progressMessage").textContent =
-        `${qualified % 3} of 3 referrals toward your next reward.`;
+
+    const progress = qualified % 3;
+    const percentage = (progress / 3) * 100;
+
+    byId("progressBar").style.width = percentage + "%";
+
+    if (qualified === 0) {
+        byId("progressMessage").textContent =
+            "You have no qualified referrals yet. Share your link to get started.";
+    } else {
+        byId("progressMessage").textContent =
+            `${progress} of 3 qualified referrals toward your next reward. Total qualified: ${qualified}.`;
+    }
 
     if (referrals.length === 0) {
-        list.innerHTML =
-            '<p class="message">No referrals yet. Share your link to get started.</p>';
+        list.replaceChildren();
+
+        const empty = document.createElement("p");
+        empty.className = "empty-state";
+        empty.textContent =
+            "No referrals yet. Share your personal link to invite your first customer.";
+
+        list.appendChild(empty);
         return;
     }
 
@@ -317,20 +829,31 @@ async function loadReferrals(userId) {
         const row = document.createElement("div");
         row.className = "referral-row";
 
-        const title = document.createElement("strong");
+        const title = document.createElement("div");
+        title.className = "row-title";
         title.textContent = "Referral";
 
         const date = document.createElement("div");
         date.className = "row-meta";
-        date.textContent = "Joined: " + new Date(item.created_at).toLocaleDateString();
 
-        const status = document.createElement("div");
+        const createdDate = item.created_at
+            ? new Date(item.created_at)
+            : null;
+
+        date.textContent =
+            createdDate && !Number.isNaN(createdDate.getTime())
+                ? "Joined: " + createdDate.toLocaleDateString()
+                : "Join date unavailable";
+
+        const status = document.createElement("span");
         status.className = "row-status";
 
         if (item.status === "rewarded") {
             status.textContent = "Rewarded";
+            status.classList.add("rewarded");
         } else if (item.status === "qualified") {
             status.textContent = "Qualified";
+            status.classList.add("qualified");
         } else {
             status.textContent = "Pending";
         }
@@ -341,7 +864,10 @@ async function loadReferrals(userId) {
 }
 
 async function loadRewards(userId) {
-    const { data, error } = await referralSupabase
+    const {
+        data,
+        error
+    } = await referralSupabase
         .from("referral_rewards")
         .select("reward_days,status")
         .eq("referrer_id", userId);
@@ -352,21 +878,28 @@ async function loadRewards(userId) {
         return;
     }
 
-    // Count only rewards recorded as successfully applied.
     const totalDays = (data || [])
         .filter(reward => reward.status === "applied")
-        .reduce((sum, reward) => sum + Number(reward.reward_days || 0), 0);
+        .reduce((sum, reward) => {
+            const days = Number(reward.reward_days || 0);
+
+            return sum + (
+                Number.isFinite(days) && days > 0
+                    ? days
+                    : 0
+            );
+        }, 0);
 
     byId("rewardDays").textContent = String(totalDays);
 }
 
-byId("copyCodeBtn").addEventListener("click", () =>
-    copyText(currentCode, "Referral code copied.")
-);
+byId("copyCodeBtn").addEventListener("click", function () {
+    copyText(currentCode, "Referral code copied successfully.", "success");
+});
 
-byId("copyLinkBtn").addEventListener("click", () =>
-    copyText(currentLink, "Referral link copied.")
-);
+byId("copyLinkBtn").addEventListener("click", function () {
+    copyText(currentLink, "Referral link copied successfully.", "success");
+});
 
 loadReferralDashboard();
 </script></body>
