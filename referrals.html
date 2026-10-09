@@ -239,8 +239,8 @@ async function loadReferralDashboard() {
             await referralSupabase.auth.getUser();
 
         if (userError || !userData.user) {
-            window.location.href = "login.html";
-            return;
+window.location.href = "./login.html?next=referrals.html";
+return;
         }
 
         const user = userData.user;
