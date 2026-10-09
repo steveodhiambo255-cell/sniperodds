@@ -2,46 +2,36 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <meta
-        name="description"
-        content="Exclusive premium football predictions, match analysis and betting market insights from SNIPER ODDS."
-    >
-
-    <meta name="theme-color" content="#07110d">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Premium Analysis | SNIPER ODDS</title>
 
+    <meta name="description"
+          content="Access premium football analysis and predictions on SNIPER ODDS.">
+
+    <meta name="theme-color" content="#07130d">
+
     <style>
         :root {
-            --bg: #07110d;
-            --surface: #101c16;
-            --surface-light: #16271e;
+            --background: #07130d;
+            --card: #102119;
+            --card-light: #172d22;
             --green: #32d583;
-            --green-dark: #147d4a;
-            --text: #f1f8f3;
-            --muted: #9aafa1;
-            --border: rgba(255,255,255,0.09);
-            --danger: #ff7777;
-            --gold: #f7cf73;
+            --green-dark: #20a864;
+            --text: #f4fff8;
+            --muted: #a5b8ac;
+            --border: #294537;
+            --red: #ff7777;
+            --yellow: #ffd166;
         }
 
         * {
             box-sizing: border-box;
         }
 
-        html {
-            scroll-behavior: smooth;
-        }
-
         body {
             margin: 0;
-            background: var(--bg);
+            background: var(--background);
             color: var(--text);
             font-family: Arial, Helvetica, sans-serif;
             line-height: 1.6;
@@ -58,154 +48,208 @@
             font: inherit;
         }
 
-        button {
-            cursor: pointer;
+        button,
+        a {
+            -webkit-tap-highlight-color: transparent;
         }
 
-        .topbar {
+        .header {
             position: sticky;
             top: 0;
-            z-index: 20;
-            background: rgba(7,17,13,0.96);
+            z-index: 10;
+            background: rgba(7, 19, 13, 0.97);
             border-bottom: 1px solid var(--border);
-            backdrop-filter: blur(12px);
+            padding: 14px 16px;
         }
 
-        .nav {
-            max-width: 1150px;
-            min-height: 68px;
+        .header-inner {
+            max-width: 1100px;
             margin: auto;
-            padding: 12px 20px;
             display: flex;
             align-items: center;
             justify-content: space-between;
-            gap: 15px;
+            gap: 12px;
         }
 
         .brand {
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 900;
             letter-spacing: 0.5px;
-            white-space: nowrap;
         }
 
         .brand span {
             color: var(--green);
         }
 
-        .nav-links {
+        .nav {
             display: flex;
             align-items: center;
-            gap: 17px;
+            gap: 12px;
+            flex-wrap: wrap;
             font-size: 13px;
         }
 
-        .nav-links a {
+        .nav a {
             color: var(--muted);
         }
 
-        .nav-links a:hover {
+        .nav a:hover {
             color: var(--green);
         }
 
-        .logout-btn {
-            background: transparent;
-            color: var(--text);
+        .logout-button {
             border: 1px solid var(--border);
             border-radius: 8px;
-            padding: 8px 12px;
+            padding: 7px 11px;
+            background: transparent;
+            color: var(--text);
+            cursor: pointer;
         }
 
         .container {
             width: min(1100px, 92%);
-            margin: auto;
+            margin: 28px auto 50px;
         }
 
         .hero {
-            padding: 45px 0 30px;
-        }
-
-        .eyebrow {
-            display: inline-block;
-            color: var(--green);
-            font-size: 12px;
-            font-weight: 800;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-        }
-
-        h1 {
-            margin: 10px 0;
-            font-size: clamp(29px, 5vw, 43px);
-            line-height: 1.15;
-        }
-
-        .hero p {
-            max-width: 650px;
-            color: var(--muted);
-            margin: 12px 0 0;
+            padding: 25px 20px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            background:
+                radial-gradient(
+                    circle at top right,
+                    rgba(50, 213, 131, 0.13),
+                    transparent 45%
+                ),
+                var(--card);
+            margin-bottom: 22px;
         }
 
         .badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            padding: 7px 11px;
-            border-radius: 30px;
-            background: rgba(50,213,131,0.10);
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(50, 213, 131, 0.12);
             color: var(--green);
             font-size: 12px;
-            font-weight: 700;
+            font-weight: bold;
+            margin-bottom: 8px;
         }
 
-        .dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: currentColor;
+        h1 {
+            margin: 0 0 8px;
+            font-size: clamp(25px, 5vw, 38px);
+            line-height: 1.2;
         }
 
-        .stats {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin: 26px 0;
+        h2 {
+            margin-top: 0;
         }
 
-        .stat-card {
-            padding: 18px;
-            background: var(--surface);
+        .muted {
+            color: var(--muted);
+        }
+
+        .panel {
+            background: var(--card);
             border: 1px solid var(--border);
             border-radius: 14px;
+            padding: 20px;
+            margin-bottom: 20px;
         }
 
-        .stat-label {
-            color: var(--muted);
+        .status-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .status {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 20px;
             font-size: 12px;
+            font-weight: bold;
         }
 
-        .stat-value {
-            display: block;
-            margin-top: 5px;
-            font-size: 25px;
-            font-weight: 800;
+        .status.loading {
+            background: #26352d;
+            color: var(--yellow);
+        }
+
+        .status.active {
+            background: rgba(50, 213, 131, 0.15);
+            color: var(--green);
+        }
+
+        .status.inactive {
+            background: rgba(255, 119, 119, 0.12);
+            color: var(--red);
+        }
+
+        .message {
+            padding: 13px;
+            border-radius: 9px;
+            margin: 12px 0;
+            background: var(--card-light);
+            border: 1px solid var(--border);
+            overflow-wrap: anywhere;
+        }
+
+        .message.error {
+            color: var(--red);
+        }
+
+        .message.success {
+            color: var(--green);
+        }
+
+        .button {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            border: 0;
+            border-radius: 9px;
+            padding: 11px 15px;
+            background: var(--green);
+            color: #062013;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+        }
+
+        .button:hover {
+            background: #56e69a;
+        }
+
+        .button.secondary {
+            background: var(--card-light);
+            border: 1px solid var(--border);
+            color: var(--text);
+        }
+
+        .button:disabled {
+            opacity: 0.6;
+            cursor: wait;
         }
 
         .toolbar {
             display: grid;
-            grid-template-columns: 1fr 200px auto;
-            gap: 12px;
-            margin: 28px 0 18px;
+            grid-template-columns: 1fr 190px auto;
+            gap: 10px;
+            margin-bottom: 18px;
         }
 
         .field {
             width: 100%;
             min-width: 0;
-            background: var(--surface);
-            color: var(--text);
+            padding: 12px;
             border: 1px solid var(--border);
-            border-radius: 10px;
-            padding: 13px 14px;
+            border-radius: 9px;
+            background: #09170f;
+            color: var(--text);
             outline: none;
         }
 
@@ -213,257 +257,97 @@
             border-color: var(--green);
         }
 
-        .primary-btn {
-            background: var(--green);
-            color: #062014;
-            border: 0;
-            border-radius: 10px;
-            padding: 12px 18px;
-            font-weight: 800;
-        }
-
-        .primary-btn:hover {
-            background: #59e69b;
-        }
-
-        .section-heading {
+        .results-heading {
             display: flex;
-            justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin: 32px 0 15px;
-        }
-
-        .section-heading h2 {
-            margin: 0;
-            font-size: 22px;
-        }
-
-        .muted {
-            color: var(--muted);
-            font-size: 13px;
+            justify-content: space-between;
+            gap: 10px;
+            flex-wrap: wrap;
         }
 
         .predictions {
             display: grid;
             grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 16px;
+            gap: 15px;
         }
 
         .prediction-card {
-            min-width: 0;
-            background: var(--surface);
+            padding: 18px;
             border: 1px solid var(--border);
-            border-radius: 16px;
-            overflow: hidden;
-        }
-
-        .card-top {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            gap: 10px;
-            padding: 15px 17px;
-            background: rgba(255,255,255,0.02);
-            border-bottom: 1px solid var(--border);
-        }
-
-        .market {
-            color: var(--green);
-            font-size: 11px;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 0.7px;
+            border-radius: 13px;
+            background: var(--card);
+            min-width: 0;
         }
 
         .match-date {
-            color: var(--muted);
-            font-size: 11px;
-            text-align: right;
-        }
-
-        .card-body {
-            padding: 18px;
+            color: var(--green);
+            font-size: 12px;
+            font-weight: bold;
+            margin-bottom: 10px;
         }
 
         .teams {
-            display: grid;
-            grid-template-columns: 1fr auto 1fr;
-            align-items: center;
-            gap: 12px;
-            margin: 4px 0 20px;
+            font-size: 18px;
+            font-weight: bold;
+            overflow-wrap: anywhere;
+            margin-bottom: 13px;
         }
 
-        .team {
-            font-size: 16px;
-            font-weight: 800;
+        .prediction-line {
+            padding: 11px;
+            background: var(--card-light);
+            border-radius: 8px;
+            margin: 10px 0;
             overflow-wrap: anywhere;
         }
 
-        .team:last-child {
-            text-align: right;
-        }
-
-        .vs {
-            color: var(--muted);
-            font-size: 11px;
-        }
-
-        .pick-box {
-            background: var(--surface-light);
-            border: 1px solid rgba(50,213,131,0.18);
-            border-radius: 11px;
-            padding: 13px;
-        }
-
-        .pick-label {
+        .label {
             display: block;
             color: var(--muted);
-            font-size: 11px;
-            margin-bottom: 4px;
+            font-size: 12px;
+            margin-bottom: 3px;
         }
 
-        .pick-value {
-            font-weight: 800;
-            font-size: 17px;
-            overflow-wrap: anywhere;
-        }
-
-        .odds {
-            display: inline-block;
-            margin-top: 10px;
-            color: var(--gold);
-            font-size: 13px;
-            font-weight: 800;
+        .pick {
+            color: var(--green);
+            font-weight: bold;
         }
 
         .analysis {
-            margin-top: 17px;
-            color: #c0cec4;
-            font-size: 13px;
-            white-space: pre-line;
+            color: #d5e5db;
+            font-size: 14px;
             overflow-wrap: anywhere;
         }
 
-        .analysis-title {
-            color: var(--text);
-            font-weight: 800;
-            margin-bottom: 6px;
-        }
-
-        .player {
-            margin-top: 12px;
-            font-size: 12px;
-            color: var(--muted);
-        }
-
-        .empty-state {
+        .empty {
             grid-column: 1 / -1;
-            padding: 35px 20px;
+            padding: 28px 16px;
             text-align: center;
-            background: var(--surface);
             border: 1px dashed var(--border);
-            border-radius: 14px;
-        }
-
-        .empty-state h3 {
-            margin-top: 0;
-        }
-
-        .empty-state p {
+            border-radius: 12px;
             color: var(--muted);
-            font-size: 14px;
         }
 
-        .status-message {
-            display: none;
-            margin: 20px 0;
-            padding: 14px 16px;
-            border: 1px solid var(--border);
-            border-radius: 10px;
-            background: var(--surface);
-            font-size: 13px;
+        .hidden {
+            display: none !important;
         }
 
-        .status-message.visible {
-            display: block;
-        }
-
-        .status-message.error {
-            color: var(--danger);
-        }
-
-        .status-message.success {
-            color: var(--green);
-        }
-
-        .loading {
-            color: var(--muted);
+        footer {
             text-align: center;
-            padding: 30px 10px;
-        }
-
-        .upgrade-panel {
-            margin: 35px 0;
-            padding: 23px;
-            border: 1px solid rgba(50,213,131,0.2);
-            border-radius: 15px;
-            background: linear-gradient(
-                135deg,
-                rgba(50,213,131,0.09),
-                rgba(16,28,22,0.8)
-            );
-        }
-
-        .upgrade-panel h3 {
-            margin: 0 0 6px;
-        }
-
-        .upgrade-panel p {
             color: var(--muted);
-            font-size: 13px;
-        }
-
-        .footer {
-            margin-top: 50px;
             padding: 25px 15px;
-            text-align: center;
             border-top: 1px solid var(--border);
-            color: var(--muted);
-            font-size: 12px;
+            font-size: 13px;
         }
 
-        .footer a {
-            color: var(--green);
-        }
+        @media (max-width: 650px) {
+            .header-inner {
+                align-items: flex-start;
+                flex-direction: column;
+            }
 
-        @media (max-width: 760px) {
             .nav {
-                flex-wrap: wrap;
-            }
-
-            .nav-links {
-                order: 3;
-                width: 100%;
-                overflow-x: auto;
-                padding: 5px 0;
-                gap: 16px;
-            }
-
-            .nav-links a {
-                white-space: nowrap;
-            }
-
-            .stats {
-                gap: 8px;
-            }
-
-            .stat-card {
-                padding: 13px 10px;
-            }
-
-            .stat-value {
-                font-size: 21px;
+                gap: 10px;
             }
 
             .toolbar {
@@ -473,15 +357,14 @@
             .predictions {
                 grid-template-columns: 1fr;
             }
-        }
 
-        @media (max-width: 380px) {
-            .brand {
-                font-size: 16px;
+            .container {
+                margin-top: 18px;
             }
 
-            .stats {
-                grid-template-columns: 1fr;
+            .panel,
+            .hero {
+                padding: 16px;
             }
         }
     </style>
@@ -489,312 +372,610 @@
 
 <body>
 
-<header class="topbar">
-    <nav class="nav">
-
-        <a class="brand" href="index.html">
+<header class="header">
+    <div class="header-inner">
+        <a class="brand" href="./index.html">
             SNIPER <span>ODDS</span>
         </a>
 
-        <div class="nav-links">
-            <a href="index.html">Home</a>
-            <a href="account.html">My Account</a>
-            <a href="subscription.html">Plans</a>
-            <a href="#predictions">Predictions</a>
-        </div>
+        <nav class="nav" aria-label="Main navigation">
+            <a href="./index.html">Home</a>
+            <a href="./account.html">My Account</a>
+            <a href="./subscription.html">Plans</a>
 
-        <button
-            class="logout-btn"
-            id="logoutButton"
-            type="button"
-        >
-            Logout
-        </button>
-
-    </nav>
+            <button
+                class="logout-button"
+                id="logoutButton"
+                type="button">
+                Logout
+            </button>
+        </nav>
+    </div>
 </header>
 
 <main class="container">
 
     <section class="hero">
+        <span class="badge">PREMIUM MEMBERS AREA</span>
 
-        <span class="eyebrow">
-            Premium Football Intelligence
-        </span>
+        <h1>Premium Football Analysis</h1>
 
-        <h1>Premium Analysis</h1>
-
-        <p>
-            Access detailed football match analysis, selected
-            markets, odds and predictions prepared for SNIPER ODDS
-            premium members.
+        <p class="muted">
+            Access your premium football predictions, match insights,
+            markets and analysis.
         </p>
 
-        <div style="margin-top:18px">
-            <span class="badge" id="subscriptionBadge">
-                <span class="dot"></span>
-                Checking subscription...
+        <div class="status-row">
+            <span id="welcomeText" class="muted">
+                Checking your account...
+            </span>
+
+            <span id="subscriptionStatus" class="status loading">
+                Checking subscription
             </span>
         </div>
-
     </section>
 
-    <section class="stats">
-
-        <div class="stat-card">
-            <span class="stat-label">
-                Available Predictions
-            </span>
-
-            <strong class="stat-value" id="totalPredictions">
-                —
-            </strong>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-label">
-                Upcoming Matches
-            </span>
-
-            <strong class="stat-value" id="upcomingMatches">
-                —
-            </strong>
-        </div>
-
-        <div class="stat-card">
-            <span class="stat-label">
-                Subscription
-            </span>
-
-            <strong
-                class="stat-value"
-                id="subscriptionStatus"
-                style="font-size:18px"
-            >
-                Checking
-            </strong>
-        </div>
-
+    <section id="loadingPanel" class="panel">
+        <h2>Verifying access</h2>
+        <p class="muted" id="loadingText">
+            Please wait while we verify your login and subscription.
+        </p>
     </section>
 
-    <div
-        id="statusMessage"
-        class="status-message"
-        role="status"
-        aria-live="polite"
-    ></div>
+    <section id="loginPanel" class="panel hidden">
+        <h2>Login required</h2>
 
-    <section id="predictions">
+        <p class="muted">
+            Please log in to your SNIPER ODDS account to continue.
+        </p>
 
-        <div class="section-heading">
+        <a class="button" href="./login.html">
+            Login to your account
+        </a>
 
+        <a class="button secondary" href="./account.html">
+            My Account
+        </a>
+    </section>
+
+    <section id="subscriptionPanel" class="panel hidden">
+        <h2>Premium subscription required</h2>
+
+        <p id="subscriptionMessage" class="muted">
+            An active premium subscription is required to access these
+            predictions.
+        </p>
+
+        <a class="button" href="./subscription.html">
+            View Premium Plans
+        </a>
+
+        <a class="button secondary" href="./account.html">
+            Back to My Account
+        </a>
+    </section>
+
+    <section id="errorPanel" class="panel hidden">
+        <h2>Unable to load premium access</h2>
+
+        <p id="errorMessage" class="message error">
+            Something went wrong.
+        </p>
+
+        <button
+            class="button"
+            id="retryButton"
+            type="button">
+            Try Again
+        </button>
+
+        <a class="button secondary" href="./account.html">
+            My Account
+        </a>
+    </section>
+
+    <section id="predictionsPanel" class="panel hidden">
+
+        <div class="results-heading">
             <div>
                 <h2>Premium Predictions</h2>
-
-                <span class="muted" id="lastUpdated">
-                    Preparing your analysis...
-                </span>
+                <p class="muted">
+                    Review each match and its available analysis.
+                </p>
             </div>
 
+            <button
+                class="button secondary"
+                id="refreshButton"
+                type="button">
+                Refresh
+            </button>
         </div>
 
         <div class="toolbar">
-
             <input
                 class="field"
                 id="searchInput"
                 type="search"
                 placeholder="Search teams, markets or predictions..."
-                aria-label="Search premium predictions"
-            >
+                aria-label="Search predictions">
 
             <select
                 class="field"
-                id="filterSelect"
-                aria-label="Filter predictions"
-            >
-                <option value="all">All predictions</option>
-                <option value="upcoming">Upcoming matches</option>
-                <option value="today">Today's matches</option>
+                id="marketFilter"
+                aria-label="Filter by market">
+                <option value="">All Markets</option>
             </select>
 
             <button
-                class="primary-btn"
-                id="refreshButton"
-                type="button"
-            >
-                Refresh
+                class="button secondary"
+                id="clearFiltersButton"
+                type="button">
+                Clear Filters
             </button>
-
         </div>
 
-        <div
-            class="predictions"
-            id="predictionList"
-            aria-live="polite"
-        >
-            <div class="loading">
-                Checking your subscription and loading predictions...
-            </div>
-        </div>
-
-    </section>
-
-    <section class="upgrade-panel">
-
-        <h3>Make the most of your membership</h3>
-
-        <p>
-            Keep your subscription active to continue accessing
-            premium football analysis.
+        <p id="resultsCount" class="muted">
+            Loading predictions...
         </p>
 
-        <a class="primary-btn" href="subscription.html">
-            View Premium Plans
-        </a>
+        <div id="predictionsList" class="predictions">
+            <div class="empty">Loading premium predictions...</div>
+        </div>
 
     </section>
 
 </main>
 
-<footer class="footer">
-
-    <p>
-        &copy; <span id="year"></span> SNIPER ODDS.
-        Football Analysis &bull; Statistics &bull; Insights.
-    </p>
-
-    <p>
-        Predictions are analytical opinions, not guaranteed
-        outcomes. Bet responsibly and only where legally permitted.
-    </p>
-
-    <a href="contact.html">Contact Us</a>
-
+<footer>
+    <p>© <span id="currentYear"></span> SNIPER ODDS.</p>
+    <p>Football analysis and insights. Predictions are not guarantees.</p>
 </footer>
 
-<!-- Supabase JavaScript client -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 "use strict";
 
 /*
-==========================================================
-SNIPER ODDS SUPABASE CONFIGURATION
-==========================================================
-
-Project URL is configured for your existing project.
-
-IMPORTANT:
-Replace the placeholder below with the SAME public
-publishable key (or legacy anon key) already used by
-your working SNIPER ODDS script.js.
-
-NEVER place a service_role key or secret key in this file.
-==========================================================
-*/
-
+ * SNIPER ODDS Supabase configuration.
+ * This is the public publishable key, not a service-role key.
+ */
 const SUPABASE_URL =
     "https://gddyhbjslwcgtqdtbzvu.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
-
-const supabaseClient = window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_PUBLISHABLE_KEY
-);
-
-
-const elements = {
-    badge: document.getElementById("subscriptionBadge"),
-    subscriptionStatus: document.getElementById("subscriptionStatus"),
-    total: document.getElementById("totalPredictions"),
-    upcoming: document.getElementById("upcomingMatches"),
-    list: document.getElementById("predictionList"),
-    search: document.getElementById("searchInput"),
-    filter: document.getElementById("filterSelect"),
-    refresh: document.getElementById("refreshButton"),
-    logout: document.getElementById("logoutButton"),
-    message: document.getElementById("statusMessage"),
-    updated: document.getElementById("lastUpdated")
-};
-
-
+let client;
 let currentUser = null;
 let allPredictions = [];
-let loading = false;
 
+const elements = {
+    welcomeText: document.getElementById("welcomeText"),
+    subscriptionStatus: document.getElementById("subscriptionStatus"),
+    loadingPanel: document.getElementById("loadingPanel"),
+    loadingText: document.getElementById("loadingText"),
+    loginPanel: document.getElementById("loginPanel"),
+    subscriptionPanel: document.getElementById("subscriptionPanel"),
+    subscriptionMessage: document.getElementById("subscriptionMessage"),
+    errorPanel: document.getElementById("errorPanel"),
+    errorMessage: document.getElementById("errorMessage"),
+    predictionsPanel: document.getElementById("predictionsPanel"),
+    predictionsList: document.getElementById("predictionsList"),
+    resultsCount: document.getElementById("resultsCount"),
+    searchInput: document.getElementById("searchInput"),
+    marketFilter: document.getElementById("marketFilter"),
+    refreshButton: document.getElementById("refreshButton"),
+    clearFiltersButton: document.getElementById("clearFiltersButton"),
+    retryButton: document.getElementById("retryButton"),
+    logoutButton: document.getElementById("logoutButton")
+};
 
-document.getElementById("year").textContent =
+document.getElementById("currentYear").textContent =
     new Date().getFullYear();
 
 
-function showMessage(message, type = "") {
-    elements.message.textContent = message;
-    elements.message.className = "status-message visible";
+function showOnly(panelToShow) {
+    [
+        elements.loadingPanel,
+        elements.loginPanel,
+        elements.subscriptionPanel,
+        elements.errorPanel,
+        elements.predictionsPanel
+    ].forEach(function(panel) {
+        panel.classList.add("hidden");
+    });
 
-    if (type) {
-        elements.message.classList.add(type);
+    if (panelToShow) {
+        panelToShow.classList.remove("hidden");
     }
 }
 
 
-function clearMessage() {
-    elements.message.textContent = "";
-    elements.message.className = "status-message";
-}
-
-
-function setSubscriptionDisplay(text, active = false) {
-    elements.badge.textContent = text;
-    elements.subscriptionStatus.textContent =
-        active ? "ACTIVE" : text;
-
-    elements.badge.style.color =
-        active ? "var(--green)" : "var(--gold)";
+function setSubscriptionStatus(text, state) {
+    elements.subscriptionStatus.textContent = text;
+    elements.subscriptionStatus.className = "status " + state;
 }
 
 
 function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, function(char) {
-        const entities = {
+    return String(value ?? "").replace(/[&<>"']/g, function(character) {
+        const replacements = {
             "&": "&amp;",
             "<": "&lt;",
             ">": "&gt;",
             '"': "&quot;",
-            "'": "&#039;"
+            "'": "&#39;"
         };
 
-        return entities[char];
+        return replacements[character];
     });
 }
 
 
-function formatDate(dateValue) {
-    if (!dateValue) {
+function formatMatchDate(value) {
+    if (!value) {
         return "Date not specified";
     }
 
-    const date = new Date(dateValue + "T00:00:00");
+    const date = new Date(value);
 
     if (Number.isNaN(date.getTime())) {
-        return "Date not specified";
+        return String(value);
     }
 
-    return date.toLocaleDateString("en-KE", {
-        day: "numeric",
-        month: "short",
-        year: "numeric"
-    });
+    return new Intl.DateTimeFormat("en-KE", {
+        dateStyle: "medium",
+        timeStyle: "short",
+        timeZone: "Africa/Nairobi"
+    }).format(date);
 }
 
 
-function getToday() {
-    const parts = new Intl.DateTimeFormat("en-CA", {
-        timeZone: "Africa/Nairobi",
-        year: "numeric",
-        month: "2-digit",
-        day
+async function verifyLogin() {
+    const {
+        data: { session },
+        error: sessionError
+    } = await client.auth.getSession();
+
+    if (sessionError) {
+        throw new Error(
+            "Unable to check your login session. Check your internet connection and try again."
+        );
+    }
+
+    if (!session) {
+        showOnly(elements.loginPanel);
+        elements.welcomeText.textContent = "Login required";
+        setSubscriptionStatus("Not logged in", "inactive");
+        return false;
+    }
+
+    const {
+        data: { user },
+        error: userError
+    } = await client.auth.getUser();
+
+    if (userError || !user) {
+        showOnly(elements.loginPanel);
+        elements.welcomeText.textContent = "Login required";
+        setSubscriptionStatus("Not logged in", "inactive");
+        return false;
+    }
+
+    currentUser = user;
+
+    const displayName =
+        user.user_metadata?.name ||
+        user.user_metadata?.full_name ||
+        user.email ||
+        "Member";
+
+    elements.welcomeText.textContent = "Welcome, " + displayName;
+
+    return true;
+}
+
+
+async function verifySubscription() {
+    const { data, error } = await client
+        .from("subscriptions")
+        .select("plan, status, expires_at")
+        .eq("user_id", currentUser.id)
+        .eq("status", "active")
+        .gt("expires_at", new Date().toISOString())
+        .order("expires_at", { ascending: false })
+        .limit(1);
+
+    if (error) {
+        console.error("Subscription verification error:", error);
+
+        throw new Error(
+            "We could not verify your subscription. Please check the subscriptions table, its columns and your Supabase access policies."
+        );
+    }
+
+    if (!data || data.length === 0) {
+        elements.subscriptionMessage.textContent =
+            "Your account does not currently have an active subscription. Choose a premium plan to access premium predictions.";
+
+        setSubscriptionStatus("Subscription inactive", "inactive");
+
+        showOnly(elements.subscriptionPanel);
+
+        return false;
+    }
+
+    setSubscriptionStatus("Premium active", "active");
+
+    return true;
+}
+
+
+async function loadPredictions() {
+    elements.refreshButton.disabled = true;
+    elements.resultsCount.textContent = "Loading predictions...";
+
+    elements.predictionsList.innerHTML =
+        '<div class="empty">Loading predictions...</div>';
+
+    try {
+        const { data, error } = await client
+            .from("premium_predictions")
+            .select(
+                "id, match_date, home_team, away_team, market, player, prediction, odds, analysis"
+            )
+            .order("match_date", { ascending: true });
+
+        if (error) {
+            console.error("Predictions loading error:", error);
+
+            throw new Error(
+                "Premium predictions could not be loaded. Check the premium_predictions table, column names and its Row Level Security policies."
+            );
+        }
+
+        allPredictions = data || [];
+
+        populateMarketFilter();
+        renderPredictions();
+
+    } finally {
+        elements.refreshButton.disabled = false;
+    }
+}
+
+
+function populateMarketFilter() {
+    const selectedMarket = elements.marketFilter.value;
+
+    const markets = [
+        ...new Set(
+            allPredictions
+                .map(function(item) {
+                    return item.market;
+                })
+                .filter(Boolean)
+        )
+    ].sort();
+
+    elements.marketFilter.innerHTML =
+        '<option value="">All Markets</option>';
+
+    markets.forEach(function(market) {
+        const option = document.createElement("option");
+
+        option.value = market;
+        option.textContent = market;
+
+        elements.marketFilter.appendChild(option);
+    });
+
+    if (markets.includes(selectedMarket)) {
+        elements.marketFilter.value = selectedMarket;
+    }
+}
+
+
+function renderPredictions() {
+    const searchTerm =
+        elements.searchInput.value.trim().toLowerCase();
+
+    const selectedMarket = elements.marketFilter.value;
+
+    const filtered = allPredictions.filter(function(item) {
+        const searchableText = [
+            item.home_team,
+            item.away_team,
+            item.market,
+            item.player,
+            item.prediction,
+            item.analysis
+        ].filter(Boolean).join(" ").toLowerCase();
+
+        const matchesSearch =
+            !searchTerm || searchableText.includes(searchTerm);
+
+        const matchesMarket =
+            !selectedMarket || item.market === selectedMarket;
+
+        return matchesSearch && matchesMarket;
+    });
+
+    elements.resultsCount.textContent =
+        filtered.length + " prediction(s) found";
+
+    if (filtered.length === 0) {
+        elements.predictionsList.innerHTML =
+            '<div class="empty">No predictions match your search. Try changing your filters or check again later.</div>';
+
+        return;
+    }
+
+    elements.predictionsList.innerHTML = filtered.map(function(item) {
+        const homeTeam = escapeHTML(item.home_team || "Home team");
+        const awayTeam = escapeHTML(item.away_team || "Away team");
+        const market = escapeHTML(item.market || "Not specified");
+        const prediction = escapeHTML(item.prediction || "Not specified");
+        const player = escapeHTML(item.player || "");
+        const analysis = escapeHTML(item.analysis || "No additional analysis provided.");
+        const matchDate = escapeHTML(formatMatchDate(item.match_date));
+
+        const oddsValue =
+            item.odds !== null && item.odds !== undefined
+                ? escapeHTML(item.odds)
+                : "Not specified";
+
+        return `
+            <article class="prediction-card">
+                <div class="match-date">${matchDate}</div>
+
+                <div class="teams">
+                    ${homeTeam} vs ${awayTeam}
+                </div>
+
+                <div class="prediction-line">
+                    <span class="label">Market</span>
+                    <strong>${market}</strong>
+                </div>
+
+                <div class="prediction-line">
+                    <span class="label">Prediction</span>
+                    <span class="pick">${prediction}</span>
+                </div>
+
+                ${player ? `
+                    <div class="prediction-line">
+                        <span class="label">Player</span>
+                        <strong>${player}</strong>
+                    </div>
+                ` : ""}
+
+                <div class="prediction-line">
+                    <span class="label">Odds</span>
+                    <strong>${oddsValue}</strong>
+                </div>
+
+                <div class="analysis">
+                    <span class="label">Analysis</span>
+                    ${analysis}
+                </div>
+            </article>
+        `;
+    }).join("");
+}
+
+
+async function initializePremiumPage() {
+    showOnly(elements.loadingPanel);
+
+    elements.loadingText.textContent =
+        "Checking your login and premium subscription...";
+
+    setSubscriptionStatus("Checking subscription", "loading");
+
+    try {
+        const loggedIn = await verifyLogin();
+
+        if (!loggedIn) {
+            return;
+        }
+
+        const hasSubscription = await verifySubscription();
+
+        if (!hasSubscription) {
+            return;
+        }
+
+        showOnly(elements.predictionsPanel);
+
+        await loadPredictions();
+
+    } catch (error) {
+        console.error("Premium page error:", error);
+
+        elements.errorMessage.textContent =
+            error.message || "An unexpected error occurred.";
+
+        showOnly(elements.errorPanel);
+    }
+}
+
+
+elements.searchInput.addEventListener("input", renderPredictions);
+
+elements.marketFilter.addEventListener("change", renderPredictions);
+
+elements.clearFiltersButton.addEventListener("click", function() {
+    elements.searchInput.value = "";
+    elements.marketFilter.value = "";
+
+    renderPredictions();
+});
+
+
+elements.refreshButton.addEventListener("click", async function() {
+    try {
+        await loadPredictions();
+    } catch (error) {
+        console.error(error);
+
+        elements.predictionsList.innerHTML =
+            '<div class="empty">Could not refresh predictions. Please try again.</div>';
+
+        elements.resultsCount.textContent = "Refresh failed";
+    }
+});
+
+
+elements.retryButton.addEventListener("click", initializePremiumPage);
+
+
+elements.logoutButton.addEventListener("click", async function() {
+    elements.logoutButton.disabled = true;
+
+    try {
+        const { error } = await client.auth.signOut();
+
+        if (error) {
+            throw error;
+        }
+
+        window.location.href = "./login.html";
+
+    } catch (error) {
+        console.error("Logout error:", error);
+
+        alert("Logout failed. Please try again.");
+
+        elements.logoutButton.disabled = false;
+    }
+});
+
+
+async function startPage() {
+    if (!window.supabase) {
+        elements.errorMessage.textContent =
+            "The Supabase library could not load. Check your internet connection and refresh the page.";
+
+        showOnly(elements.errorPanel);
+
+        return;
+    }
+
+    client = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
+
+    await initializePremiumPage();
+}
+
+
+startPage();
+</script>
+
+</body>
+</html>
