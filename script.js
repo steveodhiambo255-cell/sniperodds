@@ -308,8 +308,20 @@ if (loginForm) {
                 );
 
 
-                window.location.href =
-                    "./account.html";
+                const params = new URLSearchParams(
+    window.location.search
+);
+
+const next = params.get("next");
+
+if (
+    next === "referrals.html" ||
+    next === "account.html"
+) {
+    window.location.href = "./" + next;
+} else {
+    window.location.href = "./account.html";
+}
 
 
             } catch (error) {
