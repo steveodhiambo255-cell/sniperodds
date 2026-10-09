@@ -9,7 +9,6 @@
    ========================================================= */
 
 window.selectPlan = function (plan, amount) {
-
     localStorage.setItem("selectedPlan", plan);
     localStorage.setItem("selectedAmount", amount);
 
@@ -27,25 +26,18 @@ const SUPABASE_URL =
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
-
 if (!window.supabase) {
-
     console.error(
         "Supabase library did not load. Check the Supabase script tag."
     );
-
 } else {
-
-    window.supabaseClient =
-        window.supabase.createClient(
-            SUPABASE_URL,
-            SUPABASE_PUBLISHABLE_KEY
-        );
+    window.supabaseClient = window.supabase.createClient(
+        SUPABASE_URL,
+        SUPABASE_PUBLISHABLE_KEY
+    );
 }
 
-
-const supabaseClient =
-    window.supabaseClient;
+const supabaseClient = window.supabaseClient;
 
 
 /* =========================================================
@@ -53,13 +45,10 @@ const supabaseClient =
    ========================================================= */
 
 function getElement(id) {
-
     return document.getElementById(id);
 }
 
-
 function showMessage(element, message, type = "") {
-
     if (!element) return;
 
     element.textContent = message;
@@ -75,11 +64,22 @@ function showMessage(element, message, type = "") {
     }
 }
 
-
 function redirectToLogin() {
+    window.location.href = "./login.html";
+}
 
-    window.location.href =
-        "./login.html";
+function escapeHTML(value) {
+    return String(value ?? "").replace(/[&<>"']/g, function (char) {
+        const entities = {
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;",
+            "'": "&#39;"
+        };
+
+        return entities[char];
+    });
 }
 
 
@@ -88,21 +88,13 @@ function redirectToLogin() {
    ========================================================= */
 
 async function getCurrentUser() {
-
-    if (!supabaseClient) {
-        return null;
-    }
+    if (!supabaseClient) return null;
 
     try {
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient.auth.getUser();
 
         if (error) {
-
             console.error(
                 "Unable to get current user:",
                 error
@@ -114,7 +106,6 @@ async function getCurrentUser() {
         return data?.user || null;
 
     } catch (error) {
-
         console.error(
             "Current user check failed:",
             error
@@ -130,48 +121,27 @@ async function getCurrentUser() {
    ========================================================= */
 
 async function getActiveSubscription(userId) {
-
-    if (!supabaseClient || !userId) {
-        return null;
-    }
+    if (!supabaseClient || !userId) return null;
 
     try {
+        const now = new Date().toISOString();
 
-        const now =
-            new Date().toISOString();
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient
                 .from("subscriptions")
                 .select(
                     "plan, amount, status, started_at, expires_at"
                 )
-                .eq(
-                    "user_id",
-                    userId
-                )
-                .eq(
-                    "status",
-                    "active"
-                )
-                .gt(
-                    "expires_at",
-                    now
-                )
-                .order(
-                    "expires_at",
-                    {
-                        ascending: false
-                    }
-                )
+                .eq("user_id", userId)
+                .eq("status", "active")
+                .gt("expires_at", now)
+                .order("expires_at", {
+                    ascending: false
+                })
                 .limit(1)
                 .maybeSingle();
 
         if (error) {
-
             console.error(
                 "Subscription lookup failed:",
                 error
@@ -183,7 +153,6 @@ async function getActiveSubscription(userId) {
         return data || null;
 
     } catch (error) {
-
         console.error(
             "Subscription check failed:",
             error
@@ -198,36 +167,22 @@ async function getActiveSubscription(userId) {
    6. LOGIN
    ========================================================= */
 
-const loginForm =
-    getElement("loginForm");
-
+const loginForm = getElement("loginForm");
 
 if (loginForm) {
-
     loginForm.addEventListener(
         "submit",
         async function (event) {
-
             event.preventDefault();
 
-            const emailInput =
-                getElement("loginEmail");
+            const emailInput = getElement("loginEmail");
+            const passwordInput = getElement("loginPassword");
+            const message = getElement("loginMessage");
 
-            const passwordInput =
-                getElement("loginPassword");
-
-            const message =
-                getElement("loginMessage");
-
-            const email =
-                emailInput?.value.trim() || "";
-
-            const password =
-                passwordInput?.value || "";
-
+            const email = emailInput?.value.trim() || "";
+            const password = passwordInput?.value || "";
 
             if (!email || !password) {
-
                 showMessage(
                     message,
                     "Please enter your email and password.",
@@ -237,9 +192,7 @@ if (loginForm) {
                 return;
             }
 
-
             if (!supabaseClient) {
-
                 showMessage(
                     message,
                     "Supabase is not available. Please refresh the page.",
@@ -249,34 +202,21 @@ if (loginForm) {
                 return;
             }
 
-
             showMessage(
                 message,
                 "Signing in...",
                 "info"
             );
 
-
             try {
-
-                const {
-                    data,
-                    error
-                } =
+                const { data, error } =
                     await supabaseClient.auth.signInWithPassword({
-
                         email: email,
-
                         password: password
                     });
 
-
                 if (error) {
-
-                    console.error(
-                        "Login error:",
-                        error
-                    );
+                    console.error("Login error:", error);
 
                     showMessage(
                         message,
@@ -288,9 +228,7 @@ if (loginForm) {
                     return;
                 }
 
-
                 if (!data?.user) {
-
                     showMessage(
                         message,
                         "Login failed. Please try again.",
@@ -300,32 +238,16 @@ if (loginForm) {
                     return;
                 }
 
-
                 showMessage(
                     message,
                     "Login successful. Redirecting...",
                     "success"
                 );
 
-
-                const params = new URLSearchParams(
-    window.location.search
-);
-
-const next = params.get("next");
-
-if (
-    next === "referrals.html" ||
-    next === "account.html"
-) {
-    window.location.href = "./" + next;
-} else {
-    window.location.href = "./account.html";
-}
-
+                // Always send successful logins to the account page.
+                window.location.href = "./account.html";
 
             } catch (error) {
-
                 console.error(
                     "Unexpected login error:",
                     error
@@ -346,42 +268,24 @@ if (
    7. SIGN UP
    ========================================================= */
 
-const signupForm =
-    getElement("signupForm");
-
+const signupForm = getElement("signupForm");
 
 if (signupForm) {
-
     signupForm.addEventListener(
         "submit",
         async function (event) {
-
             event.preventDefault();
 
-            const nameInput =
-                getElement("signupName");
+            const nameInput = getElement("signupName");
+            const emailInput = getElement("signupEmail");
+            const passwordInput = getElement("signupPassword");
+            const message = getElement("signupMessage");
 
-            const emailInput =
-                getElement("signupEmail");
-
-            const passwordInput =
-                getElement("signupPassword");
-
-            const message =
-                getElement("signupMessage");
-
-            const name =
-                nameInput?.value.trim() || "";
-
-            const email =
-                emailInput?.value.trim() || "";
-
-            const password =
-                passwordInput?.value || "";
-
+            const name = nameInput?.value.trim() || "";
+            const email = emailInput?.value.trim() || "";
+            const password = passwordInput?.value || "";
 
             if (!name || !email || !password) {
-
                 showMessage(
                     message,
                     "Please complete all fields.",
@@ -391,9 +295,7 @@ if (signupForm) {
                 return;
             }
 
-
             if (password.length < 6) {
-
                 showMessage(
                     message,
                     "Password must contain at least 6 characters.",
@@ -403,9 +305,7 @@ if (signupForm) {
                 return;
             }
 
-
             if (!supabaseClient) {
-
                 showMessage(
                     message,
                     "Supabase is not available. Please refresh the page.",
@@ -415,44 +315,28 @@ if (signupForm) {
                 return;
             }
 
-
             showMessage(
                 message,
                 "Creating your account...",
                 "info"
             );
 
-
             try {
-
-                const {
-                    data,
-                    error
-                } =
+                const { data, error } =
                     await supabaseClient.auth.signUp({
-
                         email: email,
-
                         password: password,
-
                         options: {
-
                             data: {
                                 name: name
                             },
-
                             emailRedirectTo:
                                 "https://steveodhiambo255-cell.github.io/sniperodds/"
                         }
                     });
 
-
                 if (error) {
-
-                    console.error(
-                        "Signup error:",
-                        error
-                    );
+                    console.error("Signup error:", error);
 
                     showMessage(
                         message,
@@ -464,17 +348,13 @@ if (signupForm) {
                     return;
                 }
 
-
                 if (data?.user) {
-
                     showMessage(
                         message,
                         "Account created successfully. Please check your email to verify your account.",
                         "success"
                     );
-
                 } else {
-
                     showMessage(
                         message,
                         "Please check your email to complete registration.",
@@ -482,9 +362,7 @@ if (signupForm) {
                     );
                 }
 
-
             } catch (error) {
-
                 console.error(
                     "Unexpected signup error:",
                     error
@@ -508,27 +386,18 @@ if (signupForm) {
 const forgotPasswordForm =
     getElement("forgotPasswordForm");
 
-
 if (forgotPasswordForm) {
-
     forgotPasswordForm.addEventListener(
         "submit",
         async function (event) {
-
             event.preventDefault();
 
-            const emailInput =
-                getElement("forgotEmail");
+            const emailInput = getElement("forgotEmail");
+            const message = getElement("forgotMessage");
 
-            const message =
-                getElement("forgotMessage");
-
-            const email =
-                emailInput?.value.trim() || "";
-
+            const email = emailInput?.value.trim() || "";
 
             if (!email) {
-
                 showMessage(
                     message,
                     "Please enter your email address.",
@@ -538,9 +407,7 @@ if (forgotPasswordForm) {
                 return;
             }
 
-
             if (!supabaseClient) {
-
                 showMessage(
                     message,
                     "Supabase is not available.",
@@ -550,32 +417,23 @@ if (forgotPasswordForm) {
                 return;
             }
 
-
             showMessage(
                 message,
                 "Sending password reset email...",
                 "info"
             );
 
-
             try {
-
-                const {
-                    error
-                } =
+                const { error } =
                     await supabaseClient.auth.resetPasswordForEmail(
-
                         email,
-
                         {
                             redirectTo:
                                 "https://steveodhiambo255-cell.github.io/sniperodds/reset-password.html"
                         }
                     );
 
-
                 if (error) {
-
                     console.error(
                         "Password reset error:",
                         error
@@ -591,16 +449,13 @@ if (forgotPasswordForm) {
                     return;
                 }
 
-
                 showMessage(
                     message,
                     "Password reset instructions have been sent to your email.",
                     "success"
                 );
 
-
             } catch (error) {
-
                 console.error(
                     "Unexpected password reset error:",
                     error
@@ -624,33 +479,20 @@ if (forgotPasswordForm) {
 const resetPasswordForm =
     getElement("resetPasswordForm");
 
-
 if (resetPasswordForm) {
-
     resetPasswordForm.addEventListener(
         "submit",
         async function (event) {
-
             event.preventDefault();
 
-            const passwordInput =
-                getElement("newPassword");
+            const passwordInput = getElement("newPassword");
+            const confirmInput = getElement("confirmPassword");
+            const message = getElement("resetMessage");
 
-            const confirmInput =
-                getElement("confirmPassword");
-
-            const message =
-                getElement("resetMessage");
-
-            const password =
-                passwordInput?.value || "";
-
-            const confirmPassword =
-                confirmInput?.value || "";
-
+            const password = passwordInput?.value || "";
+            const confirmPassword = confirmInput?.value || "";
 
             if (!password || !confirmPassword) {
-
                 showMessage(
                     message,
                     "Please enter and confirm your new password.",
@@ -660,9 +502,7 @@ if (resetPasswordForm) {
                 return;
             }
 
-
             if (password.length < 6) {
-
                 showMessage(
                     message,
                     "Password must contain at least 6 characters.",
@@ -672,9 +512,7 @@ if (resetPasswordForm) {
                 return;
             }
 
-
             if (password !== confirmPassword) {
-
                 showMessage(
                     message,
                     "Passwords do not match.",
@@ -684,9 +522,7 @@ if (resetPasswordForm) {
                 return;
             }
 
-
             if (!supabaseClient) {
-
                 showMessage(
                     message,
                     "Supabase is not available.",
@@ -696,27 +532,19 @@ if (resetPasswordForm) {
                 return;
             }
 
-
             showMessage(
                 message,
                 "Updating your password...",
                 "info"
             );
 
-
             try {
-
-                const {
-                    error
-                } =
+                const { error } =
                     await supabaseClient.auth.updateUser({
-
                         password: password
                     });
 
-
                 if (error) {
-
                     console.error(
                         "Password update error:",
                         error
@@ -732,27 +560,17 @@ if (resetPasswordForm) {
                     return;
                 }
 
-
                 showMessage(
                     message,
                     "Password updated successfully. You can now log in.",
                     "success"
                 );
 
-
-                setTimeout(
-                    function () {
-
-                        window.location.href =
-                            "./login.html";
-
-                    },
-                    1500
-                );
-
+                setTimeout(function () {
+                    window.location.href = "./login.html";
+                }, 1500);
 
             } catch (error) {
-
                 console.error(
                     "Unexpected password update error:",
                     error
@@ -773,48 +591,30 @@ if (resetPasswordForm) {
    10. LOGOUT
    ========================================================= */
 
-window.logout =
-    async function () {
+window.logout = async function () {
+    if (!supabaseClient) {
+        redirectToLogin();
+        return;
+    }
 
-        if (!supabaseClient) {
+    try {
+        const { error } =
+            await supabaseClient.auth.signOut();
 
-            redirectToLogin();
-
-            return;
+        if (error) {
+            console.error("Logout error:", error);
         }
 
+    } catch (error) {
+        console.error(
+            "Unexpected logout error:",
+            error
+        );
 
-        try {
-
-            const {
-                error
-            } =
-                await supabaseClient.auth.signOut();
-
-
-            if (error) {
-
-                console.error(
-                    "Logout error:",
-                    error
-                );
-            }
-
-
-        } catch (error) {
-
-            console.error(
-                "Unexpected logout error:",
-                error
-            );
-
-
-        } finally {
-
-            window.location.href =
-                "./login.html";
-        }
-    };
+    } finally {
+        window.location.href = "./login.html";
+    }
+};
 
 
 /* =========================================================
@@ -822,56 +622,31 @@ window.logout =
    ========================================================= */
 
 async function loadAccount() {
+    const accountName = getElement("accountName");
+    const accountEmail = getElement("accountEmail");
+    const subscriptionPlan = getElement("subscriptionPlan");
+    const subscriptionBadge = getElement("subscriptionBadge");
+    const subscriptionText = getElement("subscriptionText");
 
-    const accountName =
-        getElement("accountName");
+    const upgradeButton = getElement("upgradeButton");
+    const upgradeTitle = getElement("upgradeTitle");
+    const upgradeDescription = getElement("upgradeDescription");
 
-    const accountEmail =
-        getElement("accountEmail");
-
-    const subscriptionPlan =
-        getElement("subscriptionPlan");
-
-    const subscriptionBadge =
-        getElement("subscriptionBadge");
-
-    const subscriptionText =
-        getElement("subscriptionText");
-
-    const upgradeButton =
-        getElement("upgradeButton");
-
-    const upgradeTitle =
-        getElement("upgradeTitle");
-
-    const upgradeDescription =
-        getElement("upgradeDescription");
-
-    const premiumContent =
-        getElement("premiumContent");
-
-    const premiumTitle =
-        getElement("premiumTitle");
-
-    const premiumMessage =
-        getElement("premiumMessage");
-
-    const premiumButton =
-        getElement("premiumButton");
-
+    const premiumContent = getElement("premiumContent");
+    const premiumTitle = getElement("premiumTitle");
+    const premiumMessage = getElement("premiumMessage");
+    const premiumButton = getElement("premiumButton");
+    const viewPremiumButton = getElement("viewPremiumButton");
 
     if (
         !accountName &&
         !accountEmail &&
         !subscriptionPlan
     ) {
-
         return;
     }
 
-
     if (!supabaseClient) {
-
         console.error(
             "Supabase client is not available."
         );
@@ -879,96 +654,60 @@ async function loadAccount() {
         return;
     }
 
-
     let user = null;
 
-
     try {
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient.auth.getSession();
 
-
         if (error) {
-
-            console.error(
-                "Session error:",
-                error
-            );
-
+            console.error("Session error:", error);
             redirectToLogin();
-
             return;
         }
 
-
-        user =
-            data?.session?.user || null;
-
+        user = data?.session?.user || null;
 
     } catch (error) {
-
         console.error(
             "Session check failed:",
             error
         );
 
         redirectToLogin();
-
         return;
     }
-
 
     if (!user) {
-
         redirectToLogin();
-
         return;
     }
 
 
-    /* =====================================================
-       ACCOUNT INFORMATION
-       ===================================================== */
+    /* ACCOUNT INFORMATION */
 
     const name =
         user.user_metadata?.name ||
         user.user_metadata?.full_name ||
         "SNIPER ODDS User";
 
-
     if (accountName) {
-
-        accountName.textContent =
-            name;
+        accountName.textContent = name;
     }
-
 
     if (accountEmail) {
-
-        accountEmail.textContent =
-            user.email || "";
+        accountEmail.textContent = user.email || "";
     }
 
 
-    /* =====================================================
-       DEFAULT FREE STATE
-       ===================================================== */
+    /* DEFAULT FREE STATE */
 
     if (subscriptionPlan) {
-
-        subscriptionPlan.textContent =
-            "Free";
+        subscriptionPlan.textContent = "Free";
     }
 
-
     if (subscriptionBadge) {
-
-        subscriptionBadge.textContent =
-            "FREE";
+        subscriptionBadge.textContent = "FREE";
 
         subscriptionBadge.classList.remove(
             "active",
@@ -976,97 +715,64 @@ async function loadAccount() {
         );
     }
 
-
     if (subscriptionText) {
-
         subscriptionText.textContent =
             "You currently have access to free analysis and predictions. Upgrade to unlock premium content.";
     }
 
-
     if (upgradeTitle) {
-
-        upgradeTitle.textContent =
-            "Upgrade to Premium";
+        upgradeTitle.textContent = "Upgrade to Premium";
     }
 
-
     if (upgradeDescription) {
-
         upgradeDescription.textContent =
             "Unlock premium football analysis and exclusive predictions.";
     }
 
-
     if (upgradeButton) {
-
-        upgradeButton.style.display =
-            "inline-block";
-
-        upgradeButton.textContent =
-            "Choose Premium Plan";
-
-        upgradeButton.href =
-            "./subscription.html";
+        upgradeButton.style.display = "inline-block";
+        upgradeButton.textContent = "Choose Premium Plan";
+        upgradeButton.href = "./subscription.html";
     }
-
 
     if (premiumTitle) {
-
-        premiumTitle.textContent =
-            "Premium Analysis Locked";
+        premiumTitle.textContent = "Premium Analysis Locked";
     }
 
-
     if (premiumMessage) {
-
         premiumMessage.textContent =
             "Premium football predictions are available to active premium subscribers.";
     }
 
-
     if (premiumButton) {
+        premiumButton.style.display = "inline-block";
+        premiumButton.textContent = "View Premium Plans";
+        premiumButton.href = "./subscription.html";
+    }
 
-        premiumButton.style.display =
-            "inline-block";
-
-        premiumButton.textContent =
-            "View Premium Plans";
-
-        premiumButton.href =
-            "./subscription.html";
+    // Hide the results link by default.
+    if (viewPremiumButton) {
+        viewPremiumButton.style.display = "none";
     }
 
 
-    /* =====================================================
-       CHECK ACTIVE SUBSCRIPTION
-       ===================================================== */
+    /* CHECK ACTIVE SUBSCRIPTION */
 
     const subscription =
         await getActiveSubscription(user.id);
 
-
     if (!subscription) {
-
         if (premiumContent) {
-
             premiumContent.innerHTML = `
-
                 <div class="premium-locked">
+                    <div class="lock-icon">🔒</div>
 
-                    <div class="lock-icon">
-                        🔒
-                    </div>
-
-                    <h3>
-                        Premium Picks Locked
-                    </h3>
+                    <h3>Premium Picks Locked</h3>
 
                     <p>
                         Subscribe to a Premium plan to unlock
                         exclusive football predictions and deeper analysis.
                     </p>
-
                 </div>
             `;
         }
@@ -1075,125 +781,76 @@ async function loadAccount() {
     }
 
 
-    /* =====================================================
-       ACTIVE PREMIUM USER
-       ===================================================== */
+    /* ACTIVE PREMIUM USER */
 
     const plan =
-        subscription.plan ||
-        "Premium Pass";
-
+        subscription.plan || "Premium Pass";
 
     if (subscriptionPlan) {
-
-        subscriptionPlan.textContent =
-            plan;
+        subscriptionPlan.textContent = plan;
     }
-
 
     if (subscriptionBadge) {
+        subscriptionBadge.textContent = "ACTIVE";
 
-        subscriptionBadge.textContent =
-            "ACTIVE";
-
-        subscriptionBadge.classList.add(
-            "active"
-        );
-
-        subscriptionBadge.classList.remove(
-            "premium"
-        );
+        subscriptionBadge.classList.add("active");
+        subscriptionBadge.classList.remove("premium");
     }
 
-
     if (subscriptionText) {
-
         subscriptionText.textContent =
             `Your ${plan} is active. You have access to free and premium analysis.`;
     }
 
-
     if (upgradeTitle) {
-
-        if (
+        upgradeTitle.textContent =
             plan.toLowerCase().includes("monthly")
-        ) {
-
-            upgradeTitle.textContent =
-                "Renew / Manage Plan";
-
-        } else {
-
-            upgradeTitle.textContent =
-                "Extend / Upgrade Plan";
-        }
+                ? "Renew / Manage Plan"
+                : "Extend / Upgrade Plan";
     }
 
-
     if (upgradeDescription) {
-
-        if (
-            plan.toLowerCase().includes("daily")
-        ) {
-
+        if (plan.toLowerCase().includes("daily")) {
             upgradeDescription.textContent =
                 "Your Daily Pass is active. You can extend your access or upgrade to a longer premium plan.";
 
-        } else if (
-            plan.toLowerCase().includes("weekly")
-        ) {
-
+        } else if (plan.toLowerCase().includes("weekly")) {
             upgradeDescription.textContent =
                 "Your Weekly Pass is active. Extend your access or upgrade to the Monthly Pass.";
 
-        } else if (
-            plan.toLowerCase().includes("monthly")
-        ) {
-
+        } else if (plan.toLowerCase().includes("monthly")) {
             upgradeDescription.textContent =
                 "Your Monthly Pass is active. Renew your premium access whenever you are ready.";
 
         } else {
-
             upgradeDescription.textContent =
                 "Your premium access is active. You can extend or manage your plan.";
         }
     }
 
-
     if (upgradeButton) {
-
-        upgradeButton.style.display =
-            "inline-block";
-
-        upgradeButton.textContent =
-            "Manage Premium Plan";
-
-        upgradeButton.href =
-            "./subscription.html";
+        upgradeButton.style.display = "inline-block";
+        upgradeButton.textContent = "Manage Premium Plan";
+        upgradeButton.href = "./subscription.html";
     }
-
 
     if (premiumTitle) {
-
-        premiumTitle.textContent =
-            "Premium Picks Unlocked";
+        premiumTitle.textContent = "Premium Picks Unlocked";
     }
 
-
     if (premiumMessage) {
-
         premiumMessage.textContent =
             `Your ${plan} is active. Premium football selections are now unlocked.`;
     }
 
-
     if (premiumButton) {
-
-        premiumButton.style.display =
-            "none";
+        premiumButton.style.display = "none";
     }
 
+    // Show the results link for an active subscriber.
+    if (viewPremiumButton) {
+        viewPremiumButton.style.display = "inline-block";
+    }
 
     await loadPremiumPredictions();
 }
@@ -1204,68 +861,40 @@ async function loadAccount() {
    ========================================================= */
 
 async function loadPremiumPredictions() {
+    const premiumContent = getElement("premiumContent");
 
-    const premiumContent =
-        getElement("premiumContent");
-
-
-    if (!premiumContent) {
+    if (!premiumContent || !supabaseClient) {
         return;
     }
 
-
-    if (!supabaseClient) {
-        return;
-    }
-
-
-    const user =
-        await getCurrentUser();
-
+    const user = await getCurrentUser();
 
     if (!user) {
-
         premiumContent.innerHTML = `
-
             <div class="premium-locked">
+                <div class="lock-icon">🔒</div>
 
-                <div class="lock-icon">
-                    🔒
-                </div>
-
-                <h3>
-                    Premium Picks Locked
-                </h3>
+                <h3>Premium Picks Locked</h3>
 
                 <p>
                     Please log in and activate a Premium plan
                     to access premium predictions.
                 </p>
-
             </div>
         `;
 
         return;
     }
 
-
     const subscription =
         await getActiveSubscription(user.id);
 
-
     if (!subscription) {
-
         premiumContent.innerHTML = `
-
             <div class="premium-locked">
+                <div class="lock-icon">🔒</div>
 
-                <div class="lock-icon">
-                    🔒
-                </div>
-
-                <h3>
-                    Premium Picks Locked
-                </h3>
+                <h3>Premium Picks Locked</h3>
 
                 <p>
                     Subscribe to a Premium plan to unlock
@@ -1278,221 +907,150 @@ async function loadPremiumPredictions() {
                 >
                     View Premium Plans
                 </a>
-
             </div>
         `;
 
         return;
     }
 
-
     try {
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient
                 .from("premium_predictions")
                 .select(
                     "id, match_date, home_team, away_team, market, player, prediction, odds, analysis"
                 )
-                .order(
-                    "match_date",
-                    {
-                        ascending: true
-                    }
-                );
-
+                .order("match_date", {
+                    ascending: true
+                });
 
         if (error) {
-
             console.error(
                 "Premium predictions error:",
                 error
             );
 
             premiumContent.innerHTML = `
-
                 <div class="premium-locked">
-
-                    <h3>
-                        Premium Analysis
-                    </h3>
+                    <h3>Premium Analysis</h3>
 
                     <p>
                         We could not load the premium predictions right now.
                         Please refresh and try again.
                     </p>
-
                 </div>
             `;
 
             return;
         }
 
-
         if (!data || data.length === 0) {
-
             premiumContent.innerHTML = `
-
                 <div class="premium-locked">
-
-                    <h3>
-                        Premium Analysis
-                    </h3>
+                    <h3>Premium Analysis</h3>
 
                     <p>
                         No premium predictions are available yet.
                         Please check again later.
                     </p>
-
                 </div>
             `;
 
             return;
         }
 
+        premiumContent.innerHTML = data.map(function (prediction) {
+            const date = prediction.match_date
+                ? new Date(
+                    prediction.match_date
+                ).toLocaleDateString("en-GB", {
+                    day: "2-digit",
+                    month: "short",
+                    year: "numeric"
+                })
+                : "";
 
-        premiumContent.innerHTML =
-            data.map(
-                function (prediction) {
+            const match =
+                `${escapeHTML(prediction.home_team || "")} vs ${escapeHTML(prediction.away_team || "")}`;
 
-                    const date =
-                        prediction.match_date
-                            ? new Date(
-                                prediction.match_date
-                            ).toLocaleDateString(
-                                "en-GB",
-                                {
-                                    day: "2-digit",
-                                    month: "short",
-                                    year: "numeric"
-                                }
-                            )
-                            : "";
+            const market = escapeHTML(prediction.market || "");
+            const player = escapeHTML(prediction.player || "");
+            const pick = escapeHTML(prediction.prediction || "");
+            const odds = escapeHTML(prediction.odds ?? "");
+            const analysis = escapeHTML(prediction.analysis || "");
 
+            return `
+                <article class="prediction-card">
+                    <div class="prediction-date">
+                        ${escapeHTML(date)}
+                    </div>
 
-                    const match =
-                        `${prediction.home_team || ""} vs ${prediction.away_team || ""}`;
+                    <h3 class="prediction-match">
+                        ⚽ ${match}
+                    </h3>
 
+                    ${
+                        market
+                            ? `
+                                <div class="prediction-market">
+                                    📊 Market: ${market}
+                                </div>
+                            `
+                            : ""
+                    }
 
-                    return `
+                    ${
+                        player
+                            ? `
+                                <div class="prediction-player">
+                                    👤 Player: ${player}
+                                </div>
+                            `
+                            : ""
+                    }
 
-                        <article class="prediction-card">
+                    <div class="prediction-pick">
+                        🎯 Prediction:
+                        <strong>${pick}</strong>
+                    </div>
 
-                            <div class="prediction-date">
-                                ${date}
-                            </div>
+                    ${
+                        odds
+                            ? `
+                                <div class="prediction-odds">
+                                    💰 Odds: <strong>${odds}</strong>
+                                </div>
+                            `
+                            : ""
+                    }
 
-                            <h3 class="prediction-match">
-                                ⚽ ${match}
-                            </h3>
-
-
-                            ${
-                                prediction.market
-                                    ? `
-
-                                        <div class="prediction-market">
-
-                                            📊 Market:
-                                            ${prediction.market}
-
-                                        </div>
-
-                                      `
-                                    : ""
-                            }
-
-
-                            ${
-                                prediction.player
-                                    ? `
-
-                                        <div class="prediction-player">
-
-                                            👤 Player:
-                                            ${prediction.player}
-
-                                        </div>
-
-                                      `
-                                    : ""
-                            }
-
-
-                            <div class="prediction-pick">
-
-                                🎯 Prediction:
-
-                                <strong>
-                                    ${prediction.prediction || ""}
-                                </strong>
-
-                            </div>
-
-
-                            ${
-                                prediction.odds
-                                    ? `
-
-                                        <div class="prediction-odds">
-
-                                            💰 Odds:
-
-                                            <strong>
-                                                ${prediction.odds}
-                                            </strong>
-
-                                        </div>
-
-                                      `
-                                    : ""
-                            }
-
-
-                            ${
-                                prediction.analysis
-                                    ? `
-
-                                        <div class="prediction-analysis">
-
-                                            ${prediction.analysis}
-
-                                        </div>
-
-                                      `
-                                    : ""
-                            }
-
-                        </article>
-
-                    `;
-                }
-            ).join("");
-
+                    ${
+                        analysis
+                            ? `
+                                <div class="prediction-analysis">
+                                    ${analysis}
+                                </div>
+                            `
+                            : ""
+                    }
+                </article>
+            `;
+        }).join("");
 
     } catch (error) {
-
         console.error(
             "Unexpected premium prediction error:",
             error
         );
 
         premiumContent.innerHTML = `
-
             <div class="premium-locked">
-
-                <h3>
-                    Premium Analysis
-                </h3>
+                <h3>Premium Analysis</h3>
 
                 <p>
                     Something went wrong while loading the predictions.
                     Please refresh the page.
                 </p>
-
             </div>
         `;
     }
@@ -1503,37 +1061,18 @@ async function loadPremiumPredictions() {
    13. M-PESA PAYMENT
    ========================================================= */
 
-let paymentInProgress =
-    false;
-
+let paymentInProgress = false;
 
 async function startPayment() {
+    if (paymentInProgress) return;
 
-    if (paymentInProgress) {
-        return;
-    }
+    const phoneInput = getElement("mpesaPhone");
+    const message = getElement("paymentMessage");
+    const payButton = getElement("payButton");
 
-
-    const phoneInput =
-        getElement("mpesaPhone");
-
-    const message =
-        getElement("paymentMessage");
-
-    const payButton =
-        getElement("payButton");
-
-
-    /* =====================================================
-       GET SELECTED PLAN
-       ===================================================== */
-
-    const plan =
-        localStorage.getItem("selectedPlan");
-
+    const plan = localStorage.getItem("selectedPlan");
 
     if (!plan) {
-
         showMessage(
             message,
             "Please select a subscription plan first.",
@@ -1543,39 +1082,19 @@ async function startPayment() {
         return;
     }
 
-
-    /* =====================================================
-       GET PHONE
-       ===================================================== */
-
-    let phone =
-        phoneInput?.value.trim() || "";
-
-
-    phone =
-        phone.replace(/\s+/g, "");
-
-
-    /* =====================================================
-       VALIDATE KENYAN PHONE
-       ===================================================== */
+    let phone = phoneInput?.value.trim() || "";
+    phone = phone.replace(/\s+/g, "");
 
     if (
         /^07\d{8}$/.test(phone) ||
         /^01\d{8}$/.test(phone)
     ) {
+        phone = "254" + phone.substring(1);
 
-        phone =
-            "254" + phone.substring(1);
-
-    } else if (
-        /^254[17]\d{8}$/.test(phone)
-    ) {
-
-        /* Already correctly formatted */
+    } else if (/^254[17]\d{8}$/.test(phone)) {
+        // Already correctly formatted.
 
     } else {
-
         showMessage(
             message,
             "Enter a valid Kenyan M-Pesa number, for example 0712345678.",
@@ -1585,13 +1104,7 @@ async function startPayment() {
         return;
     }
 
-
-    /* =====================================================
-       CHECK SUPABASE
-       ===================================================== */
-
     if (!supabaseClient) {
-
         showMessage(
             message,
             "Supabase is not available. Please refresh the page.",
@@ -1601,30 +1114,14 @@ async function startPayment() {
         return;
     }
 
-
-    /* =====================================================
-       GET AUTHENTICATED SESSION
-       ===================================================== */
-
-    let session =
-        null;
-
+    let session = null;
 
     try {
-
-        const {
-            data,
-            error
-        } =
+        const { data, error } =
             await supabaseClient.auth.getSession();
 
-
         if (error) {
-
-            console.error(
-                "Session error:",
-                error
-            );
+            console.error("Session error:", error);
 
             showMessage(
                 message,
@@ -1635,13 +1132,9 @@ async function startPayment() {
             return;
         }
 
-
-        session =
-            data?.session || null;
-
+        session = data?.session || null;
 
     } catch (error) {
-
         console.error(
             "Session check failed:",
             error
@@ -1656,85 +1149,37 @@ async function startPayment() {
         return;
     }
 
-
-    /* =====================================================
-       REQUIRE LOGIN
-       ===================================================== */
-
     if (!session?.user) {
-
         showMessage(
             message,
             "Please log in before making a payment.",
             "error"
         );
 
-
-        setTimeout(
-            function () {
-
-                redirectToLogin();
-
-            },
-            1000
-        );
-
-
+        setTimeout(redirectToLogin, 1000);
         return;
     }
 
-
-    /* =====================================================
-       GET ACCESS TOKEN
-       ===================================================== */
-
-    const accessToken =
-        session.access_token;
-
+    const accessToken = session.access_token;
 
     if (!accessToken) {
-
         showMessage(
             message,
             "Your login session has expired. Please log in again.",
             "error"
         );
 
-
-        setTimeout(
-            function () {
-
-                redirectToLogin();
-
-            },
-            1000
-        );
-
-
+        setTimeout(redirectToLogin, 1000);
         return;
     }
 
-
-    /* =====================================================
-       START PAYMENT
-       ===================================================== */
-
-    paymentInProgress =
-        true;
-
+    paymentInProgress = true;
 
     if (payButton) {
-
-        payButton.disabled =
-            true;
-
-        payButton.style.opacity =
-            "0.7";
-
-        payButton.textContent =
-            "Sending M-Pesa Prompt...";
+        payButton.disabled = true;
+        payButton.style.opacity = "0.7";
+        payButton.textContent = "Sending M-Pesa Prompt...";
     }
-
 
     showMessage(
         message,
@@ -1742,80 +1187,40 @@ async function startPayment() {
         "info"
     );
 
-
     try {
+        const response = await fetch(
+            `${SUPABASE_URL}/functions/v1/mpesa-payment`,
+            {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${accessToken}`,
+                    "apikey": SUPABASE_PUBLISHABLE_KEY
+                },
+                body: JSON.stringify({
+                    phone: phone,
+                    plan: plan
+                })
+            }
+        );
 
-        /*
-         * IMPORTANT:
-         *
-         * The browser does NOT send the amount.
-         *
-         * The Edge Function must determine
-         * the correct price from the plan.
-         */
-
-
-        const response =
-            await fetch(
-                `${SUPABASE_URL}/functions/v1/mpesa-payment`,
-                {
-
-                    method: "POST",
-
-                    headers: {
-
-                        "Content-Type":
-                            "application/json",
-
-                        "Authorization":
-                            `Bearer ${accessToken}`,
-
-                        "apikey":
-                            SUPABASE_PUBLISHABLE_KEY
-                    },
-
-                    body: JSON.stringify({
-
-                        phone:
-                            phone,
-
-                        plan:
-                            plan
-                    })
-                }
-            );
-
-
-        let result =
-            null;
-
+        let result = null;
 
         try {
-
-            result =
-                await response.json();
-
+            result = await response.json();
         } catch (jsonError) {
-
             console.error(
                 "Invalid payment response:",
                 jsonError
             );
         }
 
-
-        /* =================================================
-           HTTP ERROR
-           ================================================= */
-
         if (!response.ok) {
-
             console.error(
                 "M-Pesa request failed:",
                 response.status,
                 result
             );
-
 
             showMessage(
                 message,
@@ -1826,34 +1231,21 @@ async function startPayment() {
                 "error"
             );
 
-
             return;
         }
-
-
-        /* =================================================
-           SUCCESS
-           ================================================= */
 
         if (
             result?.success === true ||
             result?.resultCode === 0
         ) {
-
             showMessage(
                 message,
                 `M-Pesa prompt sent. Check ${phone} and enter your M-Pesa PIN to complete the ${plan} payment.`,
                 "success"
             );
 
-
             return;
         }
-
-
-        /* =================================================
-           DARAJA ERROR
-           ================================================= */
 
         showMessage(
             message,
@@ -1864,14 +1256,11 @@ async function startPayment() {
             "error"
         );
 
-
     } catch (error) {
-
         console.error(
             "M-Pesa connection error:",
             error
         );
-
 
         showMessage(
             message,
@@ -1879,34 +1268,18 @@ async function startPayment() {
             "error"
         );
 
-
     } finally {
-
-        paymentInProgress =
-            false;
-
+        paymentInProgress = false;
 
         if (payButton) {
-
-            payButton.disabled =
-                false;
-
-            payButton.style.opacity =
-                "1";
-
-            payButton.textContent =
-                "Pay with M-Pesa";
+            payButton.disabled = false;
+            payButton.style.opacity = "1";
+            payButton.textContent = "Pay with M-Pesa";
         }
     }
 }
 
-
-/*
- * Make the function available to payment.html.
- */
-
-window.startPayment =
-    startPayment;
+window.startPayment = startPayment;
 
 
 /* =========================================================
@@ -1914,42 +1287,26 @@ window.startPayment =
    ========================================================= */
 
 function protectAuthenticatedPage() {
+    if (!supabaseClient) return;
 
-    if (!supabaseClient) {
-        return;
-    }
+    const page = document.body?.dataset?.authPage;
 
-
-    const page =
-        document.body?.dataset?.authPage;
-
-
-    if (page !== "true") {
-        return;
-    }
-
+    if (page !== "true") return;
 
     getCurrentUser()
-        .then(
-            function (user) {
-
-                if (!user) {
-
-                    redirectToLogin();
-                }
-            }
-        )
-        .catch(
-            function (error) {
-
-                console.error(
-                    "Protected page check failed:",
-                    error
-                );
-
+        .then(function (user) {
+            if (!user) {
                 redirectToLogin();
             }
-        );
+        })
+        .catch(function (error) {
+            console.error(
+                "Protected page check failed:",
+                error
+            );
+
+            redirectToLogin();
+        });
 }
 
 
@@ -1958,20 +1315,14 @@ function protectAuthenticatedPage() {
    ========================================================= */
 
 if (supabaseClient) {
-
     supabaseClient.auth.onAuthStateChange(
-        function (event, session) {
-
-            if (
-                event === "SIGNED_OUT"
-            ) {
-
+        function (event) {
+            if (event === "SIGNED_OUT") {
                 if (
                     window.location.pathname
                         .toLowerCase()
                         .includes("account.html")
                 ) {
-
                     redirectToLogin();
                 }
             }
@@ -1987,20 +1338,13 @@ if (supabaseClient) {
 document.addEventListener(
     "DOMContentLoaded",
     function () {
-
-        /* Account page */
-
         if (
             getElement("accountName") ||
             getElement("accountEmail") ||
             getElement("subscriptionPlan")
         ) {
-
             loadAccount();
         }
-
-
-        /* Protected pages */
 
         protectAuthenticatedPage();
     }
