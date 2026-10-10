@@ -642,7 +642,133 @@
     </div>
 </section>
 
-<section class="section">
+<section class="section" id="referralDashboard">
+    <article class="card">
+        <div class="card-heading">
+            <h2>Referral Rewards</h2>
+            <div class="icon-box" aria-hidden="true">⇧</div>
+        </div>    <p class="plan-description">
+        Invite friends to SNIPER ODDS. When their qualifying M-Pesa
+        subscription is verified, you can earn additional premium days.
+    </p>
+
+    <div id="referralMessage" class="notice" role="status" aria-live="polite">
+        Loading your referral information...
+    </div>
+
+    <div class="detail">
+        <span class="detail-label">Your referral code</span>
+        <span class="detail-value" id="referralCode">Generating...</span>
+    </div>
+
+    <div class="detail">
+        <label class="detail-label" for="referralLink">Your personal referral link</label>
+        <input
+            id="referralLink"
+            type="text"
+            readonly
+            aria-label="Your personal referral link"
+            style="width:100%;padding:12px;border:1px solid #22364d;border-radius:10px;background:#07111f;color:#f4f7fb;"
+            value="Preparing your link..."
+        >
+    </div>
+
+    <div class="premium-actions">
+        <button type="button" class="btn" id="copyReferralButton">
+            Copy Referral Link
+        </button>
+        <button type="button" class="btn btn-secondary" id="shareReferralButton">
+            Share Link
+        </button>
+    </div>
+</article>
+
+<div class="quick-grid" style="margin-top:14px;">
+    <article class="card">
+        <span class="detail-label">Registered referrals</span>
+        <div class="plan-name" id="referralTotal">—</div>
+        <p class="plan-description">People registered through your referral code.</p>
+    </article>
+
+    <article class="card">
+        <span class="detail-label">Qualifying referrals</span>
+        <div class="plan-name" id="referralQualified">—</div>
+        <p class="plan-description">Referrals with verified qualifying payments.</p>
+    </article>
+
+    <article class="card">
+        <span class="detail-label">Rewards earned</span>
+        <div class="plan-name" id="referralDaysEarned">—</div>
+        <p class="plan-description">Premium days awarded through referrals.</p>
+    </article>
+</div>
+
+<article class="card section">
+    <div class="card-heading">
+        <h2>How to Earn Premium Days</h2>
+    </div>
+
+    <div class="detail">
+        <span class="detail-value">Daily Pass — KSh 100</span>
+        <span class="detail-label">
+            Refer 3 customers who complete qualifying Daily Pass payments
+            to earn 2 premium days.
+        </span>
+    </div>
+
+    <div class="detail">
+        <span class="detail-value">Weekly Pass — KSh 500</span>
+        <span class="detail-label">
+            Refer 3 customers who complete qualifying Weekly Pass payments
+            to earn 7 premium days.
+        </span>
+    </div>
+
+    <div class="detail">
+        <span class="detail-value">Monthly Pass — KSh 1,500</span>
+        <span class="detail-label">
+            Refer 1 customer who completes a qualifying Monthly Pass payment
+            to earn 7 premium days.
+        </span>
+    </div>
+</article>
+
+<article class="card section">
+    <div class="card-heading">
+        <h2>Your Referral Progress</h2>
+    </div>
+
+    <p class="plan-description">
+        Progress is calculated separately for each subscription plan.
+        Only verified qualifying payments count.
+    </p>
+
+    <div id="referralProgress">
+        <p class="plan-description">Loading referral progress...</p>
+    </div>
+</article>
+
+<article class="card section">
+    <div class="card-heading">
+        <h2>Referral Activity</h2>
+    </div>
+
+    <div id="referralActivity">
+        <p class="plan-description">Loading your referral activity...</p>
+    </div>
+</article>
+
+<article class="card section">
+    <div class="card-heading">
+        <h2>Earned Rewards</h2>
+    </div>
+
+    <div id="referralRewardActivity">
+        <p class="plan-description">Loading your earned rewards...</p>
+    </div>
+</article>
+
+</section><section class="section">
     <div class="card">
         <div class="card-heading">
             <h2>Need assistance?</h2>
@@ -704,6 +830,333 @@
                 logoutButton.textContent = "Logout";
             }
         });
+    }
+})();
+</script><script>
+(function () {
+    "use strict";
+
+    const $ = (id) => document.getElementById(id);
+
+    function escapeHTML(value) {
+        return String(value ?? "").replace(/[&<>"']/g, function (char) {
+            return {
+                "&": "&amp;",
+                "<": "&lt;",
+                ">": "&gt;",
+                '"': "&quot;",
+                "'": "&#39;"
+            }[char];
+        });
+    }
+
+    function showReferralMessage(message, type) {
+        const box = $("referralMessage");
+        if (!box) return;
+
+        box.textContent = message;
+        box.className = "notice" + (type ? " " + type : "");
+        box.style.display = "block";
+    }
+
+    function setText(id, value) {
+        const element = $(id);
+        if (element) element.textContent = value;
+    }
+
+    function getSignupURL(code) {
+        const base = window.location.href.split("?")[0].split("#")[0];
+        const signupURL = new URL("./signup.html", base);
+        signupURL.searchParams.set("ref", code);
+        return signupURL.href;
+    }
+
+    async function loadReferralDashboard() {
+        const client = window.supabaseClient;
+
+        if (!client) {
+            showReferralMessage(
+                "The account service has not loaded. Refresh this page and try again.",
+                "error"
+            );
+            return;
+        }
+
+        try {
+            const { data: authData, error: authError } =
+                await client.auth.getUser();
+
+            if (authError) throw authError;
+
+            const user = authData && authData.user;
+
+            if (!user) {
+                showReferralMessage(
+                    "Please sign in to view your referral dashboard.",
+                    "error"
+                );
+                return;
+            }
+
+            // Get or create this member's referral code.
+            const { data: code, error: codeError } =
+                await client.rpc("generate_referral_code");
+
+            if (codeError) throw codeError;
+
+            if (!code) {
+                throw new Error("A referral code could not be generated.");
+            }
+
+            setText("referralCode", code);
+
+            const link = getSignupURL(code);
+            const linkInput = $("referralLink");
+
+            if (linkInput) linkInput.value = link;
+
+            // Read referral activity belonging to this member.
+            const { data: referrals, error: referralsError } =
+                await client
+                    .from("referrals")
+                    .select("id, status, created_at, qualified_at, qualification_plan")
+                    .eq("referrer_id", user.id)
+                    .order("created_at", { ascending: false });
+
+            if (referralsError) throw referralsError;
+
+            // Read rewards earned by this member.
+            const { data: rewards, error: rewardsError } =
+                await client
+                    .from("referral_rewards")
+                    .select("id, amount, status, created_at, reward_days, qualification_group, qualification_plan")
+                    .eq("referrer_id", user.id)
+                    .order("created_at", { ascending: false });
+
+            if (rewardsError) throw rewardsError;
+
+            const referralRows = referrals || [];
+            const rewardRows = rewards || [];
+
+            const qualifiedCount = referralRows.filter((item) =>
+                ["qualified", "rewarded"].includes(
+                    String(item.status || "").toLowerCase()
+                )
+            ).length;
+
+            const earnedDays = rewardRows
+                .filter((item) =>
+                    ["earned", "awarded", "paid", "successful", "active"]
+                        .includes(String(item.status || "").toLowerCase())
+                )
+                .reduce((sum, item) => sum + Number(item.reward_days || 0), 0);
+
+            setText("referralTotal", String(referralRows.length));
+            setText("referralQualified", String(qualifiedCount));
+            setText("referralDaysEarned", String(earnedDays));
+
+            // Calculate each plan's qualifying progress separately.
+            const rules = [
+                {
+                    name: "Daily Pass",
+                    threshold: 3,
+                    days: 2
+                },
+                {
+                    name: "Weekly Pass",
+                    threshold: 3,
+                    days: 7
+                },
+                {
+                    name: "Monthly Pass",
+                    threshold: 1,
+                    days: 7
+                }
+            ];
+
+            const progress = $("referralProgress");
+
+            if (progress) {
+                progress.innerHTML = rules.map((rule) => {
+                    const count = referralRows.filter((item) => {
+                        const status = String(item.status || "").toLowerCase();
+                        const plan = String(item.qualification_plan || "").toLowerCase();
+
+                        return ["qualified", "rewarded"].includes(status) &&
+                            plan === rule.name.toLowerCase();
+                    }).length;
+
+                    const remainder = count % rule.threshold;
+                    const needed = remainder === 0 ? rule.threshold : rule.threshold - remainder;
+                    const percentage = Math.min(
+                        100,
+                        Math.round((remainder / rule.threshold) * 100)
+                    );
+
+                    const completedGroups = Math.floor(count / rule.threshold);
+
+                    return `
+                        <div class="detail">
+                            <span class="detail-value">${escapeHTML(rule.name)}</span>
+                            <span class="detail-label">
+                                ${count} qualifying referral(s) recorded.
+                                ${completedGroups} complete group(s).
+                                ${needed} more to complete the next group.
+                            </span>
+                            <div style="height:7px;background:#22364d;border-radius:8px;overflow:hidden;margin-top:10px;">
+                                <div style="height:100%;width:${percentage}%;background:#32d583;border-radius:8px;"></div>
+                            </div>
+                            <span class="detail-label" style="margin-top:8px;">
+                                Reward rule: ${rule.threshold} qualifying referral(s)
+                                → ${rule.days} premium day(s).
+                            </span>
+                        </div>
+                    `;
+                }).join("");
+            }
+
+            // Referral activity.
+            const activity = $("referralActivity");
+
+            if (activity) {
+                if (!referralRows.length) {
+                    activity.innerHTML =
+                        '<p class="plan-description">No referrals yet. Share your personal link to get started.</p>';
+                } else {
+                    activity.innerHTML = referralRows.map((item) => {
+                        const status = String(item.status || "pending");
+                        const plan = item.qualification_plan || "Awaiting qualifying payment";
+                        const date = item.created_at
+                            ? new Date(item.created_at).toLocaleDateString()
+                            : "Date unavailable";
+
+                        return `
+                            <div class="detail">
+                                <span class="detail-value">${escapeHTML(status.toUpperCase())}</span>
+                                <span class="detail-label">
+                                    Plan: ${escapeHTML(plan)}<br>
+                                    Registered: ${escapeHTML(date)}
+                                </span>
+                            </div>
+                        `;
+                    }).join("");
+                }
+            }
+
+            // Earned reward history.
+            const rewardActivity = $("referralRewardActivity");
+
+            if (rewardActivity) {
+                if (!rewardRows.length) {
+                    rewardActivity.innerHTML =
+                        '<p class="plan-description">No referral rewards have been recorded yet. Keep sharing your link.</p>';
+                } else {
+                    rewardActivity.innerHTML = rewardRows.map((item) => {
+                        const date = item.created_at
+                            ? new Date(item.created_at).toLocaleDateString()
+                            : "Date unavailable";
+
+                        return `
+                            <div class="detail">
+                                <span class="detail-value">
+                                    ${Number(item.reward_days || 0)} premium day(s)
+                                </span>
+                                <span class="detail-label">
+                                    Plan: ${escapeHTML(item.qualification_plan || "Referral reward")}<br>
+                                    Status: ${escapeHTML(item.status || "pending")}<br>
+                                    Recorded: ${escapeHTML(date)}
+                                </span>
+                            </div>
+                        `;
+                    }).join("");
+                }
+            }
+
+            showReferralMessage(
+                "Your referral information has loaded. Share your personal link to invite new members.",
+                "success"
+            );
+
+        } catch (error) {
+            console.error("Referral dashboard error:", error);
+
+            showReferralMessage(
+                "We couldn't load your referral information. Please refresh the page and try again.",
+                "error"
+            );
+        }
+    }
+
+    const copyButton = $("copyReferralButton");
+
+    if (copyButton) {
+        copyButton.addEventListener("click", async function () {
+            const input = $("referralLink");
+            if (!input || !input.value || input.value === "Preparing your link...") {
+                showReferralMessage("Your referral link is not ready yet.", "error");
+                return;
+            }
+
+            try {
+                await navigator.clipboard.writeText(input.value);
+                showReferralMessage("Referral link copied. Share it with your friends!", "success");
+            } catch (error) {
+                input.focus();
+                input.select();
+
+                const copied = document.execCommand("copy");
+
+                showReferralMessage(
+                    copied
+                        ? "Referral link copied. Share it with your friends!"
+                        : "Select the referral link above and copy it manually.",
+                    copied ? "success" : "error"
+                );
+            }
+        });
+    }
+
+    const shareButton = $("shareReferralButton");
+
+    if (shareButton) {
+        shareButton.addEventListener("click", async function () {
+            const input = $("referralLink");
+            if (!input || !input.value || input.value === "Preparing your link...") {
+                showReferralMessage("Your referral link is not ready yet.", "error");
+                return;
+            }
+
+            const shareData = {
+                title: "SNIPER ODDS",
+                text: "Join SNIPER ODDS for football analysis and predictions.",
+                url: input.value
+            };
+
+            try {
+                if (navigator.share) {
+                    await navigator.share(shareData);
+                } else {
+                    await navigator.clipboard.writeText(input.value);
+                    showReferralMessage(
+                        "Your browser doesn't support direct sharing. Your referral link has been copied.",
+                        "success"
+                    );
+                }
+            } catch (error) {
+                if (error.name !== "AbortError") {
+                    showReferralMessage(
+                        "Sharing wasn't available. Use Copy Referral Link instead.",
+                        "error"
+                    );
+                }
+            }
+        });
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", loadReferralDashboard);
+    } else {
+        loadReferralDashboard();
     }
 })();
 </script></body>
