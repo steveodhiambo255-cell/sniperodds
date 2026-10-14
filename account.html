@@ -1077,11 +1077,16 @@
                 "success"
             );
 
-        } catch (error) {
+                } catch (error) {
             console.error("Referral dashboard error:", error);
 
+            const errorMessage =
+                error && error.message
+                    ? error.message
+                    : String(error);
+
             showReferralMessage(
-                "We couldn't load your referral information. Please refresh the page and try again.",
+                "Referral dashboard error: " + errorMessage,
                 "error"
             );
         }
