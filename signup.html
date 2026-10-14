@@ -1,272 +1,555 @@
 <!DOCTYPE html><html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SNIPER ODDS | Create Account</title>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.js"></script><style>
-*{box-sizing:border-box;margin:0;padding:0}
-body{font-family:Arial,Helvetica,sans-serif;background:#07111f;color:#f5f7fa;min-height:100vh;display:flex;flex-direction:column}
-a{color:inherit;text-decoration:none}
-header{border-bottom:1px solid rgba(255,255,255,.08)}
-.nav{width:92%;max-width:850px;margin:auto;min-height:68px;display:flex;align-items:center;justify-content:space-between}
-.logo{font-size:20px;font-weight:900;letter-spacing:1px}
-.logo span{color:#32d583}
-.home-btn{background:#32d583;color:#06110d;padding:8px 13px;border-radius:8px;font-size:13px;font-weight:800}
-main{flex:1;display:flex;align-items:center;padding:40px 0}
-.container{width:92%;max-width:470px;margin:auto}
-.card{background:#0c1929;border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:27px}
-.heading{text-align:center;margin-bottom:24px}
-.heading h1{font-size:29px;margin-bottom:7px}
-.heading p{color:#8f9eaf;font-size:14px}
-.field{margin-bottom:16px}
-label{display:block;margin-bottom:6px;color:#cbd5e1;font-size:13px;font-weight:700}
-input[type="text"],input[type="email"],input[type="password"]{width:100%;padding:13px;border-radius:9px;border:1px solid rgba(255,255,255,.12);background:#081423;color:#fff;outline:none;font-size:16px}
-input:focus{border-color:#32d583}
-.age-check{display:flex;align-items:flex-start;gap:10px;margin:18px 0;color:#aab6c5;font-size:13px}
-.age-check input{margin-top:4px;accent-color:#32d583}
-.age-check label{margin:0;font-weight:400;color:#aab6c5}
-.primary-btn{width:100%;border:none;background:#32d583;color:#06110d;padding:13px;border-radius:9px;font-weight:900;font-size:16px}
-.primary-btn:disabled{opacity:.55;cursor:not-allowed}
-.message{min-height:20px;margin-top:13px;text-align:center;color:#ff9a9a;font-size:13px}
-.bottom-link{text-align:center;margin-top:18px;color:#8997a8;font-size:13px}
-.bottom-link a{color:#32d583;font-weight:700}
-footer{padding:22px;border-top:1px solid rgba(255,255,255,.08);text-align:center}
-footer p{color:#5e6e82;font-size:12px}
-</style></head><body><header>
-  <div class="nav">
-    <a href="index.html" class="logo">SNIPER <span>ODDS</span></a>
-    <a href="index.html" class="home-btn">🏠 Home</a>
-  </div>
-</header><main>
-  <div class="container">
-    <div class="card">  <div class="heading">
-    <h1>Create Account</h1>
-    <p>Create your SNIPER ODDS account to continue.</p>
-  </div>
-
-  <form id="signupForm">
-
-    <div class="field">
-      <label for="signupName">Full Name</label>
-      <input
-        type="text"
-        id="signupName"
-        placeholder="Enter your name"
-        required>
-    </div>
-
-    <div class="field">
-      <label for="signupEmail">Email Address</label>
-      <input
-        type="email"
-        id="signupEmail"
-        placeholder="Enter your email"
-        required>
-    </div>
-
-    <div class="field">
-      <label for="signupPassword">Password</label>
-      <input
-        type="password"
-        id="signupPassword"
-        placeholder="Create a password"
-        minlength="6"
-        required>
-    </div>
-
-    <div class="age-check">
-      <input type="checkbox" id="ageConfirm" required>
-
-      <label for="ageConfirm">
-        I confirm that I am <strong>18 years or older</strong>
-        and legally permitted to use betting-related
-        services in my jurisdiction.
-      </label>
-    </div>
-
-    <button
-      type="submit"
-      class="primary-btn"
-      id="signupButton">
-      Create Account
-    </button>
-
-    <p id="signupMessage" class="message"></p>
-
-  </form>
-
-  <div class="bottom-link">
-    Already have an account?
-    <a href="login.html">Login</a>
-  </div>
-
-</div>
-
-  </div>
-</main><footer>
-  <p>© 2026 SNIPER ODDS. 18+ only.</p>
-</footer><script src="script.js"></script><script>
-
-try {
-
-  var urlRef =
-    new URLSearchParams(location.search).get("ref");
-
-  if (urlRef) {
-    localStorage.setItem(
-      "so_ref",
-      urlRef.trim()
-    );
-  }
-
-} catch (e) {}
-
-
-document
-  .getElementById("signupForm")
-  .addEventListener(
-    "submit",
-    async function (event) {
-
-      event.preventDefault();
-
-
-      var name =
-        document
-          .getElementById("signupName")
-          .value
-          .trim();
-
-
-      var email =
-        document
-          .getElementById("signupEmail")
-          .value
-          .trim();
-
-
-      var password =
-        document
-          .getElementById("signupPassword")
-          .value;
-
-
-      var message =
-        document
-          .getElementById("signupMessage");
-
-
-      var button =
-        document
-          .getElementById("signupButton");
-
-
-      if (
-        !document
-          .getElementById("ageConfirm")
-          .checked
-      ) {
-
-        message.textContent =
-          "You must confirm that you are 18 or older.";
-
-        return;
-      }
-
-
-      var ref = null;
-
-      try {
-
-        ref =
-          localStorage.getItem("so_ref");
-
-      } catch (e) {}
-
-
-      button.disabled = true;
-
-      button.textContent =
-        "Creating Account...";
-
-      message.style.color =
-        "#ff9a9a";
-
-      message.textContent =
-        "";
-
-
-      try {
-
-        var result =
-          await supabaseClient.auth.signUp({
-
-            email: email,
-
-            password: password,
-
-            options: {
-
-              data: {
-
-                name: name,
-
-                age_confirmed: true,
-
-                referral_code: ref
-
-              },
-
-              emailRedirectTo:
-                "https://steveodhiambo255-cell.github.io/sniperodds/"
-
-            }
-
-          });
-
-
-        if (result.error) {
-
-          message.textContent =
-            result.error.message;
-
-          button.disabled = false;
-
-          button.textContent =
-            "Create Account";
-
-          return;
-        }
-
-
-        message.style.color =
-          "#32d583";
-
-        message.textContent =
-          "Account created successfully. Please check your email and click the verification link to activate your account.";
-
-
-      } catch (err) {
-
-        console.error(err);
-
-        message.style.color =
-          "#ff9a9a";
-
-        message.textContent =
-          "System error. Please try again.";
-
-      }
-
-
-      button.disabled = false;
-
-      button.textContent =
-        "Create Account";
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="theme-color" content="#07130e"><title>Create Account | SNIPER ODDS</title>
+<meta name="description" content="Create your SNIPER ODDS account for football analysis, statistics and premium insights.">
+
+<style>
+    :root {
+        --background: #07130e;
+        --card: #0e2118;
+        --input: #091910;
+        --green: #32d583;
+        --green-dark: #20b96c;
+        --text: #f4fff8;
+        --muted: #a2b9ab;
+        --border: #254334;
+        --danger: #ff8b8b;
     }
 
-  );
+    * {
+        box-sizing: border-box;
+    }
 
-</script></body>
+    body {
+        margin: 0;
+        min-height: 100vh;
+        padding: 24px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: radial-gradient(circle at top, #153c29 0, var(--background) 48%);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .container {
+        width: 100%;
+        max-width: 440px;
+    }
+
+    .brand {
+        text-align: center;
+        margin-bottom: 24px;
+    }
+
+    .brand-name {
+        margin: 0;
+        color: var(--green);
+        font-size: 29px;
+        font-weight: 900;
+        letter-spacing: 1.5px;
+    }
+
+    .brand-subtitle {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+        font-weight: bold;
+        letter-spacing: 3px;
+    }
+
+    .card {
+        padding: 28px 24px;
+        background: rgba(14, 33, 24, 0.97);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        box-shadow: 0 18px 55px rgba(0, 0, 0, 0.3);
+    }
+
+    h1 {
+        margin: 0 0 9px;
+        font-size: 25px;
+        text-align: center;
+    }
+
+    .intro {
+        margin: 0 0 25px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+    .field {
+        margin-bottom: 17px;
+    }
+
+    label {
+        display: block;
+        margin-bottom: 8px;
+        font-size: 13px;
+        font-weight: bold;
+    }
+
+    input {
+        width: 100%;
+        min-height: 48px;
+        padding: 13px 14px;
+        color: var(--text);
+        background: var(--input);
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        outline: none;
+        font-size: 15px;
+    }
+
+    input:focus {
+        border-color: var(--green);
+        box-shadow: 0 0 0 3px rgba(50, 213, 131, 0.12);
+    }
+
+    input::placeholder {
+        color: #718779;
+    }
+
+    .password-wrap {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .password-wrap input {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .show-password {
+        min-height: 46px;
+        padding: 0 10px;
+        color: var(--green);
+        background: transparent;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .hint {
+        margin: 7px 0 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+    .checkbox-row {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        margin: 19px 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+    }
+
+    .checkbox-row input {
+        width: 17px;
+        height: 17px;
+        min-height: auto;
+        margin: 2px 0 0;
+        flex-shrink: 0;
+        accent-color: var(--green);
+    }
+
+    .checkbox-row label {
+        margin: 0;
+        font-weight: normal;
+    }
+
+    .footer a,
+    .legal a {
+        color: var(--green);
+        text-decoration: none;
+    }
+
+    .footer a:hover,
+    .legal a:hover,
+    .back-home:hover {
+        text-decoration: underline;
+    }
+
+    .submit-button {
+        width: 100%;
+        min-height: 49px;
+        padding: 14px;
+        color: #04140b;
+        background: var(--green);
+        border: none;
+        border-radius: 9px;
+        font-size: 15px;
+        font-weight: 900;
+        cursor: pointer;
+    }
+
+    .submit-button:hover {
+        background: var(--green-dark);
+    }
+
+    .submit-button:disabled {
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+    .message {
+        display: none;
+        margin: 0 0 18px;
+        padding: 12px;
+        border-radius: 8px;
+        font-size: 13px;
+        line-height: 1.6;
+        overflow-wrap: anywhere;
+    }
+
+    .message.success {
+        display: block;
+        color: #a5f3c8;
+        background: rgba(50, 213, 131, 0.1);
+        border: 1px solid rgba(50, 213, 131, 0.3);
+    }
+
+    .message.error {
+        display: block;
+        color: var(--danger);
+        background: rgba(255, 80, 80, 0.08);
+        border: 1px solid rgba(255, 100, 100, 0.25);
+    }
+
+    .footer {
+        margin-top: 22px;
+        text-align: center;
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.8;
+    }
+
+    .legal {
+        margin-top: 18px;
+        color: var(--muted);
+        text-align: center;
+        font-size: 11px;
+        line-height: 1.7;
+    }
+
+    .back-home {
+        display: inline-block;
+        margin-top: 20px;
+        color: var(--muted);
+        text-decoration: none;
+        font-size: 13px;
+    }
+
+    @media (max-width: 380px) {
+        .card {
+            padding: 24px 18px;
+        }
+
+        .brand-name {
+            font-size: 25px;
+        }
+
+        h1 {
+            font-size: 23px;
+        }
+    }
+</style>
+
+</head><body>
+<main class="container"><header class="brand">
+    <p class="brand-name">SNIPER ODDS</p>
+    <p class="brand-subtitle">FOOTBALL INTELLIGENCE</p>
+</header>
+
+<section class="card" aria-labelledby="signup-title">
+    <h1 id="signup-title">Create Your Account</h1>
+
+    <p class="intro">
+        Join SNIPER ODDS for football analysis, match statistics and insights.
+    </p>
+
+    <div id="message" class="message" role="status" aria-live="polite"></div>
+
+    <form id="signup-form">
+        <div class="field">
+            <label for="full-name">Full name</label>
+            <input
+                type="text"
+                id="full-name"
+                name="full_name"
+                placeholder="Enter your full name"
+                autocomplete="name"
+                maxlength="100"
+                required
+            >
+        </div>
+
+        <div class="field">
+            <label for="email">Email address</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                maxlength="254"
+                required
+            >
+        </div>
+
+        <div class="field">
+            <label for="password">Password</label>
+
+            <div class="password-wrap">
+                <input
+                    type="password"
+                    id="password"
+                    name="password"
+                    placeholder="Create a strong password"
+                    autocomplete="new-password"
+                    minlength="8"
+                    maxlength="128"
+                    required
+                >
+
+                <button
+                    type="button"
+                    class="show-password"
+                    id="toggle-password"
+                    aria-controls="password"
+                    aria-pressed="false"
+                >Show</button>
+            </div>
+
+            <p class="hint">Use at least 8 characters and choose a unique password.</p>
+        </div>
+
+        <div class="field">
+            <label for="confirm-password">Confirm password</label>
+            <input
+                type="password"
+                id="confirm-password"
+                name="confirm_password"
+                placeholder="Enter your password again"
+                autocomplete="new-password"
+                minlength="8"
+                maxlength="128"
+                required
+            >
+        </div>
+
+        <div class="checkbox-row">
+            <input type="checkbox" id="age-confirmation" required>
+            <label for="age-confirmation">
+                I confirm that I am at least 18 years old and understand
+                that football predictions are uncertain and that I should
+                make responsible decisions.
+            </label>
+        </div>
+
+        <button type="submit" class="submit-button" id="signup-button">
+            Create Account
+        </button>
+    </form>
+
+    <div class="footer">
+        Already have an account?
+        <a id="login-link" href="login.html">Login here</a>
+    </div>
+
+    <div class="legal">
+        Please use SNIPER ODDS responsibly.<br>
+        <a href="responsible_gambling.html">Responsible Gambling</a>
+    </div>
+</section>
+
+<div style="text-align:center">
+    <a class="back-home" href="index.html">&larr; Back to Home</a>
+</div>
+
+</main><script>
+(function () {
+    "use strict";
+
+    const SUPABASE_URL =
+        "https://gddyhbjslwcgtqdtbzvu.supabase.co";
+
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
+
+    const form = document.getElementById("signup-form");
+    const messageBox = document.getElementById("message");
+    const signupButton = document.getElementById("signup-button");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+
+    /*
+     * Resolve links relative to this page so they work on GitHub Pages
+     * and when the site is hosted inside a subfolder.
+     */
+    document.getElementById("login-link").href =
+        new URL("login.html", window.location.href).href;
+
+    document.querySelector(".back-home").href =
+        new URL("index.html", window.location.href).href;
+
+    document.querySelector(".legal a").href =
+        new URL("responsible_gambling.html", window.location.href).href;
+
+    function showMessage(message, type) {
+        messageBox.textContent = message;
+        messageBox.className = "message " + type;
+    }
+
+    function friendlyError(error) {
+        const lower = String(error && error.message || "").toLowerCase();
+
+        if (
+            lower.includes("over_email_send_rate_limit") ||
+            lower.includes("email rate limit") ||
+            lower.includes("security purposes") ||
+            (lower.includes("after") && lower.includes("seconds"))
+        ) {
+            return "Too many signup or email requests were made recently. Please wait before trying again.";
+        }
+
+        if (
+            lower.includes("already registered") ||
+            lower.includes("user already exists")
+        ) {
+            return "An account may already exist with this email. Try logging in or resetting your password.";
+        }
+
+        if (lower.includes("failed to fetch") || lower.includes("network")) {
+            return "Unable to connect to the signup service. Check your internet connection and try again.";
+        }
+
+        return "Signup failed. Please check your details and try again.";
+    }
+
+    document.getElementById("toggle-password").addEventListener("click", function () {
+        const reveal = passwordInput.type === "password";
+        passwordInput.type = reveal ? "text" : "password";
+        this.textContent = reveal ? "Hide" : "Show";
+        this.setAttribute("aria-pressed", String(reveal));
+    });
+
+    form.addEventListener("submit", async function (event) {
+        event.preventDefault();
+
+        messageBox.textContent = "";
+        messageBox.className = "message";
+
+        const fullName = document.getElementById("full-name").value.trim();
+        const email = document.getElementById("email").value.trim();
+        const password = passwordInput.value;
+        const confirmPassword = confirmPasswordInput.value;
+
+        if (fullName.length < 2) {
+            showMessage("Please enter your full name.", "error");
+            return;
+        }
+
+        if (password.length < 8) {
+            showMessage("Your password must contain at least 8 characters.", "error");
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            showMessage("Your passwords do not match.", "error");
+            confirmPasswordInput.focus();
+            return;
+        }
+
+        if (!document.getElementById("age-confirmation").checked) {
+            showMessage("Please confirm that you meet the age requirement.", "error");
+            return;
+        }
+
+        /*
+         * Detect a missing Supabase library and show an error rather
+         * than silently leaving the button unresponsive.
+         */
+        if (!window.supabase || typeof window.supabase.createClient !== "function") {
+            showMessage(
+                "The signup service library could not load. Check your internet connection, refresh the page and try again.",
+                "error"
+            );
+            return;
+        }
+
+        signupButton.disabled = true;
+        signupButton.textContent = "Creating Account...";
+
+        try {
+            const db = window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+            const params = new URLSearchParams(window.location.search);
+            const referralCode = (
+                params.get("ref") ||
+                params.get("referral") ||
+                ""
+            ).trim();
+
+            const metadata = { full_name: fullName };
+
+            if (referralCode) {
+                metadata.referral_code = referralCode;
+            }
+
+            const loginUrl = new URL("login.html", window.location.href).href;
+
+            const { data, error } = await db.auth.signUp({
+                email: email,
+                password: password,
+                options: {
+                    data: metadata,
+                    emailRedirectTo: loginUrl
+                }
+            });
+
+            if (error) throw error;
+
+            if (!data || !data.user) {
+                throw new Error("The signup service did not return a user.");
+            }
+
+            showMessage(
+                data.session
+                    ? "Account created successfully. Redirecting to login..."
+                    : "Account created. Check your email and confirm your address if requested. Redirecting to login...",
+                "success"
+            );
+
+            signupButton.textContent = "Account Created";
+            form.reset();
+
+            window.setTimeout(function () {
+                window.location.assign(loginUrl);
+            }, 1800);
+
+        } catch (error) {
+            showMessage(friendlyError(error), "error");
+            signupButton.disabled = false;
+            signupButton.textContent = "Create Account";
+        }
+    });
+})();
+</script><!-- Load Supabase after the page's own event handlers are ready. --><script
+    src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"
+    onerror="document.getElementById('message').textContent='Could not load the signup service. Check your internet connection and refresh.'; document.getElementById('message').className='message error';"
+></script></body>
 </html>
