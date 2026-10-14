@@ -1,572 +1,595 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Premium Analysis | SNIPER ODDS</title>
 
-    <title>Premium Analysis | SNIPER ODDS</title>
+<meta name="description"
+      content="Access verified premium football analysis and predictions on SNIPER ODDS.">
 
-    <meta name="description"
-          content="Access premium football analysis and predictions on SNIPER ODDS.">
+<meta name="theme-color" content="#07130d">
 
-    <meta name="theme-color" content="#07130d">
+<style>
+    :root {
+        --background: #07130d;
+        --card: #102119;
+        --card-light: #172d22;
+        --green: #32d583;
+        --green-dark: #20a864;
+        --text: #f4fff8;
+        --muted: #a5b8ac;
+        --border: #294537;
+        --red: #ff7777;
+        --yellow: #ffd166;
+    }
 
-    <style>
-        :root {
-            --background: #07130d;
-            --card: #102119;
-            --card-light: #172d22;
-            --green: #32d583;
-            --green-dark: #20a864;
-            --text: #f4fff8;
-            --muted: #a5b8ac;
-            --border: #294537;
-            --red: #ff7777;
-            --yellow: #ffd166;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    body {
+        margin: 0;
+        background: var(--background);
+        color: var(--text);
+        font-family: Arial, Helvetica, sans-serif;
+        line-height: 1.6;
+    }
 
-        body {
-            margin: 0;
-            background: var(--background);
-            color: var(--text);
-            font-family: Arial, Helvetica, sans-serif;
-            line-height: 1.6;
-        }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
-        a {
-            color: inherit;
-            text-decoration: none;
-        }
+    button,
+    input,
+    select {
+        font: inherit;
+    }
 
-        button,
-        input,
-        select {
-            font: inherit;
-        }
+    button,
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        button,
-        a {
-            -webkit-tap-highlight-color: transparent;
-        }
+    button:focus-visible,
+    a:focus-visible,
+    input:focus-visible,
+    select:focus-visible {
+        outline: 2px solid var(--green);
+        outline-offset: 3px;
+    }
 
-        .header {
-            position: sticky;
-            top: 0;
-            z-index: 10;
-            background: rgba(7, 19, 13, 0.97);
-            border-bottom: 1px solid var(--border);
-            padding: 14px 16px;
-        }
+    .header {
+        position: sticky;
+        top: 0;
+        z-index: 10;
+        background: rgba(7, 19, 13, 0.97);
+        border-bottom: 1px solid var(--border);
+        padding: 14px 16px;
+    }
 
+    .header-inner {
+        max-width: 1100px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+    }
+
+    .brand {
+        font-size: 20px;
+        font-weight: 900;
+        letter-spacing: 0.5px;
+    }
+
+    .brand span {
+        color: var(--green);
+    }
+
+    .nav {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        flex-wrap: wrap;
+        font-size: 13px;
+    }
+
+    .nav a {
+        color: var(--muted);
+    }
+
+    .nav a:hover {
+        color: var(--green);
+    }
+
+    .logout-button {
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 7px 11px;
+        background: transparent;
+        color: var(--text);
+        cursor: pointer;
+    }
+
+    .container {
+        width: min(1100px, 92%);
+        margin: 28px auto 50px;
+    }
+
+    .hero {
+        padding: 25px 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background:
+            radial-gradient(
+                circle at top right,
+                rgba(50, 213, 131, 0.13),
+                transparent 45%
+            ),
+            var(--card);
+        margin-bottom: 22px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        background: rgba(50, 213, 131, 0.12);
+        color: var(--green);
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 8px;
+    }
+
+    h1 {
+        margin: 0 0 8px;
+        font-size: clamp(25px, 5vw, 38px);
+        line-height: 1.2;
+    }
+
+    h2 {
+        margin-top: 0;
+    }
+
+    h3 {
+        color: var(--green);
+        font-size: 17px;
+    }
+
+    .muted {
+        color: var(--muted);
+    }
+
+    .panel {
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        margin-bottom: 20px;
+    }
+
+    .status-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .status {
+        display: inline-block;
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .status.loading {
+        background: #26352d;
+        color: var(--yellow);
+    }
+
+    .status.active {
+        background: rgba(50, 213, 131, 0.15);
+        color: var(--green);
+    }
+
+    .status.inactive {
+        background: rgba(255, 119, 119, 0.12);
+        color: var(--red);
+    }
+
+    .message {
+        padding: 13px;
+        border-radius: 9px;
+        margin: 12px 0;
+        background: var(--card-light);
+        border: 1px solid var(--border);
+        overflow-wrap: anywhere;
+    }
+
+    .message.error {
+        color: var(--red);
+    }
+
+    .message.success {
+        color: var(--green);
+    }
+
+    .button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border: 0;
+        border-radius: 9px;
+        padding: 11px 15px;
+        background: var(--green);
+        color: #062013;
+        font-weight: bold;
+        cursor: pointer;
+        text-align: center;
+    }
+
+    .button:hover {
+        background: #56e69a;
+    }
+
+    .button.secondary {
+        background: var(--card-light);
+        border: 1px solid var(--border);
+        color: var(--text);
+    }
+
+    .button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+    }
+
+    .toolbar {
+        display: grid;
+        grid-template-columns: 1fr 190px auto;
+        gap: 10px;
+        margin-bottom: 18px;
+    }
+
+    .field {
+        width: 100%;
+        min-width: 0;
+        padding: 12px;
+        border: 1px solid var(--border);
+        border-radius: 9px;
+        background: #09170f;
+        color: var(--text);
+        outline: none;
+    }
+
+    .field:focus {
+        border-color: var(--green);
+    }
+
+    .results-heading {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+    }
+
+    .predictions {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 15px;
+    }
+
+    .prediction-card {
+        padding: 18px;
+        border: 1px solid var(--border);
+        border-radius: 13px;
+        background: var(--card);
+        min-width: 0;
+    }
+
+    .match-date {
+        color: var(--green);
+        font-size: 12px;
+        font-weight: bold;
+        margin-bottom: 10px;
+    }
+
+    .teams {
+        font-size: 18px;
+        font-weight: bold;
+        overflow-wrap: anywhere;
+        margin-bottom: 13px;
+    }
+
+    .prediction-line {
+        padding: 11px;
+        background: var(--card-light);
+        border-radius: 8px;
+        margin: 10px 0;
+        overflow-wrap: anywhere;
+    }
+
+    .label {
+        display: block;
+        color: var(--muted);
+        font-size: 12px;
+        margin-bottom: 3px;
+    }
+
+    .pick {
+        color: var(--green);
+        font-weight: bold;
+    }
+
+    .analysis {
+        color: #d5e5db;
+        font-size: 14px;
+        overflow-wrap: anywhere;
+    }
+
+    .empty {
+        grid-column: 1 / -1;
+        padding: 28px 16px;
+        text-align: center;
+        border: 1px dashed var(--border);
+        border-radius: 12px;
+        color: var(--muted);
+    }
+
+    .date-heading {
+        grid-column: 1 / -1;
+        margin: 18px 0 0;
+        padding: 12px;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    footer {
+        text-align: center;
+        color: var(--muted);
+        padding: 25px 15px;
+        border-top: 1px solid var(--border);
+        font-size: 13px;
+    }
+
+    @media (max-width: 650px) {
         .header-inner {
-            max-width: 1100px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .brand {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 0.5px;
-        }
-
-        .brand span {
-            color: var(--green);
+            align-items: flex-start;
+            flex-direction: column;
         }
 
         .nav {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            flex-wrap: wrap;
-            font-size: 13px;
-        }
-
-        .nav a {
-            color: var(--muted);
-        }
-
-        .nav a:hover {
-            color: var(--green);
-        }
-
-        .logout-button {
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 7px 11px;
-            background: transparent;
-            color: var(--text);
-            cursor: pointer;
-        }
-
-        .container {
-            width: min(1100px, 92%);
-            margin: 28px auto 50px;
-        }
-
-        .hero {
-            padding: 25px 20px;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            background:
-                radial-gradient(
-                    circle at top right,
-                    rgba(50, 213, 131, 0.13),
-                    transparent 45%
-                ),
-                var(--card);
-            margin-bottom: 22px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            background: rgba(50, 213, 131, 0.12);
-            color: var(--green);
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 8px;
-        }
-
-        h1 {
-            margin: 0 0 8px;
-            font-size: clamp(25px, 5vw, 38px);
-            line-height: 1.2;
-        }
-
-        h2 {
-            margin-top: 0;
-        }
-
-        .muted {
-            color: var(--muted);
-        }
-
-        .panel {
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 14px;
-            padding: 20px;
-            margin-bottom: 20px;
-        }
-
-        .status-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
             gap: 10px;
-        }
-
-        .status {
-            display: inline-block;
-            padding: 5px 10px;
-            border-radius: 20px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        .status.loading {
-            background: #26352d;
-            color: var(--yellow);
-        }
-
-        .status.active {
-            background: rgba(50, 213, 131, 0.15);
-            color: var(--green);
-        }
-
-        .status.inactive {
-            background: rgba(255, 119, 119, 0.12);
-            color: var(--red);
-        }
-
-        .message {
-            padding: 13px;
-            border-radius: 9px;
-            margin: 12px 0;
-            background: var(--card-light);
-            border: 1px solid var(--border);
-            overflow-wrap: anywhere;
-        }
-
-        .message.error {
-            color: var(--red);
-        }
-
-        .message.success {
-            color: var(--green);
-        }
-
-        .button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            border: 0;
-            border-radius: 9px;
-            padding: 11px 15px;
-            background: var(--green);
-            color: #062013;
-            font-weight: bold;
-            cursor: pointer;
-            text-align: center;
-        }
-
-        .button:hover {
-            background: #56e69a;
-        }
-
-        .button.secondary {
-            background: var(--card-light);
-            border: 1px solid var(--border);
-            color: var(--text);
-        }
-
-        .button:disabled {
-            opacity: 0.6;
-            cursor: wait;
         }
 
         .toolbar {
-            display: grid;
-            grid-template-columns: 1fr 190px auto;
-            gap: 10px;
-            margin-bottom: 18px;
-        }
-
-        .field {
-            width: 100%;
-            min-width: 0;
-            padding: 12px;
-            border: 1px solid var(--border);
-            border-radius: 9px;
-            background: #09170f;
-            color: var(--text);
-            outline: none;
-        }
-
-        .field:focus {
-            border-color: var(--green);
-        }
-
-        .results-heading {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            flex-wrap: wrap;
+            grid-template-columns: 1fr;
         }
 
         .predictions {
-            display: grid;
-            grid-template-columns: repeat(2, minmax(0, 1fr));
-            gap: 15px;
+            grid-template-columns: 1fr;
         }
 
-        .prediction-card {
-            padding: 18px;
-            border: 1px solid var(--border);
-            border-radius: 13px;
-            background: var(--card);
-            min-width: 0;
+        .container {
+            margin-top: 18px;
         }
 
-        .match-date {
-            color: var(--green);
-            font-size: 12px;
-            font-weight: bold;
-            margin-bottom: 10px;
+        .panel,
+        .hero {
+            padding: 16px;
         }
+    }
+</style>
 
-        .teams {
-            font-size: 18px;
-            font-weight: bold;
-            overflow-wrap: anywhere;
-            margin-bottom: 13px;
-        }
-
-        .prediction-line {
-            padding: 11px;
-            background: var(--card-light);
-            border-radius: 8px;
-            margin: 10px 0;
-            overflow-wrap: anywhere;
-        }
-
-        .label {
-            display: block;
-            color: var(--muted);
-            font-size: 12px;
-            margin-bottom: 3px;
-        }
-
-        .pick {
-            color: var(--green);
-            font-weight: bold;
-        }
-
-        .analysis {
-            color: #d5e5db;
-            font-size: 14px;
-            overflow-wrap: anywhere;
-        }
-
-        .empty {
-            grid-column: 1 / -1;
-            padding: 28px 16px;
-            text-align: center;
-            border: 1px dashed var(--border);
-            border-radius: 12px;
-            color: var(--muted);
-        }
-
-        .hidden {
-            display: none !important;
-        }
-
-        footer {
-            text-align: center;
-            color: var(--muted);
-            padding: 25px 15px;
-            border-top: 1px solid var(--border);
-            font-size: 13px;
-        }
-
-        @media (max-width: 650px) {
-            .header-inner {
-                align-items: flex-start;
-                flex-direction: column;
-            }
-
-            .nav {
-                gap: 10px;
-            }
-
-            .toolbar {
-                grid-template-columns: 1fr;
-            }
-
-            .predictions {
-                grid-template-columns: 1fr;
-            }
-
-            .container {
-                margin-top: 18px;
-            }
-
-            .panel,
-            .hero {
-                padding: 16px;
-            }
-        }
-    </style>
-</head>
-
-<body>
-
-<header class="header">
+</head><body><header class="header">
     <div class="header-inner">
         <a class="brand" href="./index.html">
             SNIPER <span>ODDS</span>
-        </a>
-
-        <nav class="nav" aria-label="Main navigation">
-            <a href="./index.html">Home</a>
-            <a href="./account.html">My Account</a>
-            <a href="./subscription.html">Plans</a>
-
-            <button
-                class="logout-button"
-                id="logoutButton"
-                type="button">
-                Logout
-            </button>
-        </nav>
-    </div>
-</header>
-
-<main class="container">
-
-    <section class="hero">
-        <span class="badge">PREMIUM MEMBERS AREA</span>
-
-        <h1>Premium Football Analysis</h1>
-
-        <p class="muted">
-            Access your premium football predictions, match insights,
-            markets and analysis.
-        </p>
-
-        <div class="status-row">
-            <span id="welcomeText" class="muted">
-                Checking your account...
-            </span>
-
-            <span id="subscriptionStatus" class="status loading">
-                Checking subscription
-            </span>
-        </div>
-    </section>
-
-    <section id="loadingPanel" class="panel">
-        <h2>Verifying access</h2>
-        <p class="muted" id="loadingText">
-            Please wait while we verify your login and subscription.
-        </p>
-    </section>
-
-    <section id="loginPanel" class="panel hidden">
-        <h2>Login required</h2>
-
-        <p class="muted">
-            Please log in to your SNIPER ODDS account to continue.
-        </p>
-
-        <a class="button" href="./login.html">
-            Login to your account
-        </a>
-
-        <a class="button secondary" href="./account.html">
-            My Account
-        </a>
-    </section>
-
-    <section id="subscriptionPanel" class="panel hidden">
-        <h2>Premium subscription required</h2>
-
-        <p id="subscriptionMessage" class="muted">
-            An active premium subscription is required to access these
-            predictions.
-        </p>
-
-        <a class="button" href="./subscription.html">
-            View Premium Plans
-        </a>
-
-        <a class="button secondary" href="./account.html">
-            Back to My Account
-        </a>
-    </section>
-
-    <section id="errorPanel" class="panel hidden">
-        <h2>Unable to load premium access</h2>
-
-        <p id="errorMessage" class="message error">
-            Something went wrong.
-        </p>
+        </a>    <nav class="nav" aria-label="Main navigation">
+        <a href="./index.html">Home</a>
+        <a href="./analysis.html">Free Analysis</a>
+        <a href="./account.html">My Account</a>
+        <a href="./subscription.html">Plans</a>
 
         <button
-            class="button"
-            id="retryButton"
+            class="logout-button"
+            id="logoutButton"
             type="button">
-            Try Again
+            Logout
         </button>
+    </nav>
+</div>
 
-        <a class="button secondary" href="./account.html">
-            My Account
-        </a>
-    </section>
+</header><main class="container"><section class="hero">
+    <span class="badge">PREMIUM MEMBERS AREA</span>
 
-    <section id="predictionsPanel" class="panel hidden">
+    <h1>Premium Football Analysis</h1>
 
-        <div class="results-heading">
-            <div>
-                <h2>Premium Predictions</h2>
-                <p class="muted">
-                    Review each match and its available analysis.
-                </p>
-            </div>
+    <p class="muted">
+        Access verified premium football predictions, match insights,
+        markets and analysis.
+    </p>
 
-            <button
-                class="button secondary"
-                id="refreshButton"
-                type="button">
-                Refresh
-            </button>
+    <div class="status-row">
+        <span id="welcomeText" class="muted">
+            Checking your account...
+        </span>
+
+        <span id="subscriptionStatus" class="status loading">
+            Checking subscription
+        </span>
+    </div>
+</section>
+
+<section id="loadingPanel" class="panel">
+    <h2>Verifying access</h2>
+    <p class="muted" id="loadingText">
+        Please wait while we verify your login and subscription.
+    </p>
+</section>
+
+<section id="loginPanel" class="panel hidden">
+    <h2>Login required</h2>
+
+    <p class="muted">
+        Please log in to your SNIPER ODDS account to continue.
+    </p>
+
+    <a class="button" href="./login.html">
+        Login to Your Account
+    </a>
+
+    <a class="button secondary" href="./account.html">
+        My Account
+    </a>
+</section>
+
+<section id="subscriptionPanel" class="panel hidden">
+    <h2>Premium Subscription Required</h2>
+
+    <p id="subscriptionMessage" class="muted">
+        An active premium subscription is required to access these
+        predictions.
+    </p>
+
+    <a class="button" href="./subscription.html">
+        View Premium Plans
+    </a>
+
+    <a class="button secondary" href="./account.html">
+        Back to My Account
+    </a>
+</section>
+
+<section id="errorPanel" class="panel hidden">
+    <h2>Unable to Load Premium Access</h2>
+
+    <p id="errorMessage" class="message error">
+        Something went wrong.
+    </p>
+
+    <button
+        class="button"
+        id="retryButton"
+        type="button">
+        Try Again
+    </button>
+
+    <a class="button secondary" href="./account.html">
+        My Account
+    </a>
+</section>
+
+<section id="predictionsPanel" class="panel hidden">
+
+    <div class="results-heading">
+        <div>
+            <h2>Premium Predictions</h2>
+
+            <p class="muted">
+                Review each match and its available analysis.
+                Maximum four verified games per match date.
+            </p>
         </div>
 
-        <div class="toolbar">
-            <input
-                class="field"
-                id="searchInput"
-                type="search"
-                placeholder="Search teams, markets or predictions..."
-                aria-label="Search predictions">
+        <button
+            class="button secondary"
+            id="refreshButton"
+            type="button">
+            Refresh
+        </button>
+    </div>
 
-            <select
-                class="field"
-                id="marketFilter"
-                aria-label="Filter by market">
-                <option value="">All Markets</option>
-            </select>
+    <div class="toolbar">
+        <input
+            class="field"
+            id="searchInput"
+            type="search"
+            placeholder="Search teams, markets or predictions..."
+            aria-label="Search predictions">
 
-            <button
-                class="button secondary"
-                id="clearFiltersButton"
-                type="button">
-                Clear Filters
-            </button>
+        <select
+            class="field"
+            id="marketFilter"
+            aria-label="Filter by market">
+            <option value="">All Markets</option>
+        </select>
+
+        <button
+            class="button secondary"
+            id="clearFiltersButton"
+            type="button">
+            Clear Filters
+        </button>
+    </div>
+
+    <p id="resultsCount" class="muted" aria-live="polite">
+        Loading verified predictions...
+    </p>
+
+    <div id="predictionsList" class="predictions">
+        <div class="empty">
+            Loading premium predictions...
         </div>
+    </div>
 
-        <p id="resultsCount" class="muted">
-            Loading predictions...
-        </p>
+</section>
 
-        <div id="predictionsList" class="predictions">
-            <div class="empty">Loading premium predictions...</div>
-        </div>
-
-    </section>
-
-</main>
-
-<footer>
+</main><footer>
     <p>© <span id="currentYear"></span> SNIPER ODDS.</p>
-    <p>Football analysis and insights. Predictions are not guarantees.</p>
-</footer>
-
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-<script>
+    <p>
+        Football analysis and insights.
+        Predictions are not guarantees.
+    </p>
+</footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
 "use strict";
 
 /*
  * SNIPER ODDS Supabase configuration.
- * This is the public publishable key, not a service-role key.
+ *
+ * The publishable key is intended for browser use.
+ * Database security must be enforced through Supabase RLS policies.
+ * Never place a service-role key in this file.
  */
+
 const SUPABASE_URL =
     "https://gddyhbjslwcgtqdtbzvu.supabase.co";
 
 const SUPABASE_PUBLISHABLE_KEY =
     "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
-let client;
+let client = null;
 let currentUser = null;
 let allPredictions = [];
+let pageIsStarting = false;
 
 const elements = {
     welcomeText: document.getElementById("welcomeText"),
     subscriptionStatus: document.getElementById("subscriptionStatus"),
+
     loadingPanel: document.getElementById("loadingPanel"),
     loadingText: document.getElementById("loadingText"),
+
     loginPanel: document.getElementById("loginPanel"),
+
     subscriptionPanel: document.getElementById("subscriptionPanel"),
     subscriptionMessage: document.getElementById("subscriptionMessage"),
+
     errorPanel: document.getElementById("errorPanel"),
     errorMessage: document.getElementById("errorMessage"),
+
     predictionsPanel: document.getElementById("predictionsPanel"),
     predictionsList: document.getElementById("predictionsList"),
     resultsCount: document.getElementById("resultsCount"),
+
     searchInput: document.getElementById("searchInput"),
     marketFilter: document.getElementById("marketFilter"),
+
     refreshButton: document.getElementById("refreshButton"),
     clearFiltersButton: document.getElementById("clearFiltersButton"),
     retryButton: document.getElementById("retryButton"),
@@ -596,7 +619,9 @@ function showOnly(panelToShow) {
 
 function setSubscriptionStatus(text, state) {
     elements.subscriptionStatus.textContent = text;
-    elements.subscriptionStatus.className = "status " + state;
+
+    elements.subscriptionStatus.className =
+        "status " + state;
 }
 
 
@@ -615,24 +640,46 @@ function escapeHTML(value) {
 }
 
 
+/*
+ * Format a database date without changing its calendar date.
+ * match_date is expected to be a DATE column in YYYY-MM-DD format.
+ */
+
 function formatMatchDate(value) {
     if (!value) {
         return "Date not specified";
     }
 
-    const date = new Date(value);
+    const dateString = String(value).slice(0, 10);
+    const parts = dateString.split("-").map(Number);
 
-    if (Number.isNaN(date.getTime())) {
-        return String(value);
+    if (
+        parts.length !== 3 ||
+        !parts.every(Number.isFinite)
+    ) {
+        return dateString;
     }
 
+    const date = new Date(Date.UTC(
+        parts[0],
+        parts[1] - 1,
+        parts[2],
+        12
+    ));
+
     return new Intl.DateTimeFormat("en-KE", {
-        dateStyle: "medium",
-        timeStyle: "short",
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
         timeZone: "Africa/Nairobi"
     }).format(date);
 }
 
+
+/*
+ * Check the authenticated session and verify the current user.
+ */
 
 async function verifyLogin() {
     const {
@@ -642,14 +689,22 @@ async function verifyLogin() {
 
     if (sessionError) {
         throw new Error(
-            "Unable to check your login session. Check your internet connection and try again."
+            "Unable to check your login session. Check your connection and try again."
         );
     }
 
     if (!session) {
-        showOnly(elements.loginPanel);
+        currentUser = null;
+
         elements.welcomeText.textContent = "Login required";
-        setSubscriptionStatus("Not logged in", "inactive");
+
+        setSubscriptionStatus(
+            "Not logged in",
+            "inactive"
+        );
+
+        showOnly(elements.loginPanel);
+
         return false;
     }
 
@@ -659,9 +714,17 @@ async function verifyLogin() {
     } = await client.auth.getUser();
 
     if (userError || !user) {
-        showOnly(elements.loginPanel);
+        currentUser = null;
+
         elements.welcomeText.textContent = "Login required";
-        setSubscriptionStatus("Not logged in", "inactive");
+
+        setSubscriptionStatus(
+            "Not logged in",
+            "inactive"
+        );
+
+        showOnly(elements.loginPanel);
+
         return false;
     }
 
@@ -673,13 +736,25 @@ async function verifyLogin() {
         user.email ||
         "Member";
 
-    elements.welcomeText.textContent = "Welcome, " + displayName;
+    elements.welcomeText.textContent =
+        "Welcome, " + displayName;
 
     return true;
 }
 
 
+/*
+ * Confirm that the logged-in user has an active, unexpired subscription.
+ *
+ * This browser check is not a replacement for RLS policies.
+ * The database must independently protect premium prediction access.
+ */
+
 async function verifySubscription() {
+    if (!currentUser) {
+        return false;
+    }
+
     const { data, error } = await client
         .from("subscriptions")
         .select("plan, status, expires_at")
@@ -690,10 +765,13 @@ async function verifySubscription() {
         .limit(1);
 
     if (error) {
-        console.error("Subscription verification error:", error);
+        console.error(
+            "Subscription verification error:",
+            error
+        );
 
         throw new Error(
-            "We could not verify your subscription. Please check the subscriptions table, its columns and your Supabase access policies."
+            "We could not verify your subscription. Check the subscriptions table, its columns and its Row Level Security policies."
         );
     }
 
@@ -701,39 +779,65 @@ async function verifySubscription() {
         elements.subscriptionMessage.textContent =
             "Your account does not currently have an active subscription. Choose a premium plan to access premium predictions.";
 
-        setSubscriptionStatus("Subscription inactive", "inactive");
+        setSubscriptionStatus(
+            "Subscription inactive",
+            "inactive"
+        );
 
         showOnly(elements.subscriptionPanel);
 
         return false;
     }
 
-    setSubscriptionStatus("Premium active", "active");
+    setSubscriptionStatus(
+        "Premium active",
+        "active"
+    );
 
     return true;
 }
 
 
+/*
+ * Load verified premium predictions.
+ * Unverified database records are never requested for display.
+ */
+
 async function loadPredictions() {
     elements.refreshButton.disabled = true;
-    elements.resultsCount.textContent = "Loading predictions...";
 
-    elements.predictionsList.innerHTML =
-        '<div class="empty">Loading predictions...</div>';
+    elements.resultsCount.textContent =
+        "Loading verified predictions...";
+
+    elements.predictionsList.replaceChildren();
+
+    const loadingMessage = document.createElement("div");
+
+    loadingMessage.className = "empty";
+
+    loadingMessage.textContent =
+        "Loading verified premium predictions...";
+
+    elements.predictionsList.appendChild(loadingMessage);
 
     try {
         const { data, error } = await client
             .from("premium_predictions")
             .select(
-                "id, match_date, home_team, away_team, market, player, prediction, odds, analysis"
+                "id, match_date, home_team, away_team, market, player, prediction, odds, analysis, is_verified, created_at"
             )
-            .order("match_date", { ascending: true });
+            .eq("is_verified", true)
+            .order("match_date", { ascending: true })
+            .order("created_at", { ascending: true });
 
         if (error) {
-            console.error("Predictions loading error:", error);
+            console.error(
+                "Premium predictions loading error:",
+                error
+            );
 
             throw new Error(
-                "Premium predictions could not be loaded. Check the premium_predictions table, column names and its Row Level Security policies."
+                "Premium predictions could not be loaded. Check the database columns, permissions and connection."
             );
         }
 
@@ -748,8 +852,13 @@ async function loadPredictions() {
 }
 
 
+/*
+ * Populate the market filter using markets present in verified records.
+ */
+
 function populateMarketFilter() {
-    const selectedMarket = elements.marketFilter.value;
+    const previouslySelectedMarket =
+        elements.marketFilter.value;
 
     const markets = [
         ...new Set(
@@ -757,12 +866,20 @@ function populateMarketFilter() {
                 .map(function(item) {
                     return item.market;
                 })
-                .filter(Boolean)
+                .filter(function(market) {
+                    return Boolean(market);
+                })
         )
     ].sort();
 
-    elements.marketFilter.innerHTML =
-        '<option value="">All Markets</option>';
+    elements.marketFilter.replaceChildren();
+
+    const allOption = document.createElement("option");
+
+    allOption.value = "";
+    allOption.textContent = "All Markets";
+
+    elements.marketFilter.appendChild(allOption);
 
     markets.forEach(function(market) {
         const option = document.createElement("option");
@@ -773,17 +890,26 @@ function populateMarketFilter() {
         elements.marketFilter.appendChild(option);
     });
 
-    if (markets.includes(selectedMarket)) {
-        elements.marketFilter.value = selectedMarket;
+    if (markets.includes(previouslySelectedMarket)) {
+        elements.marketFilter.value =
+            previouslySelectedMarket;
     }
 }
 
 
+/*
+ * Render no more than four verified games for each match date.
+ * Search and market filters are preserved.
+ */
+
 function renderPredictions() {
+    const DAILY_LIMIT = 4;
+
     const searchTerm =
         elements.searchInput.value.trim().toLowerCase();
 
-    const selectedMarket = elements.marketFilter.value;
+    const selectedMarket =
+        elements.marketFilter.value;
 
     const filtered = allPredictions.filter(function(item) {
         const searchableText = [
@@ -793,44 +919,101 @@ function renderPredictions() {
             item.player,
             item.prediction,
             item.analysis
-        ].filter(Boolean).join(" ").toLowerCase();
+        ]
+            .filter(Boolean)
+            .join(" ")
+            .toLowerCase();
 
         const matchesSearch =
-            !searchTerm || searchableText.includes(searchTerm);
+            !searchTerm ||
+            searchableText.includes(searchTerm);
 
         const matchesMarket =
-            !selectedMarket || item.market === selectedMarket;
+            !selectedMarket ||
+            item.market === selectedMarket;
 
         return matchesSearch && matchesMarket;
     });
 
-    elements.resultsCount.textContent =
-        filtered.length + " prediction(s) found";
+    /*
+     * The database trigger separately enforces the four-game
+     * verification limit. This grouping is an additional display safeguard.
+     */
 
-    if (filtered.length === 0) {
-        elements.predictionsList.innerHTML =
-            '<div class="empty">No predictions match your search. Try changing your filters or check again later.</div>';
+    const dailyGroups = new Map();
 
-        return;
-    }
+    filtered.forEach(function(item) {
+        if (!item.match_date) {
+            return;
+        }
 
-    elements.predictionsList.innerHTML = filtered.map(function(item) {
-        const homeTeam = escapeHTML(item.home_team || "Home team");
-        const awayTeam = escapeHTML(item.away_team || "Away team");
-        const market = escapeHTML(item.market || "Not specified");
-        const prediction = escapeHTML(item.prediction || "Not specified");
-        const player = escapeHTML(item.player || "");
-        const analysis = escapeHTML(item.analysis || "No additional analysis provided.");
-        const matchDate = escapeHTML(formatMatchDate(item.match_date));
+        const dateKey =
+            String(item.match_date).slice(0, 10);
 
-        const oddsValue =
-            item.odds !== null && item.odds !== undefined
-                ? escapeHTML(item.odds)
-                : "Not specified";
+        if (!dailyGroups.has(dateKey)) {
+            dailyGroups.set(dateKey, []);
+        }
 
-        return `
-            <article class="prediction-card">
-                <div class="match-date">${matchDate}</div>
+        const games = dailyGroups.get(dateKey);
+
+        if (games.length < DAILY_LIMIT) {
+            games.push(item);
+        }
+    });
+
+    elements.predictionsList.replaceChildren();
+
+    let displayedCount = 0;
+
+    dailyGroups.forEach(function(games, dateKey) {
+        const heading = document.createElement("h3");
+
+        heading.className = "date-heading";
+
+        heading.textContent =
+            formatMatchDate(dateKey) +
+            " — " + games.length +
+            "/" + DAILY_LIMIT + " games";
+
+        elements.predictionsList.appendChild(heading);
+
+        games.forEach(function(item) {
+            const card =
+                document.createElement("article");
+
+            card.className = "prediction-card";
+
+            const homeTeam =
+                escapeHTML(item.home_team || "Home team");
+
+            const awayTeam =
+                escapeHTML(item.away_team || "Away team");
+
+            const market =
+                escapeHTML(item.market || "Not specified");
+
+            const prediction =
+                escapeHTML(item.prediction || "Not specified");
+
+            const player =
+                escapeHTML(item.player || "");
+
+            const analysis =
+                escapeHTML(
+                    item.analysis ||
+                    "No additional analysis provided."
+                );
+
+            const oddsValue =
+                item.odds !== null &&
+                item.odds !== undefined
+                    ? escapeHTML(item.odds)
+                    : "Not specified";
+
+            card.innerHTML = `
+                <div class="match-date">
+                    ${escapeHTML(dateKey)}
+                </div>
 
                 <div class="teams">
                     ${homeTeam} vs ${awayTeam}
@@ -862,11 +1045,34 @@ function renderPredictions() {
                     <span class="label">Analysis</span>
                     ${analysis}
                 </div>
-            </article>
-        `;
-    }).join("");
+            `;
+
+            elements.predictionsList.appendChild(card);
+
+            displayedCount++;
+        });
+    });
+
+    elements.resultsCount.textContent =
+        displayedCount +
+        " verified premium prediction(s) displayed";
+
+    if (displayedCount === 0) {
+        const empty = document.createElement("div");
+
+        empty.className = "empty";
+
+        empty.textContent =
+            "No verified premium predictions are available for these filters. Please check again later.";
+
+        elements.predictionsList.appendChild(empty);
+    }
 }
 
+
+/*
+ * Main page initialization.
+ */
 
 async function initializePremiumPage() {
     showOnly(elements.loadingPanel);
@@ -874,7 +1080,10 @@ async function initializePremiumPage() {
     elements.loadingText.textContent =
         "Checking your login and premium subscription...";
 
-    setSubscriptionStatus("Checking subscription", "loading");
+    setSubscriptionStatus(
+        "Checking subscription",
+        "loading"
+    );
 
     try {
         const loggedIn = await verifyLogin();
@@ -883,7 +1092,8 @@ async function initializePremiumPage() {
             return;
         }
 
-        const hasSubscription = await verifySubscription();
+        const hasSubscription =
+            await verifySubscription();
 
         if (!hasSubscription) {
             return;
@@ -894,66 +1104,142 @@ async function initializePremiumPage() {
         await loadPredictions();
 
     } catch (error) {
-        console.error("Premium page error:", error);
+        console.error(
+            "Premium page initialization error:",
+            error
+        );
 
         elements.errorMessage.textContent =
-            error.message || "An unexpected error occurred.";
+            error.message ||
+            "An unexpected error occurred.";
 
         showOnly(elements.errorPanel);
     }
 }
 
 
-elements.searchInput.addEventListener("input", renderPredictions);
+/*
+ * Search and filtering.
+ */
 
-elements.marketFilter.addEventListener("change", renderPredictions);
+elements.searchInput.addEventListener(
+    "input",
+    renderPredictions
+);
 
-elements.clearFiltersButton.addEventListener("click", function() {
-    elements.searchInput.value = "";
-    elements.marketFilter.value = "";
+elements.marketFilter.addEventListener(
+    "change",
+    renderPredictions
+);
 
-    renderPredictions();
-});
+elements.clearFiltersButton.addEventListener(
+    "click",
+    function() {
+        elements.searchInput.value = "";
+        elements.marketFilter.value = "";
 
-
-elements.refreshButton.addEventListener("click", async function() {
-    try {
-        await loadPredictions();
-    } catch (error) {
-        console.error(error);
-
-        elements.predictionsList.innerHTML =
-            '<div class="empty">Could not refresh predictions. Please try again.</div>';
-
-        elements.resultsCount.textContent = "Refresh failed";
+        renderPredictions();
     }
-});
+);
 
 
-elements.retryButton.addEventListener("click", initializePremiumPage);
+/*
+ * Refresh verified predictions.
+ */
+
+elements.refreshButton.addEventListener(
+    "click",
+    async function() {
+        try {
+            await loadPredictions();
+
+        } catch (error) {
+            console.error(
+                "Premium refresh error:",
+                error
+            );
+
+            elements.predictionsList.replaceChildren();
+
+            const message = document.createElement("div");
+
+            message.className = "empty";
+
+            message.textContent =
+                "Could not refresh predictions. Please try again.";
+
+            elements.predictionsList.appendChild(message);
+
+            elements.resultsCount.textContent =
+                "Refresh failed";
+        }
+    }
+);
 
 
-elements.logoutButton.addEventListener("click", async function() {
-    elements.logoutButton.disabled = true;
+/*
+ * Retry initialization after an error.
+ */
 
-    try {
-        const { error } = await client.auth.signOut();
-
-        if (error) {
-            throw error;
+elements.retryButton.addEventListener(
+    "click",
+    async function() {
+        if (pageIsStarting) {
+            return;
         }
 
-        window.location.href = "./login.html";
+        pageIsStarting = true;
+        elements.retryButton.disabled = true;
 
-    } catch (error) {
-        console.error("Logout error:", error);
+        try {
+            await initializePremiumPage();
 
-        alert("Logout failed. Please try again.");
-
-        elements.logoutButton.disabled = false;
+        } finally {
+            pageIsStarting = false;
+            elements.retryButton.disabled = false;
+        }
     }
-});
+);
 
+
+/*
+ * Sign out using Supabase Auth.
+ */
+
+elements.logoutButton.addEventListener(
+    "click",
+    async function() {
+        elements.logoutButton.disabled = true;
+
+        try {
+            const { error } =
+                await client.auth.signOut();
+
+            if (error) {
+                throw error;
+            }
+
+            window.location.href = "./login.html";
+
+        } catch (error) {
+            console.error(
+                "Logout error:",
+                error
+            );
+
+            alert(
+                "Logout failed. Please check your connection and try again."
+            );
+
+            elements.logoutButton.disabled = false;
+        }
+    }
+);
+
+
+/*
+ * Start the application.
+ */
 
 async function startPage() {
     if (!window.supabase) {
@@ -973,9 +1259,6 @@ async function startPage() {
     await initializePremiumPage();
 }
 
-
 startPage();
-</script>
-
-</body>
+</script></body>
 </html>
