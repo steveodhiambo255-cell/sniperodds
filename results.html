@@ -1,649 +1,585 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta
-        name="viewport"
-        content="width=device-width, initial-scale=1.0"
-    >
-
-    <title>SNIPER ODDS | Results</title>
-
-    <meta
-        name="description"
-        content="SNIPER ODDS football analysis results and historical performance."
-    >
-
-  
-  <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        html {
-            scroll-behavior: smooth;
-        }
-
-        body {
-            font-family: Arial, Helvetica, sans-serif;
-            background: #07111f;
-            color: #f5f7fa;
-            line-height: 1.6;
-        }
-
-        a {
-            text-decoration: none;
-            color: inherit;
-        }
-
-        button {
-            font: inherit;
-            cursor: pointer;
-        }
-
-        .container {
-            width: 92%;
-            max-width: 1050px;
-            margin: auto;
-        }
-
-        /* HEADER */
-
-        header {
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            background: rgba(7,17,31,0.97);
-            border-bottom: 1px solid rgba(255,255,255,0.08);
-            backdrop-filter: blur(12px);
-        }
-
-        .nav {
-            min-height: 68px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 12px;
-        }
-
-        .logo {
-            font-size: 20px;
-            font-weight: 900;
-            letter-spacing: 1px;
-        }
-
-        .logo span {
-            color: #32d583;
-        }
-
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            font-size: 14px;
-        }
-
-        .nav-links a {
-            color: #bdc8d5;
-        }
-
-        .nav-links a:hover {
-            color: #32d583;
-        }
-
-        .account-btn {
-            background: #32d583;
-            color: #06110d !important;
-            padding: 9px 13px;
-            border-radius: 8px;
-            font-weight: 800;
-        }
-
-        /* PAGE */
-
-        main {
-            padding: 45px 0 70px;
-        }
-
-        .page-heading {
-            text-align: center;
-            max-width: 720px;
-            margin: 0 auto 35px;
-        }
-
-        .eyebrow {
-            color: #32d583;
-            font-size: 12px;
-            font-weight: 900;
-            letter-spacing: 1.5px;
-            text-transform: uppercase;
-            margin-bottom: 9px;
-        }
-
-        .page-heading h1 {
-            font-size: clamp(31px, 8vw, 48px);
-            line-height: 1.1;
-            margin-bottom: 12px;
-        }
-
-        .page-heading p {
-            color: #96a4b5;
-        }
-
-        /* SUMMARY */
-
-        .summary-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 14px;
-            margin-bottom: 35px;
-        }
-
-        .summary-card {
-            background: #0c1929;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 14px;
-            padding: 20px;
-            text-align: center;
-        }
-
-        .summary-number {
-            font-size: 28px;
-            font-weight: 900;
-            margin-bottom: 2px;
-        }
-
-        .summary-label {
-            color: #8998aa;
-            font-size: 13px;
-        }
-
-        /* SECTION */
-
-        .section {
-            margin-bottom: 35px;
-        }
-
-        .section-title {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .section-title h2 {
-            font-size: 22px;
-        }
-
-        .section-title span {
-            color: #7f8da0;
-            font-size: 12px;
-        }
-
-        /* RESULT CARD */
-
-        .results-list {
-            display: grid;
-            gap: 12px;
-        }
-
-        .result-card {
-            background: #0c1929;
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 13px;
-            padding: 18px;
-        }
-
-        .result-top {
-            display: flex;
-            justify-content: space-between;
-            gap: 12px;
-            margin-bottom: 10px;
-        }
-
-        .result-date {
-            color: #8190a2;
-            font-size: 12px;
-        }
-
-        .status {
-            padding: 4px 9px;
-            border-radius: 20px;
-            font-size: 10px;
-            font-weight: 900;
-        }
-
-        .status-won {
-            background: rgba(50,213,131,0.13);
-            color: #32d583;
-        }
-
-        .status-lost {
-            background: rgba(214,69,69,0.13);
-            color: #ff7676;
-        }
-
-        .status-pending {
-            background: rgba(255,193,7,0.12);
-            color: #ffc857;
-        }
-
-        .teams {
-            font-size: 17px;
-            font-weight: 800;
-            margin-bottom: 5px;
-        }
-
-        .market {
-            color: #32d583;
-            font-size: 13px;
-            font-weight: 700;
-            margin-bottom: 7px;
-        }
-
-        .prediction {
-            color: #c6d0dc;
-            font-size: 14px;
-        }
-
-        .result-note {
-            color: #758397;
-            font-size: 12px;
-            margin-top: 9px;
-        }
-
-        /* EMPTY STATE */
-
-        .empty-state {
-            background: #0c1929;
-            border: 1px dashed rgba(255,255,255,0.13);
-            border-radius: 13px;
-            padding: 30px 20px;
-            text-align: center;
-        }
-
-        .empty-icon {
-            font-size: 36px;
-            margin-bottom: 8px;
-        }
-
-        .empty-state h3 {
-            margin-bottom: 5px;
-        }
-
-        .empty-state p {
-            color: #8795a7;
-            font-size: 14px;
-        }
-
-        /* PREMIUM */
-
-        .premium-box {
-            background:
-                linear-gradient(
-                    135deg,
-                    rgba(50,213,131,0.10),
-                    rgba(255,255,255,0.025)
-                );
-
-            border: 1px solid rgba(50,213,131,0.20);
-            border-radius: 15px;
-            padding: 27px;
-            text-align: center;
-        }
-
-        .premium-lock {
-            font-size: 40px;
-            margin-bottom: 8px;
-        }
-
-        .premium-box h2 {
-            margin-bottom: 7px;
-        }
-
-        .premium-box p {
-            color: #98a6b7;
-            font-size: 14px;
-            max-width: 620px;
-            margin: 0 auto 18px;
-        }
-
-        .primary-btn {
-            border: none;
-            background: #32d583;
-            color: #06110d;
-            padding: 12px 19px;
-            border-radius: 9px;
-            font-weight: 900;
-        }
-
-        /* DISCLAIMER */
-
-        .notice {
-            background: rgba(255,255,255,0.035);
-            border-left: 3px solid #32d583;
-            border-radius: 8px;
-            padding: 17px;
-            color: #99a7b8;
-            font-size: 13px;
-        }
-
-        /* FOOTER */
-
-        footer {
-            background: #050d18;
-            border-top: 1px solid rgba(255,255,255,0.08);
-            padding: 30px 0;
-        }
-
-        .footer-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
-            margin-bottom: 13px;
-        }
-
-        .footer-links a {
-            color: #8593a5;
-            font-size: 13px;
-        }
-
-        .copyright {
-            color: #59697d;
-            font-size: 12px;
-        }
-
-        /* MOBILE */
-
-        @media (max-width: 700px) {
-
-            .nav-links {
-                gap: 8px;
-            }
-
-            .nav-links a {
-                display: none;
-            }
-
-            .nav-links a[href="index.html"],
-            .nav-links a[href="account.html"] {
-                display: inline-block;
-            }
-
-            .summary-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .summary-card {
-                padding: 15px;
-            }
-
-            .result-top {
-                align-items: flex-start;
-            }
-
-            .premium-box {
-                padding: 22px 17px;
-            }
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07110d">
+<title>Results & History | SNIPER ODDS</title>
+<style>
+:root {
+  --bg:#07110d;
+  --card:#101d16;
+  --green:#32d583;
+  --text:#f0f7f2;
+  --muted:#9aafa2;
+  --border:#23382b;
+}
+* { box-sizing:border-box; }
+body {
+  margin:0;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,sans-serif;
+}
+header {
+  padding:20px 16px;
+  border-bottom:1px solid var(--border);
+  background:#0b1710;
+}
+.header-inner, main, footer {
+  width:min(100% - 28px,1000px);
+  margin:auto;
+}
+.brand {
+  color:var(--green);
+  font-weight:900;
+  font-size:22px;
+  letter-spacing:1px;
+}
+.subtitle {
+  color:var(--muted);
+  font-size:11px;
+  margin-top:5px;
+  letter-spacing:2px;
+}
+nav {
+  display:flex;
+  flex-wrap:wrap;
+  gap:9px;
+  margin-top:18px;
+}
+nav a, button, select, input {
+  border:1px solid var(--border);
+  border-radius:8px;
+  padding:10px 12px;
+  font-size:14px;
+}
+nav a {
+  color:var(--text);
+  text-decoration:none;
+  background:var(--card);
+}
+nav a:hover { border-color:var(--green); }
+main { padding-top:25px; padding-bottom:35px; }
+h1 { font-size:27px; margin:0 0 8px; }
+.intro { color:var(--muted); line-height:1.6; }
+.notice {
+  background:#102219;
+  border:1px solid #24543a;
+  border-radius:10px;
+  padding:13px;
+  margin:18px 0;
+  color:#c8e8d3;
+  font-size:13px;
+  line-height:1.5;
+}
+.filters {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin:18px 0;
+}
+input,select {
+  width:100%;
+  background:#0c1710;
+  color:var(--text);
+  min-width:0;
+}
+button {
+  cursor:pointer;
+  background:var(--green);
+  color:#06110a;
+  font-weight:bold;
+  border:none;
+}
+.stats {
+  display:grid;
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:10px;
+  margin:18px 0;
+}
+.stat,.entry,.empty {
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:15px;
+}
+.stat strong {
+  display:block;
+  font-size:23px;
+  margin-bottom:5px;
+}
+.stat span { color:var(--muted); font-size:12px; }
+.entry { margin:12px 0; }
+.entry-top {
+  display:flex;
+  justify-content:space-between;
+  gap:12px;
+  align-items:flex-start;
+}
+.match { font-weight:bold; font-size:16px; line-height:1.4; }
+.league,.date,.details {
+  color:var(--muted);
+  font-size:12px;
+  margin-top:7px;
+  line-height:1.5;
+  overflow-wrap:anywhere;
+}
+.pick { margin-top:12px; line-height:1.5; }
+.badge {
+  display:inline-block;
+  padding:6px 9px;
+  border-radius:20px;
+  font-size:11px;
+  font-weight:bold;
+  white-space:nowrap;
+}
+.won { background:#123e29; color:#6ff0a6; }
+.lost { background:#451d22; color:#ff9aa4; }
+.pending { background:#493b14; color:#ffdf80; }
+.void { background:#29332d; color:#d1ddd4; }
+.source {
+  display:inline-block;
+  margin-top:12px;
+  padding:5px 8px;
+  background:#1a2a20;
+  border-radius:6px;
+  color:#c5e7d0;
+  font-size:11px;
+}
+.message {
+  padding:22px 12px;
+  color:var(--muted);
+  text-align:center;
+  line-height:1.6;
+}
+.error { color:#ff9aa4; }
+footer {
+  border-top:1px solid var(--border);
+  padding:20px 0;
+  color:var(--muted);
+  font-size:12px;
+  line-height:1.6;
+}
+@media(max-width:430px) {
+  .filters { grid-template-columns:1fr; }
+  .stats { gap:6px; }
+  .stat { padding:10px; }
+  .stat strong { font-size:20px; }
+  .entry-top { align-items:flex-start; }
+}
+</style>
 </head>
-
 <body>
 
 <header>
-    <div class="container nav">
+  <div class="header-inner">
+    <div class="brand">SNIPER ODDS</div>
+    <div class="subtitle">FOOTBALL INTELLIGENCE</div>
 
-        <a href="index.html" class="logo">
-            SNIPER <span>ODDS</span>
-        </a>
-
-        <nav class="nav-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="results.html">
-                Results
-            </a>
-
-            <a href="subscription.html">
-                Plans
-            </a>
-
-            <a
-                href="account.html"
-                class="account-btn">
-                My Account
-            </a>
-
-        </nav>
-
-    </div>
+    <nav>
+      <a href="./index.html">Home</a>
+      <a href="./account.html">My Account</a>
+      <a href="./analysis.html">Free Analysis</a>
+      <a href="./premium_analysis.html">Premium Analysis</a>
+      <a href="./subscription.html">Plans</a>
+      <a href="./results.html">Results & History</a>
+      <a href="./login.html">Login</a>
+    </nav>
+  </div>
 </header>
 
-
 <main>
+  <h1>Results & History</h1>
+  <p class="intro">
+    Review previous football analysis and follow each prediction's
+    recorded settlement status.
+  </p>
 
-    <div class="container">
+  <div class="notice">
+    Results are displayed from saved SNIPER ODDS records. A prediction
+    remains pending until an authorized administrator settles it.
+    Historical results are not guarantees of future performance.
+  </div>
 
-        <!-- PAGE INTRO -->
+  <div id="pageMessage" class="message">Checking your login...</div>
 
-        <div class="page-heading">
-
-            <div class="eyebrow">
-                Performance & History
-            </div>
-
-            <h1>
-                SNIPER ODDS Results
-            </h1>
-
-            <p>
-                Review published football analysis and recorded outcomes.
-                Results are presented for transparency and historical review.
-            </p>
-
-        </div>
-
-
-        <!-- SUMMARY -->
-
-        <div class="summary-grid">
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-number"
-                    id="totalResults">
-                    —
-                </div>
-
-                <div class="summary-label">
-                    Recorded Results
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-number"
-                    id="wonResults">
-                    —
-                </div>
-
-                <div class="summary-label">
-                    Won
-                </div>
-
-            </div>
-
-
-            <div class="summary-card">
-
-                <div
-                    class="summary-number"
-                    id="lostResults">
-                    —
-                </div>
-
-                <div class="summary-label">
-                    Lost
-                </div>
-
-            </div>
-
-        </div>
-
-
-        <!-- RECENT RESULTS -->
-
-        <section class="section">
-
-            <div class="section-title">
-
-                <h2>
-                    📊 Recent Results
-                </h2>
-
-                <span>
-                    Recorded outcomes
-                </span>
-
-            </div>
-
-
-            <div
-                class="results-list"
-                id="resultsList">
-
-                <div class="empty-state">
-
-                    <div class="empty-icon">
-                        📋
-                    </div>
-
-                    <h3>
-                        No results published yet
-                    </h3>
-
-                    <p>
-                        Published results will appear here once
-                        SNIPER ODDS records them.
-                    </p>
-
-                </div>
-
-            </div>
-
-        </section>
-
-
-        <!-- PREMIUM HISTORY -->
-
-        <section class="section">
-
-            <div class="premium-box">
-
-                <div class="premium-lock">
-                    🔒
-                </div>
-
-                <h2>
-                    Premium Results History
-                </h2>
-
-                <p>
-                    Detailed premium history will be available to
-                    authenticated subscribers. This section will include
-                    previous premium selections and their recorded outcomes.
-                </p>
-
-                <button
-                    class="primary-btn"
-                    type="button"
-                    onclick="window.location.href='login.html'">
-                    Login to Continue
-                </button>
-
-            </div>
-
-        </section>
-
-
-        <!-- RESPONSIBLE USE -->
-
-        <section class="section">
-
-            <div class="notice">
-
-                <strong>Important:</strong>
-                Historical results do not guarantee future outcomes.
-                SNIPER ODDS provides football analysis and information;
-                users should make their own decisions and use any betting
-                services responsibly.
-
-            </div>
-
-        </section>
-
+  <section id="historyArea" hidden>
+    <div class="stats">
+      <div class="stat">
+        <strong id="wonCount">0</strong>
+        <span>WON</span>
+      </div>
+      <div class="stat">
+        <strong id="lostCount">0</strong>
+        <span>LOST</span>
+      </div>
+      <div class="stat">
+        <strong id="pendingCount">0</strong>
+        <span>PENDING</span>
+      </div>
     </div>
 
+    <div class="filters">
+      <input id="searchInput" type="search"
+        placeholder="Search teams, league or prediction">
+
+      <select id="statusFilter">
+        <option value="all">All statuses</option>
+        <option value="won">Won</option>
+        <option value="lost">Lost</option>
+        <option value="pending">Pending</option>
+        <option value="void">Void</option>
+      </select>
+
+      <select id="sourceFilter">
+        <option value="all">Free & Premium</option>
+        <option value="free">Free Analysis</option>
+        <option value="premium">Premium Analysis</option>
+      </select>
+
+      <select id="periodFilter">
+        <option value="all">All available dates</option>
+        <option value="today">Today</option>
+        <option value="yesterday">Yesterday</option>
+        <option value="week">Last 7 days</option>
+        <option value="month">Last 30 days</option>
+      </select>
+    </div>
+
+    <div id="resultsMessage" class="message">
+      Loading saved predictions...
+    </div>
+    <div id="resultsList"></div>
+  </section>
 </main>
 
-
 <footer>
-
-    <div class="container">
-
-        <div class="footer-links">
-
-            <a href="index.html">
-                Home
-            </a>
-
-            <a href="results.html">
-                Results
-            </a>
-
-            <a href="subscription.html">
-                Plans
-            </a>
-
-            <a href="account.html">
-                Account
-            </a>
-
-            <a href="contact.html">
-                Contact
-            </a>
-
-            <a href="responsible_gambling.html">
-                Responsible Gambling
-            </a>
-
-        </div>
-
-        <div class="copyright">
-            © 2026 SNIPER ODDS. All rights reserved.
-        </div>
-
-    </div>
-
+  SNIPER ODDS provides football analysis and statistical insights.
+  Football predictions involve uncertainty. Please use information
+  responsibly.
 </footer>
 
-
-<!-- Supabase -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+const SUPABASE_URL =
+  "https://gddyhbjslwcgtqdtbzvu.supabase.co";
 
-<!-- Existing project JavaScript -->
-<script src="script.js"></script>
+const SUPABASE_KEY =
+  "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
+const db = window.supabase.createClient(
+  SUPABASE_URL,
+  SUPABASE_KEY
+);
+
+const pageMessage = document.getElementById("pageMessage");
+const historyArea = document.getElementById("historyArea");
+const resultsMessage = document.getElementById("resultsMessage");
+const resultsList = document.getElementById("resultsList");
+
+let allEntries = [];
+
+function kenyaDate(dateValue) {
+  if (!dateValue) return "";
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return "";
+
+  return new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Africa/Nairobi",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).format(date);
+}
+
+function displayDate(dateValue) {
+  if (!dateValue) return "Date unavailable";
+
+  const date = new Date(dateValue);
+  if (Number.isNaN(date.getTime())) return "Date unavailable";
+
+  return new Intl.DateTimeFormat("en-KE", {
+    timeZone: "Africa/Nairobi",
+    dateStyle: "medium",
+    timeStyle: "short"
+  }).format(date);
+}
+
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g, character => ({
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#039;"
+  })[character]);
+}
+
+function normalizedStatus(value) {
+  const status = String(value || "pending").toLowerCase();
+
+  if (["won", "lost", "void", "pending"].includes(status)) {
+    return status;
+  }
+
+  return "pending";
+}
+
+function statusLabel(status) {
+  return status.toUpperCase();
+}
+
+function getEntryDate(entry) {
+  return entry.source === "free"
+    ? entry.kickoff
+    : entry.match_date;
+}
+
+function isWithinPeriod(entry, period) {
+  if (period === "all") return true;
+
+  const value = getEntryDate(entry);
+  if (!value) return false;
+
+  const entryDate = new Date(value);
+  if (Number.isNaN(entryDate.getTime())) return false;
+
+  const now = new Date();
+  const today = kenyaDate(now);
+  const entryDay = kenyaDate(entryDate);
+
+  if (period === "today") {
+    return entryDay === today;
+  }
+
+  const todayStart = new Date(today + "T00:00:00+03:00");
+  const yesterday = new Date(
+    todayStart.getTime() - 24 * 60 * 60 * 1000
+  );
+  const yesterdayKey = kenyaDate(yesterday);
+
+  if (period === "yesterday") {
+    return entryDay === yesterdayKey;
+  }
+
+  const days = period === "week" ? 7 : 30;
+  return entryDate.getTime() >=
+    now.getTime() - days * 24 * 60 * 60 * 1000;
+}
+
+function entrySearchText(entry) {
+  return [
+    entry.matchName,
+    entry.league,
+    entry.pick,
+    entry.market,
+    entry.player,
+    entry.status,
+    entry.source
+  ].join(" ").toLowerCase();
+}
+
+function renderStats(entries) {
+  document.getElementById("wonCount").textContent =
+    entries.filter(e => e.status === "won").length;
+
+  document.getElementById("lostCount").textContent =
+    entries.filter(e => e.status === "lost").length;
+
+  document.getElementById("pendingCount").textContent =
+    entries.filter(e => e.status === "pending").length;
+}
+
+function renderEntries() {
+  const status = document.getElementById("statusFilter").value;
+  const source = document.getElementById("sourceFilter").value;
+  const period = document.getElementById("periodFilter").value;
+  const search = document.getElementById("searchInput")
+    .value.trim().toLowerCase();
+
+  const filtered = allEntries.filter(entry => {
+    if (status !== "all" && entry.status !== status) return false;
+    if (source !== "all" && entry.source !== source) return false;
+    if (!isWithinPeriod(entry, period)) return false;
+    if (search && !entrySearchText(entry).includes(search)) return false;
+    return true;
+  });
+
+  renderStats(allEntries);
+
+  if (!filtered.length) {
+    resultsList.innerHTML = "";
+    resultsMessage.textContent =
+      "No saved predictions match these filters.";
+    resultsMessage.className = "message";
+    return;
+  }
+
+  resultsMessage.textContent =
+    filtered.length + " prediction(s) found.";
+
+  resultsList.innerHTML = filtered.map(entry => {
+    const status = normalizedStatus(entry.status);
+    const dateValue = getEntryDate(entry);
+
+    return `
+      <article class="entry">
+        <div class="entry-top">
+          <div>
+            <div class="match">${escapeHTML(entry.matchName)}</div>
+            <div class="league">${escapeHTML(entry.league || "Football")}</div>
+          </div>
+          <span class="badge ${status}">
+            ${statusLabel(status)}
+          </span>
+        </div>
+
+        <div class="pick">
+          <strong>Prediction:</strong>
+          ${escapeHTML(entry.pick || "Not specified")}
+        </div>
+
+        ${entry.odds != null ? `
+          <div class="details">
+            <strong>Odds:</strong> ${escapeHTML(entry.odds)}
+          </div>
+        ` : ""}
+
+        ${entry.market ? `
+          <div class="details">
+            <strong>Market:</strong> ${escapeHTML(entry.market)}
+          </div>
+        ` : ""}
+
+        ${entry.player ? `
+          <div class="details">
+            <strong>Player:</strong> ${escapeHTML(entry.player)}
+          </div>
+        ` : ""}
+
+        <div class="date">
+          <strong>Match date:</strong> ${escapeHTML(displayDate(dateValue))}
+        </div>
+
+        ${entry.settled_at ? `
+          <div class="date">
+            <strong>Settled:</strong>
+            ${escapeHTML(displayDate(entry.settled_at))}
+          </div>
+        ` : ""}
+
+        <span class="source">
+          ${entry.source === "premium" ? "PREMIUM ANALYSIS" : "FREE ANALYSIS"}
+        </span>
+      </article>
+    `;
+  }).join("");
+}
+
+async function loadHistory() {
+  pageMessage.textContent = "Checking your login...";
+  historyArea.hidden = true;
+
+  const { data: sessionData, error: sessionError } =
+    await db.auth.getSession();
+
+  if (sessionError || !sessionData.session) {
+    pageMessage.innerHTML =
+      'Please <a style="color:#32d583" href="./login.html">log in</a> ' +
+      'to view Results & History.';
+    return;
+  }
+
+  pageMessage.textContent = "Loading saved results...";
+
+  const [freeResponse, premiumResponse] = await Promise.all([
+    db.from("free_predictions")
+      .select("id,match,league,pick,odds,kickoff,result,settled_at,is_verified")
+      .eq("is_verified", true)
+      .order("kickoff", { ascending: false })
+      .limit(500),
+
+    db.from("premium_predictions")
+      .select("id,match_date,home_team,away_team,prediction,odds,analysis,market,player,result,settled_at,is_verified")
+      .eq("is_verified", true)
+      .order("match_date", { ascending: false })
+      .limit(500)
+  ]);
+
+  if (freeResponse.error) {
+    console.error("Free history:", freeResponse.error);
+  }
+
+  if (premiumResponse.error) {
+    console.error("Premium history:", premiumResponse.error);
+  }
+
+  const freeRows = freeResponse.error
+    ? []
+    : (freeResponse.data || []);
+
+  const premiumRows = premiumResponse.error
+    ? []
+    : (premiumResponse.data || []);
+
+  const freeEntries = freeRows.map(row => ({
+    source: "free",
+    matchName: row.match,
+    league: row.league,
+    pick: row.pick,
+    odds: row.odds,
+    kickoff: row.kickoff,
+    status: normalizedStatus(row.result),
+    settled_at: row.settled_at
+  }));
+
+  const premiumEntries = premiumRows.map(row => ({
+    source: "premium",
+    matchName: row.home_team + " vs " + row.away_team,
+    league: "Premium Football Analysis",
+    pick: row.prediction,
+    odds: row.odds,
+    match_date: row.match_date,
+    market: row.market,
+    player: row.player,
+    status: normalizedStatus(row.result),
+    settled_at: row.settled_at
+  }));
+
+  allEntries = [...freeEntries, ...premiumEntries];
+
+  allEntries.sort((a, b) => {
+    const dateA = new Date(getEntryDate(a) || 0).getTime();
+    const dateB = new Date(getEntryDate(b) || 0).getTime();
+    return dateB - dateA;
+  });
+
+  pageMessage.textContent = "";
+  historyArea.hidden = false;
+
+  if (premiumResponse.error) {
+    resultsMessage.textContent =
+      "Premium history may be unavailable. Your current subscription " +
+      "and database permissions determine access to premium records.";
+    resultsMessage.className = "message";
+  }
+
+  renderEntries();
+}
+
+["searchInput", "statusFilter", "sourceFilter", "periodFilter"]
+  .forEach(id => {
+    document.getElementById(id).addEventListener("input", renderEntries);
+    document.getElementById(id).addEventListener("change", renderEntries);
+  });
+
+loadHistory().catch(error => {
+  console.error(error);
+  pageMessage.textContent =
+    "We could not load Results & History. Please refresh and try again.";
+  pageMessage.className = "message error";
+});
+</script>
 </body>
 </html>
