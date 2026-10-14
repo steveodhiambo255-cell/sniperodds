@@ -1,1168 +1,929 @@
 <!DOCTYPE html><html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>My Account | SNIPER ODDS</title>
-<meta name="description" content="Manage your SNIPER ODDS account, membership and premium football analysis.">
-<meta name="theme-color" content="#07111f">
-
-<style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>My Account | SNIPER ODDS</title>
+  <meta name="description" content="Manage your SNIPER ODDS membership, premium access, referral rewards and prediction history.">  <style>
     :root {
-        --bg: #07111f;
-        --surface: #0d1a2b;
-        --surface-light: #12243a;
-        --green: #32d583;
-        --green-dark: #123c2b;
-        --text: #f4f7fb;
-        --muted: #9bacc1;
-        --border: #22364d;
-        --red: #ff7777;
-        --gold: #f5c76b;
-        --radius: 18px;
+      --bg: #07110d;
+      --panel: #101d17;
+      --panel2: #14251c;
+      --green: #32d583;
+      --green-dark: #1e9e60;
+      --text: #f2fff7;
+      --muted: #a4b9ac;
+      --border: #284436;
+      --red: #ff7777;
+      --yellow: #ffd166;
     }
 
     * {
-        box-sizing: border-box;
-    }
-
-    html {
-        scroll-behavior: smooth;
+      box-sizing: border-box;
     }
 
     body {
-        margin: 0;
-        min-height: 100vh;
-        background:
-            radial-gradient(ellipse at top right, rgba(50, 213, 131, .08), transparent 35%),
-            var(--bg);
-        color: var(--text);
-        font-family: Arial, Helvetica, sans-serif;
-        line-height: 1.6;
+      margin: 0;
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
     }
 
     a {
-        color: inherit;
+      color: var(--green);
+      text-decoration: none;
     }
 
-    button,
-    a {
-        -webkit-tap-highlight-color: transparent;
+    a:hover {
+      text-decoration: underline;
     }
 
-    button,
-    .btn {
-        font: inherit;
+    header {
+      background: #0b1711;
+      border-bottom: 1px solid var(--border);
+      padding: 17px 5%;
     }
 
-    .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        background: rgba(7, 17, 31, .96);
-        border-bottom: 1px solid var(--border);
-        backdrop-filter: blur(12px);
-    }
-
-    .nav-container {
-        width: min(1120px, 92%);
-        min-height: 72px;
-        margin: auto;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 16px;
+    .header-inner {
+      max-width: 1100px;
+      margin: auto;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      flex-wrap: wrap;
     }
 
     .brand {
-        color: var(--green);
-        text-decoration: none;
-        font-size: 21px;
-        font-weight: 900;
-        letter-spacing: 1.2px;
-        white-space: nowrap;
+      font-size: 21px;
+      font-weight: 900;
+      letter-spacing: 1px;
+      color: var(--green);
     }
 
-    .brand span {
-        display: block;
-        margin-top: -4px;
-        color: var(--muted);
-        font-size: 9px;
-        letter-spacing: 3px;
+    .brand small {
+      display: block;
+      color: var(--muted);
+      font-size: 10px;
+      letter-spacing: 3px;
+      font-weight: 600;
     }
 
-    .nav-links {
-        display: flex;
-        align-items: center;
-        gap: 19px;
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+      font-size: 13px;
     }
 
-    .nav-links a {
-        color: #d7e0eb;
-        text-decoration: none;
-        font-size: 13px;
-        transition: color .2s ease;
-    }
-
-    .nav-links a:hover {
-        color: var(--green);
-    }
-
-    .logout-btn {
-        padding: 9px 13px;
-        border: 1px solid #63343b;
-        border-radius: 9px;
-        color: #ffaaaa;
-        background: #24151e;
-        cursor: pointer;
-    }
-
-    .logout-btn:disabled {
-        opacity: .6;
-        cursor: wait;
+    nav a {
+      color: var(--text);
     }
 
     main {
-        width: min(1120px, 92%);
-        margin: 0 auto;
-        padding: 36px 0 55px;
+      width: min(1100px, 92%);
+      margin: 30px auto 55px;
     }
 
-    .eyebrow {
-        color: var(--green);
-        font-size: 11px;
-        font-weight: 800;
-        letter-spacing: 2px;
-        text-transform: uppercase;
+    .welcome {
+      margin-bottom: 24px;
     }
 
-    .page-heading {
-        margin-bottom: 26px;
+    .welcome h1 {
+      font-size: clamp(27px, 5vw, 38px);
+      margin: 0 0 5px;
     }
 
-    .page-heading h1 {
-        margin: 7px 0;
-        font-size: clamp(28px, 5vw, 40px);
-        line-height: 1.2;
-        letter-spacing: -.8px;
+    .welcome p,
+    .muted {
+      color: var(--muted);
     }
 
-    .page-heading p {
-        margin: 10px 0 0;
-        max-width: 650px;
-        color: var(--muted);
-        font-size: 14px;
-    }
-
-    .notice {
-        display: none;
-        margin: 18px 0;
-        padding: 13px 15px;
-        border: 1px solid var(--border);
-        border-radius: 11px;
-        background: var(--surface);
-        color: var(--muted);
-        font-size: 13px;
-        overflow-wrap: anywhere;
-    }
-
-    .notice.error {
-        display: block;
-        color: #ffaaaa;
-        border-color: #63343b;
-    }
-
-    .notice.success {
-        display: block;
-        color: var(--green);
-        border-color: #236748;
-    }
-
-    .overview {
-        display: grid;
-        grid-template-columns: 1.15fr .85fr;
-        gap: 20px;
-        margin-bottom: 22px;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 18px;
     }
 
     .card {
-        min-width: 0;
-        padding: 24px;
-        border: 1px solid var(--border);
-        border-radius: var(--radius);
-        background: linear-gradient(145deg, #101f32, #0b1727);
-        box-shadow: 0 12px 35px rgba(0, 0, 0, .13);
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 22px;
+      min-width: 0;
     }
 
-    .card-heading {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        gap: 12px;
-        margin-bottom: 20px;
+    .card h2 {
+      font-size: 19px;
+      margin: 0 0 14px;
     }
 
-    .card-heading h2 {
-        margin: 0;
-        font-size: 18px;
-        letter-spacing: -.2px;
+    .wide {
+      grid-column: 1 / -1;
     }
 
-    .icon-box {
-        display: grid;
-        place-items: center;
-        flex: 0 0 42px;
-        height: 42px;
-        border: 1px solid #28543f;
-        border-radius: 12px;
-        background: var(--green-dark);
-        color: var(--green);
-        font-size: 19px;
+    .label {
+      display: block;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 13px;
     }
 
-    .detail {
-        padding: 13px 0;
-        border-bottom: 1px solid rgba(155, 172, 193, .13);
-    }
-
-    .detail:last-child {
-        border-bottom: 0;
-        padding-bottom: 0;
-    }
-
-    .detail-label {
-        display: block;
-        margin-bottom: 5px;
-        color: var(--muted);
-        font-size: 12px;
-    }
-
-    .detail-value {
-        display: block;
-        font-size: 15px;
-        font-weight: 700;
-        overflow-wrap: anywhere;
+    .value {
+      overflow-wrap: anywhere;
+      font-weight: 700;
     }
 
     .badge {
-        display: inline-flex;
-        align-items: center;
-        gap: 7px;
-        width: fit-content;
-        padding: 5px 10px;
-        border: 1px solid var(--border);
-        border-radius: 30px;
-        background: #152338;
-        color: #c5d0de;
-        font-size: 11px;
-        font-weight: 800;
-        text-transform: uppercase;
+      display: inline-block;
+      padding: 5px 11px;
+      border-radius: 30px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #24372c;
+      color: var(--yellow);
     }
 
     .badge.active {
-        border-color: #236748;
-        background: #103425;
-        color: var(--green);
+      color: #07110d;
+      background: var(--green);
     }
 
-    .badge.active::before {
-        content: "";
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: var(--green);
-    }
-
-    .subscription-card {
-        position: relative;
-        overflow: hidden;
-    }
-
-    .subscription-card::after {
-        content: "";
-        position: absolute;
-        width: 150px;
-        height: 150px;
-        right: -65px;
-        top: -65px;
-        border-radius: 50%;
-        background: rgba(50, 213, 131, .055);
-        pointer-events: none;
-    }
-
-    .plan-name {
-        margin: 2px 0 6px;
-        font-size: 25px;
-        font-weight: 800;
-    }
-
-    .plan-description {
-        margin: 0 0 20px;
-        color: var(--muted);
-        font-size: 13px;
+    .badge.error {
+      color: #fff;
+      background: #8c3030;
     }
 
     .btn {
-        display: inline-flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-        min-height: 45px;
-        padding: 11px 16px;
-        border: 1px solid transparent;
-        border-radius: 10px;
-        background: var(--green);
-        color: #06140c;
-        font-size: 13px;
-        font-weight: 800;
-        text-align: center;
-        text-decoration: none;
-        cursor: pointer;
-        transition: transform .18s ease, filter .18s ease;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 15px;
+      border: 1px solid var(--green);
+      border-radius: 9px;
+      background: var(--green);
+      color: #06120b;
+      font-weight: 800;
+      font-size: 13px;
+      cursor: pointer;
+      margin: 8px 7px 0 0;
+      text-decoration: none;
     }
 
     .btn:hover {
-        filter: brightness(1.06);
-        transform: translateY(-1px);
+      background: #65e9a3;
+      text-decoration: none;
     }
 
-    .btn:focus-visible,
-    a:focus-visible,
-    button:focus-visible {
-        outline: 2px solid var(--green);
-        outline-offset: 3px;
+    .btn.secondary {
+      color: var(--text);
+      background: transparent;
+      border-color: var(--border);
     }
 
-    .btn-secondary {
-        border-color: var(--border);
-        background: var(--surface-light);
-        color: var(--text);
+    .btn.secondary:hover {
+      border-color: var(--green);
     }
 
-    .btn-outline {
-        border-color: #2b7651;
-        background: transparent;
-        color: var(--green);
+    .status-message {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 12px;
+      overflow-wrap: anywhere;
     }
 
-    .btn-full {
-        width: 100%;
+    .referral-box {
+      margin-top: 15px;
+      padding: 14px;
+      background: var(--panel2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
     }
 
-    .section {
-        margin-top: 22px;
+    .referral-code {
+      font-size: 22px;
+      font-weight: 900;
+      letter-spacing: 2px;
+      overflow-wrap: anywhere;
     }
 
-    .premium-panel {
-        position: relative;
-        overflow: hidden;
-        border-color: #286446;
-        background:
-            radial-gradient(ellipse at top right, rgba(50, 213, 131, .11), transparent 48%),
-            linear-gradient(140deg, #10251f, #0b1926 70%);
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 15px;
     }
 
-    .premium-panel .card-heading {
-        margin-bottom: 12px;
+    .stat {
+      background: var(--panel2);
+      padding: 13px 8px;
+      border-radius: 10px;
+      text-align: center;
+      border: 1px solid var(--border);
     }
 
-    .premium-panel .card-heading h2 {
-        font-size: 21px;
+    .stat strong {
+      display: block;
+      font-size: 22px;
+      color: var(--green);
     }
 
-    .premium-intro {
-        max-width: 650px;
-        margin: 0 0 19px;
-        color: #b7c8d7;
-        font-size: 14px;
+    .stat span {
+      color: var(--muted);
+      font-size: 11px;
     }
 
-    .premium-status {
+    .table-wrap {
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 470px;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 11px 9px;
+      border-bottom: 1px solid var(--border);
+      text-align: left;
+    }
+
+    th {
+      color: var(--green);
+    }
+
+    footer {
+      padding: 25px 5%;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    footer a {
+      margin: 0 7px;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    .error-text {
+      color: var(--red);
+    }
+
+    @media (max-width: 700px) {
+      .grid {
+        grid-template-columns: 1fr;
+      }
+
+      .wide {
+        grid-column: auto;
+      }
+
+      nav {
+        gap: 11px;
+      }
+
+      .card {
         padding: 18px;
-        border: 1px solid rgba(155, 172, 193, .17);
-        border-radius: 12px;
-        background: rgba(5, 14, 24, .42);
+      }
     }
 
-    .premium-status h3 {
-        margin: 0 0 7px;
-        font-size: 16px;
+    @media (max-width: 380px) {
+      .stats {
+        grid-template-columns: 1fr;
+      }
     }
+  </style></head><body>
+<header>
+  <div class="header-inner">
+    <a class="brand" href="./index.html">
+      SNIPER ODDS
+      <small>FOOTBALL INTELLIGENCE</small>
+    </a><nav>
+  <a href="./index.html">Home</a>
+  <a href="./analysis.html">Free Analysis</a>
+  <a href="./subscription.html">Plans</a>
+  <a href="./results.html">Results &amp; History</a>
+  <a href="./contact.html">Contact</a>
+  <a href="./login.html" id="loginLink">Login</a>
+  <button class="btn secondary hidden" id="logoutButton" type="button">Logout</button>
+</nav>
 
-    .premium-status p {
-        margin: 0;
-        color: var(--muted);
-        font-size: 13px;
-    }
-
-    .premium-actions {
-        display: flex;
-        flex-wrap: wrap;
-        gap: 10px;
-        margin-top: 18px;
-    }
-
-    .quick-grid {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 14px;
-    }
-
-    .quick-link {
-        display: block;
-        padding: 19px;
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        background: var(--surface);
-        text-decoration: none;
-        transition: border-color .2s ease, transform .2s ease;
-    }
-
-    .quick-link:hover {
-        border-color: #2b7651;
-        transform: translateY(-2px);
-    }
-
-    .quick-link .quick-icon {
-        display: block;
-        margin-bottom: 11px;
-        color: var(--green);
-        font-size: 22px;
-    }
-
-    .quick-link strong {
-        display: block;
-        margin-bottom: 5px;
-        font-size: 14px;
-    }
-
-    .quick-link span:last-child {
-        display: block;
-        color: var(--muted);
-        font-size: 12px;
-    }
-
-    .footer {
-        padding: 25px 4%;
-        border-top: 1px solid var(--border);
-        color: var(--muted);
-        text-align: center;
-        font-size: 12px;
-    }
-
-    .footer a {
-        color: var(--green);
-        text-decoration: none;
-    }
-
-    @media (max-width: 760px) {
-        .nav-container {
-            padding: 14px 0;
-            align-items: flex-start;
-        }
-
-        .nav-links {
-            justify-content: flex-end;
-            gap: 12px;
-            flex-wrap: wrap;
-        }
-
-        .nav-links a {
-            font-size: 12px;
-        }
-
-        .overview {
-            grid-template-columns: 1fr;
-        }
-
-        .quick-grid {
-            grid-template-columns: 1fr;
-        }
-    }
-
-    @media (max-width: 480px) {
-        .nav-container {
-            flex-direction: column;
-            gap: 13px;
-        }
-
-        .nav-links {
-            width: 100%;
-            justify-content: flex-start;
-        }
-
-        main {
-            padding-top: 27px;
-        }
-
-        .card {
-            padding: 19px;
-        }
-
-        .premium-actions {
-            flex-direction: column;
-        }
-
-        .premium-actions .btn {
-            width: 100%;
-        }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-        html {
-            scroll-behavior: auto;
-        }
-
-        *,
-        *::before,
-        *::after {
-            transition: none !important;
-        }
-    }
-</style>
-
-</head><body><header class="topbar">
-    <div class="nav-container">
-        <a class="brand" href="./index.html">
-            SNIPER ODDS
-            <span>FOOTBALL INTELLIGENCE</span>
-        </a>    <nav class="nav-links" aria-label="Main navigation">
-        <a href="./index.html">Home</a>
-        <a href="./analysis.html">Analysis</a>
-        <a href="./subscription.html">Plans</a>
-        <button type="button" class="logout-btn" id="logoutBtn">Logout</button>
-    </nav>
-</div>
-
+  </div>
 </header><main>
-    <section class="page-heading">
-        <div class="eyebrow">Member dashboard</div>
-        <h1>My Account</h1>
-        <p>
-            Welcome to your SNIPER ODDS dashboard. Manage your membership,
-            explore football analysis and access premium content when your
-            subscription is active.
-        </p>
-        <div id="pageMessage" class="notice" role="status" aria-live="polite"></div>
-    </section><section class="overview">
-    <article class="card">
-        <div class="card-heading">
-            <h2>Account Information</h2>
-            <div class="icon-box" aria-hidden="true">♙</div>
-        </div>
-
-        <div class="detail">
-            <span class="detail-label">Full name</span>
-            <span class="detail-value" id="accountName">Loading...</span>
-        </div>
-
-        <div class="detail">
-            <span class="detail-label">Email address</span>
-            <span class="detail-value" id="accountEmail">Loading...</span>
-        </div>
-    </article>
-
-    <article class="card subscription-card">
-        <div class="card-heading">
-            <h2>Membership</h2>
-            <div class="icon-box" aria-hidden="true">♛</div>
-        </div>
-
-        <div class="detail">
-            <span class="detail-label">Your current plan</span>
-            <div class="plan-name" id="subscriptionPlan">Checking...</div>
-            <span class="badge" id="subscriptionBadge">Checking status</span>
-        </div>
-
-        <p class="plan-description" id="subscriptionText">
-            Your membership information will appear here.
-        </p>
-
-        <a class="btn btn-full" id="upgradeButton" href="./subscription.html">
-            Explore Premium Plans <span aria-hidden="true">→</span>
-        </a>
-    </article>
-</section>
-
-<section class="card premium-panel section">
-    <div class="card-heading">
-        <h2>Premium Football Analysis</h2>
-        <div class="icon-box" aria-hidden="true">✦</div>
-    </div>
-
-    <p class="premium-intro">
-        Get access to members-only match analysis, prediction insights
-        and premium football content through your active subscription.
+  <section class="welcome">
+    <h1>My Account</h1>
+    <p>Manage your membership, premium access and referral rewards.</p>
+    <p id="pageMessage" class="status-message" role="status" aria-live="polite">
+      Loading your account...
     </p>
+  </section>  <div id="accountContent" class="grid hidden"><section class="card">
+  <h2>👤 Account Details</h2>
 
-    <div class="premium-status" id="premiumContent">
-        <h3 id="premiumTitle">Checking your access...</h3>
-        <p id="premiumMessage">
-            Please wait while we check your membership.
-        </p>
-    </div>
+  <span class="label">Full name</span>
+  <div class="value" id="memberName">—</div>
 
-    <div class="premium-actions">
-        <a class="btn" id="premiumButton" href="./subscription.html">
-            Unlock Premium Analysis
-        </a>
+  <span class="label">Email address</span>
+  <div class="value" id="memberEmail">—</div>
 
-        <a
-            class="btn btn-outline"
-            id="viewPremiumButton"
-            href="./premium_analysis.html"
-            style="display: none;"
-        >
-            View Premium Results <span aria-hidden="true">→</span>
-        </a>
-    </div>
+  <span class="label">Account status</span>
+  <div class="value"><span class="badge active">Signed in</span></div>
+
+  <a href="./reset-password.html" class="btn secondary">Change Password</a>
 </section>
 
-<section class="section">
-    <div class="card-heading">
-        <h2>Quick Access</h2>
-    </div>
+<section class="card">
+  <h2>💳 My Membership</h2>
 
-    <div class="quick-grid">
-        <a class="quick-link" href="./analysis.html">
-            <span class="quick-icon" aria-hidden="true">◈</span>
-            <strong>Free Analysis</strong>
-            <span>Explore football insights and match analysis.</span>
-        </a>
+  <span class="label">Current plan</span>
+  <div class="value" id="memberPlan">Free</div>
 
-        <a class="quick-link" href="./subscription.html">
-            <span class="quick-icon" aria-hidden="true">✦</span>
-            <strong>Premium Plans</strong>
-            <span>Compare membership options and choose a plan.</span>
-        </a>
+  <span class="label">Premium status</span>
+  <div id="membershipBadge"><span class="badge">Checking...</span></div>
 
-        <a class="quick-link" href="./referrals.html">
-            <span class="quick-icon" aria-hidden="true">⇧</span>
-            <strong>Referrals</strong>
-            <span>Visit your referral dashboard.</span>
-        </a>
-    </div>
+  <span class="label">Access expiry</span>
+  <div class="value" id="membershipExpiry">—</div>
+
+  <p class="muted" id="membershipMessage">
+    Your membership information is being checked.
+  </p>
+
+  <a href="./subscription.html" class="btn">View Premium Plans</a>
 </section>
 
-<section class="section" id="referralDashboard">
-    <article class="card">
-        <div class="card-heading">
-            <h2>Referral Rewards</h2>
-            <div class="icon-box" aria-hidden="true">⇧</div>
-        </div>    <p class="plan-description">
-        Invite friends to SNIPER ODDS. When their qualifying M-Pesa
-        subscription is verified, you can earn additional premium days.
+<section class="card">
+  <h2>⚽ Free Analysis</h2>
+  <p class="muted">
+    Explore available verified football analysis without a paid subscription.
+  </p>
+  <a href="./analysis.html" class="btn">Open Free Analysis</a>
+</section>
+
+<section class="card">
+  <h2>🔒 Premium Analysis</h2>
+  <p class="muted" id="premiumMessage">
+    Checking your premium access...
+  </p>
+  <a href="./premium_analysis.html" id="premiumButton" class="btn hidden">
+    Open Premium Analysis
+  </a>
+  <a href="./subscription.html" id="upgradeButton" class="btn">
+    Unlock Premium
+  </a>
+</section>
+
+<section class="card">
+  <h2>📊 Results &amp; History</h2>
+  <p class="muted">
+    Review recorded prediction outcomes, including Won, Lost, Void and Pending.
+  </p>
+  <a href="./results.html" class="btn">View Results &amp; History</a>
+</section>
+
+<section class="card">
+  <h2>🛡️ Responsible Gambling</h2>
+  <p class="muted">
+    Football analysis is uncertain. Set limits, protect your money and never
+    treat predictions as guaranteed income.
+  </p>
+  <a href="./responsible_gambling.html" class="btn secondary">
+    Read Responsible Gambling Guide
+  </a>
+</section>
+
+<section class="card wide">
+  <h2>🎁 Referral Rewards</h2>
+  <p class="muted">
+    Share your referral link. A referral qualifies only after the required
+    subscription payment has been successfully verified.
+  </p>
+
+  <div class="referral-box">
+    <span class="label">Your referral code</span>
+    <div id="referralCode" class="referral-code">Loading...</div>
+
+    <button type="button" id="copyCodeButton" class="btn secondary">
+      Copy Code
+    </button>
+    <button type="button" id="copyLinkButton" class="btn">
+      Copy Referral Link
+    </button>
+    <button type="button" id="shareButton" class="btn secondary">
+      Share Link
+    </button>
+
+    <div class="status-message" id="referralMessage" role="status" aria-live="polite">
+      Loading referral information...
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat">
+      <strong id="registeredCount">0</strong>
+      <span>Registered Referrals</span>
+    </div>
+    <div class="stat">
+      <strong id="qualifiedCount">0</strong>
+      <span>Qualified Referrals</span>
+    </div>
+    <div class="stat">
+      <strong id="earnedDays">0</strong>
+      <span>Reward Days Recorded</span>
+    </div>
+  </div>
+
+  <div class="referral-box">
+    <h3>How rewards work</h3>
+    <p>Daily Pass: 3 successful qualifying referrals earn 2 premium days.</p>
+    <p>Weekly Pass: 3 successful qualifying referrals earn 7 premium days.</p>
+    <p>Monthly Pass: 1 successful qualifying referral earns 7 premium days.</p>
+    <p class="muted">
+      Rewards depend on verified qualifying payments and the referral system's
+      recorded status. Registering alone does not qualify a referral.
     </p>
+  </div>
 
-    <div id="referralMessage" class="notice" role="status" aria-live="polite">
-        Loading your referral information...
-    </div>
+  <h3>Referral Activity</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Status</th>
+          <th>Plan</th>
+        </tr>
+      </thead>
+      <tbody id="referralRows">
+        <tr>
+          <td colspan="3">Loading referral activity...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 
-    <div class="detail">
-        <span class="detail-label">Your referral code</span>
-        <span class="detail-value" id="referralCode">Generating...</span>
-    </div>
-
-    <div class="detail">
-        <label class="detail-label" for="referralLink">Your personal referral link</label>
-        <input
-            id="referralLink"
-            type="text"
-            readonly
-            aria-label="Your personal referral link"
-            style="width:100%;padding:12px;border:1px solid #22364d;border-radius:10px;background:#07111f;color:#f4f7fb;"
-            value="Preparing your link..."
-        >
-    </div>
-
-    <div class="premium-actions">
-        <button type="button" class="btn" id="copyReferralButton">
-            Copy Referral Link
-        </button>
-        <button type="button" class="btn btn-secondary" id="shareReferralButton">
-            Share Link
-        </button>
-    </div>
-</article>
-
-<div class="quick-grid" style="margin-top:14px;">
-    <article class="card">
-        <span class="detail-label">Registered referrals</span>
-        <div class="plan-name" id="referralTotal">—</div>
-        <p class="plan-description">People registered through your referral code.</p>
-    </article>
-
-    <article class="card">
-        <span class="detail-label">Qualifying referrals</span>
-        <div class="plan-name" id="referralQualified">—</div>
-        <p class="plan-description">Referrals with verified qualifying payments.</p>
-    </article>
-
-    <article class="card">
-        <span class="detail-label">Rewards earned</span>
-        <div class="plan-name" id="referralDaysEarned">—</div>
-        <p class="plan-description">Premium days awarded through referrals.</p>
-    </article>
-</div>
-
-<article class="card section">
-    <div class="card-heading">
-        <h2>How to Earn Premium Days</h2>
-    </div>
-
-    <div class="detail">
-        <span class="detail-value">Daily Pass — KSh 100</span>
-        <span class="detail-label">
-            Refer 3 customers who complete qualifying Daily Pass payments
-            to earn 2 premium days.
-        </span>
-    </div>
-
-    <div class="detail">
-        <span class="detail-value">Weekly Pass — KSh 500</span>
-        <span class="detail-label">
-            Refer 3 customers who complete qualifying Weekly Pass payments
-            to earn 7 premium days.
-        </span>
-    </div>
-
-    <div class="detail">
-        <span class="detail-value">Monthly Pass — KSh 1,500</span>
-        <span class="detail-label">
-            Refer 1 customer who completes a qualifying Monthly Pass payment
-            to earn 7 premium days.
-        </span>
-    </div>
-</article>
-
-<article class="card section">
-    <div class="card-heading">
-        <h2>Your Referral Progress</h2>
-    </div>
-
-    <p class="plan-description">
-        Progress is calculated separately for each subscription plan.
-        Only verified qualifying payments count.
-    </p>
-
-    <div id="referralProgress">
-        <p class="plan-description">Loading referral progress...</p>
-    </div>
-</article>
-
-<article class="card section">
-    <div class="card-heading">
-        <h2>Referral Activity</h2>
-    </div>
-
-    <div id="referralActivity">
-        <p class="plan-description">Loading your referral activity...</p>
-    </div>
-</article>
-
-<article class="card section">
-    <div class="card-heading">
-        <h2>Earned Rewards</h2>
-    </div>
-
-    <div id="referralRewardActivity">
-        <p class="plan-description">Loading your earned rewards...</p>
-    </div>
-</article>
-
-</section><section class="section">
-    <div class="card">
-        <div class="card-heading">
-            <h2>Need assistance?</h2>
-        </div>
-
-        <p class="plan-description">
-            If you have a question about your account, subscription or
-            payment, contact the SNIPER ODDS support team.
-        </p>
-
-        <a class="btn btn-secondary" href="./contact.html">Contact Support</a>
-    </div>
+  <h3>Reward History</h3>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Reward</th>
+          <th>Status</th>
+        </tr>
+      </thead>
+      <tbody id="rewardRows">
+        <tr>
+          <td colspan="3">Loading reward history...</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
 </section>
 
-</main><footer class="footer">
-    <p>&copy; 2026 SNIPER ODDS. Football analysis, statistics and insights.</p>
-    <a href="./index.html">Back to Home</a>
-</footer><!-- Keep the existing Supabase library and shared site logic. --><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script src="./script.js"></script><script>
-(function () {
-    "use strict";
+  </div>
+</main><footer>
+  <p>SNIPER ODDS — FOOTBALL INTELLIGENCE</p>
+  <p>
+    <a href="./index.html">Home</a>
+    <a href="./analysis.html">Free Analysis</a>
+    <a href="./subscription.html">Plans</a>
+    <a href="./results.html">Results &amp; History</a>
+    <a href="./contact.html">Contact</a>
+    <a href="./responsible_gambling.html">Responsible Gambling</a>
+  </p>
+  <p>Football predictions are uncertain and are not guaranteed outcomes.</p>
+</footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(() => {
+  "use strict";
 
-    const logoutButton = document.getElementById("logoutBtn");
-    const pageMessage = document.getElementById("pageMessage");
+  const SUPABASE_URL = "https://gddyhbjslwcgtqdtbzvu.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
-    function showLogoutError(message) {
-        if (!pageMessage) return;
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
-        pageMessage.textContent = message;
-        pageMessage.className = "notice error";
+  const $ = (id) => document.getElementById(id);
+
+  let currentUser = null;
+  let referralCodeValue = "";
+  let referralUrlValue = "";
+
+  function setMessage(id, message, isError = false) {
+    const element = $(id);
+    if (!element) return;
+    element.textContent = message;
+    element.classList.toggle("error-text", isError);
+  }
+
+  function safeDate(value) {
+    if (!value) return "—";
+
+    const date = new Date(value);
+    if (Number.isNaN(date.getTime())) return "—";
+
+    return new Intl.DateTimeFormat("en-KE", {
+      dateStyle: "medium",
+      timeStyle: "short",
+      timeZone: "Africa/Nairobi"
+    }).format(date) + " EAT";
+  }
+
+  function textValue(value, fallback = "—") {
+    return value === null || value === undefined || value === ""
+      ? fallback
+      : String(value);
+  }
+
+  function cleanPlanName(plan) {
+    if (!plan) return "Free";
+    return String(plan)
+      .replace(/[_-]/g, " ")
+      .replace(/\b\w/g, letter => letter.toUpperCase());
+  }
+
+  function safeCell(value) {
+    const cell = document.createElement("td");
+    cell.textContent = textValue(value);
+    return cell;
+  }
+
+  function addTableRow(tbody, values) {
+    const row = document.createElement("tr");
+
+    values.forEach(value => {
+      row.appendChild(safeCell(value));
+    });
+
+    tbody.appendChild(row);
+  }
+
+  async function copyText(value, messageId, successMessage) {
+    if (!value) {
+      setMessage(messageId, "Nothing is available to copy yet.", true);
+      return;
     }
 
-    if (logoutButton) {
-        logoutButton.addEventListener("click", async function () {
-            logoutButton.disabled = true;
-            logoutButton.textContent = "Logging out...";
+    try {
+      if (navigator.clipboard && window.isSecureContext) {
+        await navigator.clipboard.writeText(value);
+      } else {
+        const field = document.createElement("textarea");
+        field.value = value;
+        field.style.position = "fixed";
+        field.style.opacity = "0";
+        document.body.appendChild(field);
+        field.select();
 
-            try {
-                if (window.supabaseClient) {
-                    const { error } =
-                        await window.supabaseClient.auth.signOut();
+        const copied = document.execCommand("copy");
+        field.remove();
 
-                    if (error) throw error;
-                }
+        if (!copied) throw new Error("Copy was not available.");
+      }
 
-                localStorage.removeItem("sniperUser");
-                localStorage.removeItem("sniperLoggedIn");
-                localStorage.removeItem("selectedPlan");
-                localStorage.removeItem("selectedAmount");
-
-                window.location.href = "./login.html";
-            } catch (error) {
-                console.error("Logout failed:", error);
-
-                showLogoutError(
-                    "Logout failed. Please check your connection and try again."
-                );
-
-                logoutButton.disabled = false;
-                logoutButton.textContent = "Logout";
-            }
-        });
+      setMessage(messageId, successMessage);
+    } catch (error) {
+      setMessage(messageId, "Copy failed. Please select and copy the text manually.", true);
     }
-})();
-</script><script>
-(function () {
-    "use strict";
+  }
 
-    const $ = (id) => document.getElementById(id);
+  async function loadAccount() {
+    const { data, error } = await db.auth.getSession();
 
-    function escapeHTML(value) {
-        return String(value ?? "").replace(/[&<>"']/g, function (char) {
-            return {
-                "&": "&amp;",
-                "<": "&lt;",
-                ">": "&gt;",
-                '"': "&quot;",
-                "'": "&#39;"
-            }[char];
-        });
+    if (error) throw error;
+
+    const session = data.session;
+
+    if (!session || !session.user) {
+      window.location.replace("./login.html");
+      return;
     }
 
-    function showReferralMessage(message, type) {
-        const box = $("referralMessage");
-        if (!box) return;
+    currentUser = session.user;
 
-        box.textContent = message;
-        box.className = "notice" + (type ? " " + type : "");
-        box.style.display = "block";
+    $("loginLink").classList.add("hidden");
+    $("logoutButton").classList.remove("hidden");
+    $("accountContent").classList.remove("hidden");
+
+    const metadata = currentUser.user_metadata || {};
+
+    $("memberName").textContent = textValue(
+      metadata.full_name || metadata.name,
+      "Member"
+    );
+
+    $("memberEmail").textContent = textValue(currentUser.email);
+
+    await Promise.allSettled([
+      loadMembership(),
+      loadReferrals()
+    ]);
+
+    setMessage("pageMessage", "Your account is ready.");
+  }
+
+  async function loadMembership() {
+    const { data, error } = await db
+      .from("subscriptions")
+      .select("plan,status,expires_at,started_at,created_at")
+      .eq("user_id", currentUser.id)
+      .eq("status", "active")
+      .gt("expires_at", new Date().toISOString())
+      .order("expires_at", { ascending: false })
+      .limit(1);
+
+    if (error) {
+      $("membershipBadge").innerHTML = "";
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Unable to verify";
+      $("membershipBadge").appendChild(badge);
+
+      $("memberPlan").textContent = "Not verified";
+      $("membershipExpiry").textContent = "—";
+      $("premiumMessage").textContent =
+        "We couldn't verify your membership. Please refresh or contact support.";
+      $("premiumButton").classList.add("hidden");
+      $("upgradeButton").classList.remove("hidden");
+
+      setMessage("membershipMessage", "Membership check failed. No access is granted by this page.", true);
+      return;
     }
 
-    function setText(id, value) {
-        const element = $(id);
-        if (element) element.textContent = value;
+    const subscription = data && data.length ? data[0] : null;
+
+    if (!subscription) {
+      $("memberPlan").textContent = "Free";
+      $("membershipExpiry").textContent = "No active subscription";
+
+      $("membershipBadge").innerHTML = "";
+      const badge = document.createElement("span");
+      badge.className = "badge";
+      badge.textContent = "Free Member";
+      $("membershipBadge").appendChild(badge);
+
+      $("membershipMessage").textContent =
+        "Choose a plan to access premium analysis.";
+
+      $("premiumMessage").textContent =
+        "Premium Analysis is locked because no active subscription was found.";
+
+      $("premiumButton").classList.add("hidden");
+      $("upgradeButton").classList.remove("hidden");
+      return;
     }
 
-    function getSignupURL(code) {
-        const base = window.location.href.split("?")[0].split("#")[0];
-        const signupURL = new URL("./signup.html", base);
-        signupURL.searchParams.set("ref", code);
-        return signupURL.href;
-    }
+    $("memberPlan").textContent = cleanPlanName(subscription.plan);
+    $("membershipExpiry").textContent = safeDate(subscription.expires_at);
 
-    async function loadReferralDashboard() {
-        const client = window.supabaseClient;
+    $("membershipBadge").innerHTML = "";
+    const badge = document.createElement("span");
+    badge.className = "badge active";
+    badge.textContent = "Premium Active";
+    $("membershipBadge").appendChild(badge);
 
-        if (!client) {
-            showReferralMessage(
-                "The account service has not loaded. Refresh this page and try again.",
-                "error"
-            );
-            return;
-        }
+    $("membershipMessage").textContent =
+      "Your active subscription has been found.";
 
-        try {
-            const { data: authData, error: authError } =
-                await client.auth.getUser();
+    $("premiumMessage").textContent =
+      "Your subscription is active. Open Premium Analysis to view available verified predictions.";
 
-            if (authError) throw authError;
+    $("premiumButton").classList.remove("hidden");
+    $("upgradeButton").classList.add("hidden");
+  }
 
-            const user = authData && authData.user;
+  async function loadReferrals() {
+    const codeElement = $("referralCode");
+    const referralRows = $("referralRows");
+    const rewardRows = $("rewardRows");
 
-            if (!user) {
-                showReferralMessage(
-                    "Please sign in to view your referral dashboard.",
-                    "error"
-                );
-                return;
-            }
+    referralRows.replaceChildren();
+    rewardRows.replaceChildren();
 
-            // Get or create this member's referral code.
-            const { data: code, error: codeError } =
-                await client.rpc("generate_referral_code");
+    /*
+      Referral functions and column names depend on the database schema.
+      This page uses the existing RPC and columns from the current project.
+      A visible error is shown if the database schema or permissions differ.
+    */
 
-            if (codeError) throw codeError;
+    const codeResult = await db.rpc("generate_referral_code");
 
-            if (!code) {
-                throw new Error("A referral code could not be generated.");
-            }
-
-            setText("referralCode", code);
-
-            const link = getSignupURL(code);
-            const linkInput = $("referralLink");
-
-            if (linkInput) linkInput.value = link;
-
-            // Read referral activity belonging to this member.
-            const { data: referrals, error: referralsError } =
-                await client
-                    .from("referrals")
-                    .select("id, status, created_at, qualified_at, qualification_plan")
-                    .eq("referrer_id", user.id)
-                    .order("created_at", { ascending: false });
-
-            if (referralsError) throw referralsError;
-
-            // Read rewards earned by this member.
-            const { data: rewards, error: rewardsError } =
-                await client
-                    .from("referral_rewards")
-                    .select("id, amount, status, created_at, reward_days, qualification_group, qualification_plan")
-                    .eq("referrer_id", user.id)
-                    .order("created_at", { ascending: false });
-
-            if (rewardsError) throw rewardsError;
-
-            const referralRows = referrals || [];
-            const rewardRows = rewards || [];
-
-            const qualifiedCount = referralRows.filter((item) =>
-                ["qualified", "rewarded"].includes(
-                    String(item.status || "").toLowerCase()
-                )
-            ).length;
-
-            const earnedDays = rewardRows
-                .filter((item) =>
-                    ["earned", "awarded", "paid", "successful", "active"]
-                        .includes(String(item.status || "").toLowerCase())
-                )
-                .reduce((sum, item) => sum + Number(item.reward_days || 0), 0);
-
-            setText("referralTotal", String(referralRows.length));
-            setText("referralQualified", String(qualifiedCount));
-            setText("referralDaysEarned", String(earnedDays));
-
-            // Calculate each plan's qualifying progress separately.
-            const rules = [
-                {
-                    name: "Daily Pass",
-                    threshold: 3,
-                    days: 2
-                },
-                {
-                    name: "Weekly Pass",
-                    threshold: 3,
-                    days: 7
-                },
-                {
-                    name: "Monthly Pass",
-                    threshold: 1,
-                    days: 7
-                }
-            ];
-
-            const progress = $("referralProgress");
-
-            if (progress) {
-                progress.innerHTML = rules.map((rule) => {
-                    const count = referralRows.filter((item) => {
-                        const status = String(item.status || "").toLowerCase();
-                        const plan = String(item.qualification_plan || "").toLowerCase();
-
-                        return ["qualified", "rewarded"].includes(status) &&
-                            plan === rule.name.toLowerCase();
-                    }).length;
-
-                    const remainder = count % rule.threshold;
-                    const needed = remainder === 0 ? rule.threshold : rule.threshold - remainder;
-                    const percentage = Math.min(
-                        100,
-                        Math.round((remainder / rule.threshold) * 100)
-                    );
-
-                    const completedGroups = Math.floor(count / rule.threshold);
-
-                    return `
-                        <div class="detail">
-                            <span class="detail-value">${escapeHTML(rule.name)}</span>
-                            <span class="detail-label">
-                                ${count} qualifying referral(s) recorded.
-                                ${completedGroups} complete group(s).
-                                ${needed} more to complete the next group.
-                            </span>
-                            <div style="height:7px;background:#22364d;border-radius:8px;overflow:hidden;margin-top:10px;">
-                                <div style="height:100%;width:${percentage}%;background:#32d583;border-radius:8px;"></div>
-                            </div>
-                            <span class="detail-label" style="margin-top:8px;">
-                                Reward rule: ${rule.threshold} qualifying referral(s)
-                                → ${rule.days} premium day(s).
-                            </span>
-                        </div>
-                    `;
-                }).join("");
-            }
-
-            // Referral activity.
-            const activity = $("referralActivity");
-
-            if (activity) {
-                if (!referralRows.length) {
-                    activity.innerHTML =
-                        '<p class="plan-description">No referrals yet. Share your personal link to get started.</p>';
-                } else {
-                    activity.innerHTML = referralRows.map((item) => {
-                        const status = String(item.status || "pending");
-                        const plan = item.qualification_plan || "Awaiting qualifying payment";
-                        const date = item.created_at
-                            ? new Date(item.created_at).toLocaleDateString()
-                            : "Date unavailable";
-
-                        return `
-                            <div class="detail">
-                                <span class="detail-value">${escapeHTML(status.toUpperCase())}</span>
-                                <span class="detail-label">
-                                    Plan: ${escapeHTML(plan)}<br>
-                                    Registered: ${escapeHTML(date)}
-                                </span>
-                            </div>
-                        `;
-                    }).join("");
-                }
-            }
-
-            // Earned reward history.
-            const rewardActivity = $("referralRewardActivity");
-
-            if (rewardActivity) {
-                if (!rewardRows.length) {
-                    rewardActivity.innerHTML =
-                        '<p class="plan-description">No referral rewards have been recorded yet. Keep sharing your link.</p>';
-                } else {
-                    rewardActivity.innerHTML = rewardRows.map((item) => {
-                        const date = item.created_at
-                            ? new Date(item.created_at).toLocaleDateString()
-                            : "Date unavailable";
-
-                        return `
-                            <div class="detail">
-                                <span class="detail-value">
-                                    ${Number(item.reward_days || 0)} premium day(s)
-                                </span>
-                                <span class="detail-label">
-                                    Plan: ${escapeHTML(item.qualification_plan || "Referral reward")}<br>
-                                    Status: ${escapeHTML(item.status || "pending")}<br>
-                                    Recorded: ${escapeHTML(date)}
-                                </span>
-                            </div>
-                        `;
-                    }).join("");
-                }
-            }
-
-            showReferralMessage(
-                "Your referral information has loaded. Share your personal link to invite new members.",
-                "success"
-            );
-
-                } catch (error) {
-            console.error("Referral dashboard error:", error);
-
-            const errorMessage =
-                error && error.message
-                    ? error.message
-                    : String(error);
-
-            showReferralMessage(
-                "Referral dashboard error: " + errorMessage,
-                "error"
-            );
-        }
-    }
-
-    const copyButton = $("copyReferralButton");
-
-    if (copyButton) {
-        copyButton.addEventListener("click", async function () {
-            const input = $("referralLink");
-            if (!input || !input.value || input.value === "Preparing your link...") {
-                showReferralMessage("Your referral link is not ready yet.", "error");
-                return;
-            }
-
-            try {
-                await navigator.clipboard.writeText(input.value);
-                showReferralMessage("Referral link copied. Share it with your friends!", "success");
-            } catch (error) {
-                input.focus();
-                input.select();
-
-                const copied = document.execCommand("copy");
-
-                showReferralMessage(
-                    copied
-                        ? "Referral link copied. Share it with your friends!"
-                        : "Select the referral link above and copy it manually.",
-                    copied ? "success" : "error"
-                );
-            }
-        });
-    }
-
-    const shareButton = $("shareReferralButton");
-
-    if (shareButton) {
-        shareButton.addEventListener("click", async function () {
-            const input = $("referralLink");
-            if (!input || !input.value || input.value === "Preparing your link...") {
-                showReferralMessage("Your referral link is not ready yet.", "error");
-                return;
-            }
-
-            const shareData = {
-                title: "SNIPER ODDS",
-                text: "Join SNIPER ODDS for football analysis and predictions.",
-                url: input.value
-            };
-
-            try {
-                if (navigator.share) {
-                    await navigator.share(shareData);
-                } else {
-                    await navigator.clipboard.writeText(input.value);
-                    showReferralMessage(
-                        "Your browser doesn't support direct sharing. Your referral link has been copied.",
-                        "success"
-                    );
-                }
-            } catch (error) {
-                if (error.name !== "AbortError") {
-                    showReferralMessage(
-                        "Sharing wasn't available. Use Copy Referral Link instead.",
-                        "error"
-                    );
-                }
-            }
-        });
-    }
-
-    if (document.readyState === "loading") {
-        document.addEventListener("DOMContentLoaded", loadReferralDashboard);
+    if (codeResult.error) {
+      codeElement.textContent = "Unavailable";
+      setMessage(
+        "referralMessage",
+        "We couldn't load your referral code: " + codeResult.error.message,
+        true
+      );
     } else {
-        loadReferralDashboard();
+      let code = codeResult.data;
+
+      if (Array.isArray(code)) {
+        code = code.length ? code[0] : "";
+      }
+
+      if (code && typeof code === "object") {
+        code = code.referral_code || code.code || "";
+      }
+
+      referralCodeValue = String(code || "").trim();
+      codeElement.textContent = referralCodeValue || "Not generated";
+
+      referralUrlValue = referralCodeValue
+        ? new URL("./signup.html", window.location.href).href +
+          "?ref=" + encodeURIComponent(referralCodeValue)
+        : "";
+
+      if (referralCodeValue) {
+        setMessage("referralMessage", "Your referral code is ready to share.");
+      } else {
+        setMessage(
+          "referralMessage",
+          "The referral-code function did not return a code. Please contact support.",
+          true
+        );
+      }
     }
+
+    const referralsResult = await db
+      .from("referrals")
+      .select("id,status,created_at,qualified_at,qualification_plan")
+      .eq("referrer_id", currentUser.id)
+      .order("created_at", { ascending: false })
+      .limit(200);
+
+    let referrals = [];
+
+    if (referralsResult.error) {
+      addTableRow(referralRows, [
+        "Unavailable",
+        "Could not load",
+        referralsResult.error.message
+      ]);
+
+      setMessage(
+        "referralMessage",
+        "Referral activity could not be loaded: " + referralsResult.error.message,
+        true
+      );
+    } else {
+      referrals = referralsResult.data || [];
+
+      if (!referrals.length) {
+        addTableRow(referralRows, ["—", "No referrals yet", "—"]);
+      } else {
+        referrals.forEach(referral => {
+          addTableRow(referralRows, [
+            safeDate(referral.created_at),
+            referral.status || "registered",
+            cleanPlanName(referral.qualification_plan)
+          ]);
+        });
+      }
+    }
+
+    const qualified = referrals.filter(referral =>
+      String(referral.status || "").toLowerCase() === "qualified" ||
+      Boolean(referral.qualified_at)
+    ).length;
+
+    $("registeredCount").textContent = String(referrals.length);
+    $("qualifiedCount").textContent = String(qualified);
+
+    const rewardsResult = await db
+      .from("referral_rewards")
+      .select("id,amount,status,created_at,reward_days,qualification_group,qualification_plan")
+      .eq("referrer_id", currentUser.id)
+      .order("created_at", { ascending: false })
+      .limit(200);
+
+    if (rewardsResult.error) {
+      addTableRow(rewardRows, [
+        "Unavailable",
+        rewardsResult.error.message,
+        "—"
+      ]);
+
+      setMessage(
+        "referralMessage",
+        "Reward history could not be loaded: " + rewardsResult.error.message,
+        true
+      );
+
+      $("earnedDays").textContent = "—";
+      return;
+    }
+
+    const rewards = rewardsResult.data || [];
+
+    if (!rewards.length) {
+      addTableRow(rewardRows, ["—", "No rewards recorded", "—"]);
+    } else {
+      rewards.forEach(reward => {
+        const rewardText = reward.reward_days !== null &&
+          reward.reward_days !== undefined
+          ? String(reward.reward_days) + " premium day(s)"
+          : reward.amount !== null && reward.amount !== undefined
+            ? String(reward.amount)
+            : "Reward";
+
+        addTableRow(rewardRows, [
+          safeDate(reward.created_at),
+          rewardText,
+          reward.status || "recorded"
+        ]);
+      });
+    }
+
+    const earnedDaysTotal = rewards.reduce((total, reward) => {
+      const status = String(reward.status || "").toLowerCase();
+
+      if (status && !["earned", "active", "applied", "completed", "success", "successful"].includes(status)) {
+        return total;
+      }
+
+      return total + (Number(reward.reward_days) || 0);
+    }, 0);
+
+    $("earnedDays").textContent = String(earnedDaysTotal);
+  }
+
+  $("copyCodeButton").addEventListener("click", () => {
+    copyText(
+      referralCodeValue,
+      "referralMessage",
+      "Referral code copied."
+    );
+  });
+
+  $("copyLinkButton").addEventListener("click", () => {
+    copyText(
+      referralUrlValue,
+      "referralMessage",
+      "Referral link copied."
+    );
+  });
+
+  $("shareButton").addEventListener("click", async () => {
+    if (!referralUrlValue) {
+      setMessage("referralMessage", "Your referral link is not available yet.", true);
+      return;
+    }
+
+    const shareData = {
+      title: "Join SNIPER ODDS",
+      text: "Explore football analysis on SNIPER ODDS. Use my referral link:",
+      url: referralUrlValue
+    };
+
+    try {
+      if (navigator.share) {
+        await navigator.share(shareData);
+      } else {
+        await copyText(
+          referralUrlValue,
+          "referralMessage",
+          "Sharing is unavailable on this browser, so the referral link was copied."
+        );
+      }
+    } catch (error) {
+      if (error.name !== "AbortError") {
+        setMessage("Sharing failed. Try copying your referral link instead.", true);
+      }
+    }
+  });
+
+  $("logoutButton").addEventListener("click", async () => {
+    $("logoutButton").disabled = true;
+    setMessage("pageMessage", "Signing out...");
+
+    const { error } = await db.auth.signOut();
+
+    if (error) {
+      $("logoutButton").disabled = false;
+      setMessage("pageMessage", "Logout failed: " + error.message, true);
+      return;
+    }
+
+    window.location.replace("./login.html");
+  });
+
+  db.auth.onAuthStateChange((event, session) => {
+    if (event === "SIGNED_OUT" || !session) {
+      window.location.replace("./login.html");
+    }
+  });
+
+  loadAccount().catch(error => {
+    console.error("Account loading error:", error);
+    setMessage(
+      "pageMessage",
+      "We couldn't load your account. Please sign in again or contact support.",
+      true
+    );
+  });
 })();
 </script></body>
 </html>
