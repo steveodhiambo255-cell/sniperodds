@@ -1,340 +1,844 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Free Football Analysis | SNIPER ODDS</title>
 
-    <title>Free Football Analysis | SNIPER ODDS</title>
+<meta name="description"
+    content="Explore verified free football predictions, match schedules and football analysis on SNIPER ODDS.">
 
-    <meta name="description"
-        content="Explore football statistics, match analysis, team form and football insights on SNIPER ODDS.">
+<meta name="theme-color" content="#07110d">
 
-    <style>
-        :root {
-            --green: #32d583;
-            --background: #07110d;
-            --card: #101c16;
-            --text: #f3fff7;
-            --muted: #a5b8ac;
-            --border: #26392e;
-        }
+<style>
+    :root {
+        --green: #32d583;
+        --background: #07110d;
+        --card: #101c16;
+        --text: #f3fff7;
+        --muted: #a5b8ac;
+        --border: #26392e;
+        --warning: #f5c66b;
+        --danger: #ff8585;
+    }
 
-        * {
-            box-sizing: border-box;
-        }
+    * {
+        box-sizing: border-box;
+    }
 
-        body {
-            margin: 0;
-            font-family: Arial, sans-serif;
-            background: var(--background);
-            color: var(--text);
-            line-height: 1.6;
-        }
+    body {
+        margin: 0;
+        font-family: Arial, sans-serif;
+        background: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+    }
 
-        header {
-            padding: 20px;
-            background: #0c1811;
-            border-bottom: 1px solid var(--border);
-        }
+    a {
+        -webkit-tap-highlight-color: transparent;
+    }
 
-        .header-inner {
-            max-width: 1000px;
-            margin: auto;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            flex-wrap: wrap;
-            gap: 15px;
-        }
+    header {
+        padding: 18px 16px;
+        background: #0c1811;
+        border-bottom: 1px solid var(--border);
+    }
 
-        .brand {
-            color: var(--green);
-            font-size: 21px;
-            font-weight: 800;
-            letter-spacing: 1px;
-        }
+    .header-inner {
+        max-width: 1050px;
+        margin: auto;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
 
-        .subtitle {
-            color: var(--muted);
-            font-size: 11px;
-            letter-spacing: 2px;
+    .brand {
+        color: var(--green);
+        font-size: 21px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    .subtitle {
+        color: var(--muted);
+        font-size: 11px;
+        letter-spacing: 2px;
+    }
+
+    nav {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 14px;
+    }
+
+    nav a {
+        color: var(--text);
+        text-decoration: none;
+        font-size: 14px;
+    }
+
+    nav a:hover,
+    nav a:focus {
+        color: var(--green);
+    }
+
+    main {
+        max-width: 1050px;
+        margin: auto;
+        padding: 25px 16px 50px;
+    }
+
+    .hero {
+        padding: 34px 20px;
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        background: linear-gradient(145deg, #12261a, #0b1510);
+        margin-bottom: 28px;
+    }
+
+    .badge {
+        display: inline-block;
+        padding: 5px 12px;
+        border-radius: 30px;
+        background: #163b27;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    h1 {
+        font-size: clamp(28px, 6vw, 42px);
+        line-height: 1.2;
+        margin: 18px 0 12px;
+    }
+
+    h2 {
+        font-size: 22px;
+    }
+
+    h3 {
+        line-height: 1.4;
+    }
+
+    p {
+        color: var(--muted);
+    }
+
+    .button {
+        display: inline-block;
+        padding: 12px 18px;
+        background: var(--green);
+        color: #07110d;
+        font-weight: bold;
+        text-decoration: none;
+        border-radius: 8px;
+        margin: 8px 8px 0 0;
+        text-align: center;
+    }
+
+    .button:hover,
+    .button:focus {
+        filter: brightness(1.08);
+    }
+
+    .button-secondary {
+        background: transparent;
+        color: var(--green);
+        border: 1px solid var(--green);
+    }
+
+    .section-title {
+        margin-top: 32px;
+    }
+
+    .toolbar {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 12px;
+        margin: 20px 0;
+    }
+
+    .field {
+        width: 100%;
+        min-width: 0;
+        padding: 12px;
+        color: var(--text);
+        background: #101c16;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        font: inherit;
+    }
+
+    .field:focus {
+        outline: 2px solid var(--green);
+        outline-offset: 2px;
+    }
+
+    select.field option {
+        background: #101c16;
+        color: var(--text);
+    }
+
+    .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+        gap: 16px;
+    }
+
+    .card {
+        padding: 20px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        min-width: 0;
+    }
+
+    .card h3 {
+        margin-top: 0;
+        color: var(--green);
+    }
+
+    .notice {
+        padding: 20px;
+        background: #111d16;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        margin-top: 25px;
+    }
+
+    .day-heading {
+        color: var(--green);
+        margin: 28px 0 14px;
+        font-size: 20px;
+    }
+
+    .match-card {
+        display: flex;
+        flex-direction: column;
+        gap: 9px;
+    }
+
+    .match-teams {
+        color: var(--text);
+        font-size: 17px;
+        font-weight: bold;
+        overflow-wrap: anywhere;
+    }
+
+    .match-league {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .pick-box {
+        margin-top: 5px;
+        padding: 12px;
+        background: #14291c;
+        border: 1px solid #285239;
+        border-radius: 8px;
+    }
+
+    .pick-label {
+        color: var(--muted);
+        font-size: 12px;
+    }
+
+    .pick-value {
+        color: var(--green);
+        font-weight: bold;
+        overflow-wrap: anywhere;
+    }
+
+    .match-time {
+        font-size: 13px;
+        color: var(--muted);
+    }
+
+    .odds-value {
+        color: var(--text);
+        font-weight: bold;
+    }
+
+    .status-box {
+        padding: 20px;
+        margin-top: 18px;
+        background: var(--card);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        overflow-wrap: anywhere;
+    }
+
+    .status-box.error {
+        border-color: #8e4b4b;
+    }
+
+    .status-box.warning {
+        border-color: #80662e;
+    }
+
+    .status-box.success {
+        border-color: #285239;
+    }
+
+    .small-note {
+        font-size: 13px;
+    }
+
+    .verified-label {
+        display: inline-block;
+        color: var(--green);
+        font-size: 12px;
+        font-weight: bold;
+    }
+
+    .hidden {
+        display: none !important;
+    }
+
+    footer {
+        padding: 25px 16px;
+        text-align: center;
+        border-top: 1px solid var(--border);
+        color: var(--muted);
+        font-size: 13px;
+    }
+
+    footer a {
+        color: var(--green);
+    }
+
+    @media (max-width: 480px) {
+        .hero {
+            padding: 25px 16px;
         }
 
         nav {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 15px;
+            gap: 10px;
         }
 
         nav a {
-            color: var(--text);
-            text-decoration: none;
-            font-size: 14px;
-        }
-
-        nav a:hover {
-            color: var(--green);
-        }
-
-        main {
-            max-width: 1000px;
-            margin: auto;
-            padding: 25px 16px 50px;
-        }
-
-        .hero {
-            padding: 35px 20px;
-            border: 1px solid var(--border);
-            border-radius: 16px;
-            background: linear-gradient(145deg, #12261a, #0b1510);
-            margin-bottom: 25px;
-        }
-
-        .badge {
-            display: inline-block;
-            padding: 5px 12px;
-            border-radius: 30px;
-            background: #163b27;
-            color: var(--green);
-            font-size: 12px;
-            font-weight: bold;
-        }
-
-        h1 {
-            font-size: clamp(28px, 6vw, 42px);
-            line-height: 1.2;
-            margin: 18px 0 12px;
-        }
-
-        h2 {
-            font-size: 22px;
-        }
-
-        p {
-            color: var(--muted);
-        }
-
-        .button {
-            display: inline-block;
-            padding: 12px 18px;
-            background: var(--green);
-            color: #07110d;
-            font-weight: bold;
-            text-decoration: none;
-            border-radius: 8px;
-            margin: 8px 8px 0 0;
-        }
-
-        .button-secondary {
-            background: transparent;
-            color: var(--green);
-            border: 1px solid var(--green);
-        }
-
-        .section-title {
-            margin-top: 32px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(
-                auto-fit, minmax(220px, 1fr)
-            );
-            gap: 16px;
-        }
-
-        .card {
-            padding: 20px;
-            background: var(--card);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-        }
-
-        .card h3 {
-            margin-top: 0;
-            color: var(--green);
-        }
-
-        .notice {
-            padding: 20px;
-            background: #111d16;
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            margin-top: 25px;
-        }
-
-        footer {
-            padding: 25px 16px;
-            text-align: center;
-            border-top: 1px solid var(--border);
-            color: var(--muted);
             font-size: 13px;
         }
 
-        footer a {
-            color: var(--green);
+        .button {
+            width: 100%;
+            margin-right: 0;
         }
-    </style>
-</head>
+    }
+</style>
 
-<body>
-
+</head><body>
 <header>
     <div class="header-inner">
-
         <div>
             <div class="brand">SNIPER ODDS</div>
             <div class="subtitle">FOOTBALL INTELLIGENCE</div>
-        </div>
+        </div>    <nav aria-label="Main navigation">
+        <a href="./index.html">Home</a>
+        <a href="./analysis.html" aria-current="page">Free Analysis</a>
+        <a href="./premium_analysis.html">Premium Analysis</a>
+        <a href="./subscription.html">Plans</a>
+        <a href="./login.html">Login</a>
+    </nav>
+</div>
 
-        <nav>
-            <a href="./index.html">Home</a>
-            <a href="./analysis.html">Free Analysis</a>
-            <a href="./subscription.html">Plans</a>
-            <a href="./login.html">Login</a>
-        </nav>
-
-    </div>
-</header>
-
-<main>
-
+</header><main>
     <section class="hero">
+        <span class="badge">FREE FOOTBALL INSIGHTS</span>    <h1>Understand the Game.<br>Read the Numbers.</h1>
 
-        <span class="badge">FREE FOOTBALL INSIGHTS</span>
+    <p>
+        Explore selected football predictions, match schedules
+        and analytical insights. We publish a maximum of
+        three verified free games per Kenya calendar day.
+    </p>
 
-        <h1>Understand the Game.<br>Read the Numbers.</h1>
+    <a class="button" href="#daily-analysis">
+        View Free Analysis
+    </a>
+
+    <a class="button button-secondary" href="./subscription.html">
+        Explore Premium Plans
+    </a>
+</section>
+
+<section id="daily-analysis">
+    <h2 class="section-title">Free Football Analysis</h2>
+
+    <p>
+        Free for everyone. No account or subscription is required.
+        Kickoff times are displayed in East Africa Time (EAT).
+    </p>
+
+    <div class="toolbar">
+        <input
+            id="search-input"
+            class="field"
+            type="search"
+            placeholder="Search teams or predictions..."
+            aria-label="Search free predictions"
+            autocomplete="off"
+        >
+
+        <select
+            id="league-filter"
+            class="field"
+            aria-label="Filter by league"
+        >
+            <option value="">All leagues</option>
+        </select>
+    </div>
+
+    <div id="loading-status" class="status-box" role="status" aria-live="polite">
+        Loading published free analysis...
+    </div>
+
+    <div id="daily-games"></div>
+
+    <p class="small-note">
+        Only predictions marked as verified in the database are
+        eligible to appear here. Predictions are not guarantees
+        of match results.
+    </p>
+</section>
+
+<section>
+    <h2 class="section-title">How to Evaluate a Match</h2>
+
+    <div class="grid">
+        <article class="card">
+            <h3>Team Form</h3>
+            <p>
+                Consider recent results, goals scored, goals conceded
+                and overall performance.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Home &amp; Away Records</h3>
+            <p>
+                Compare home and away performance when assessing
+                a fixture.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Head-to-Head Statistics</h3>
+            <p>
+                Previous meetings may provide context, but they do
+                not determine future results.
+            </p>
+        </article>
+
+        <article class="card">
+            <h3>Match Trends</h3>
+            <p>
+                Consider scoring patterns, defensive performance
+                and relevant team statistics.
+            </p>
+        </article>
+    </div>
+
+    <div class="notice">
+        <h2>Our Publishing Standard</h2>
 
         <p>
-            Explore football statistics, team performance,
-            match trends and analytical insights to help
-            you understand the game better.
+            SNIPER ODDS aims to publish accurate match information.
+            Fixtures, predictions and kickoff times should be checked
+            before publication.
         </p>
-
-        <a class="button" href="#analysis">
-            Explore Analysis
-        </a>
-
-        <a class="button button-secondary"
-           href="./subscription.html">
-            Explore Premium Plans
-        </a>
-
-    </section>
-
-    <section id="analysis">
-
-        <h2 class="section-title">Your Free Analysis Centre</h2>
 
         <p>
-            Use football statistics and performance trends
-            to evaluate matches more carefully.
+            Free Analysis is limited to three verified games per
+            Kenya calendar date. Additional selections are not
+            automatically promoted from Premium Analysis.
+        </p>
+    </div>
+</section>
+
+<section>
+    <h2 class="section-title">Want More Detailed Analysis?</h2>
+
+    <div class="card">
+        <h3>SNIPER ODDS Premium</h3>
+
+        <p>
+            Explore subscription plans for access to premium football
+            analysis and selections. Premium Analysis requires an
+            active subscription and is limited to four verified
+            games per match date.
         </p>
 
-        <div class="grid">
+        <a class="button" href="./subscription.html">
+            View Subscription Plans
+        </a>
 
-            <article class="card">
-                <h3>Team Form</h3>
+        <a class="button button-secondary" href="./premium_analysis.html">
+            Open Premium Analysis
+        </a>
+    </div>
+</section>
 
-                <p>
-                    Examine recent results, goals scored,
-                    goals conceded and overall team performance.
-                </p>
-            </article>
+</main><footer>
+    <p>SNIPER ODDS — Football Analysis, Statistics &amp; Insights</p><p>
+    Football predictions involve uncertainty.
+    Please make responsible decisions.
+</p>
 
-            <article class="card">
-                <h3>Home & Away Records</h3>
+<p>
+    <a href="./index.html">Home</a> |
+    <a href="./contact.html">Contact</a>
+</p>
 
-                <p>
-                    Compare how teams perform at home
-                    and away before evaluating a fixture.
-                </p>
-            </article>
+<p>&copy; 2026 SNIPER ODDS</p>
 
-            <article class="card">
-                <h3>Head-to-Head Statistics</h3>
+</footer><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><script>
+(function () {
+    "use strict";
 
-                <p>
-                    Review previous meetings between teams
-                    while remembering that historical results
-                    do not guarantee future outcomes.
-                </p>
-            </article>
+    /*
+     * Browser-safe configuration only.
+     * Never place a service_role key or Daraja secret here.
+     */
+    const SUPABASE_URL =
+        "https://gddyhbjslwcgtqdtbzvu.supabase.co";
 
-            <article class="card">
-                <h3>Match Trends</h3>
+    const SUPABASE_PUBLISHABLE_KEY =
+        "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
-                <p>
-                    Consider scoring patterns, defensive
-                    performance and other relevant statistics.
-                </p>
-            </article>
+    const TIME_ZONE = "Africa/Nairobi";
+    const DAILY_LIMIT = 3;
 
-        </div>
+    const statusBox = document.getElementById("loading-status");
+    const gamesContainer = document.getElementById("daily-games");
+    const searchInput = document.getElementById("search-input");
+    const leagueFilter = document.getElementById("league-filter");
 
-        <div class="notice">
+    let allMatches = [];
 
-            <h2>Match Reports & Statistical Updates</h2>
+    function showStatus(message, type) {
+        statusBox.textContent = message;
+        statusBox.className = "status-box" + (type ? " " + type : "");
+        statusBox.hidden = false;
+    }
 
-            <p>
-                This page is the Free Analysis centre.
-                Verified match reports and current statistical
-                updates can be added here as they become available.
-            </p>
+    function kenyaDateKey(value) {
+        const parts = new Intl.DateTimeFormat("en-GB", {
+            timeZone: TIME_ZONE,
+            year: "numeric",
+            month: "2-digit",
+            day: "2-digit"
+        }).formatToParts(new Date(value));
 
-            <p>
-                We do not present unverified statistics or
-                invented match predictions as factual information.
-            </p>
+        const values = {};
 
-        </div>
+        parts.forEach(function (part) {
+            if (part.type !== "literal") {
+                values[part.type] = part.value;
+            }
+        });
 
-    </section>
+        return values.year + "-" + values.month + "-" + values.day;
+    }
 
-    <section>
+    function formatDate(dateKey) {
+        const parts = dateKey.split("-").map(Number);
 
-        <h2 class="section-title">Want More Detailed Analysis?</h2>
+        // Use noon UTC to avoid accidentally crossing a date boundary.
+        const date = new Date(Date.UTC(
+            parts[0],
+            parts[1] - 1,
+            parts[2],
+            12
+        ));
 
-        <div class="card">
+        return new Intl.DateTimeFormat("en-KE", {
+            timeZone: TIME_ZONE,
+            weekday: "long",
+            day: "numeric",
+            month: "long",
+            year: "numeric"
+        }).format(date);
+    }
 
-            <h3>SNIPER ODDS Premium</h3>
+    function formatKickoff(value) {
+        const date = new Date(value);
 
-            <p>
-                Explore our subscription plans for access
-                to premium football analysis and selections.
-                Match outcomes are uncertain, and no
-                prediction guarantees a winning result.
-            </p>
+        if (Number.isNaN(date.getTime())) {
+            return "Time unavailable";
+        }
 
-            <a class="button" href="./subscription.html">
-                View Subscription Plans
-            </a>
+        return new Intl.DateTimeFormat("en-KE", {
+            timeZone: TIME_ZONE,
+            hour: "2-digit",
+            minute: "2-digit",
+            hour12: true
+        }).format(date) + " EAT";
+    }
 
-        </div>
+    function makeElement(tag, className, content) {
+        const element = document.createElement(tag);
 
-    </section>
+        if (className) {
+            element.className = className;
+        }
 
-</main>
+        if (content !== undefined && content !== null) {
+            element.textContent = String(content);
+        }
 
-<footer>
+        return element;
+    }
 
-    <p>
-        SNIPER ODDS — Football Analysis, Statistics & Insights
-    </p>
+    function makeMatchCard(match) {
+        const card = makeElement("article", "card match-card");
 
-    <p>
-        Football predictions involve uncertainty.
-        Please make responsible decisions.
-    </p>
+        card.appendChild(
+            makeElement(
+                "div",
+                "match-league",
+                match.league || "Football"
+            )
+        );
 
-    <p>
-        <a href="./index.html">Home</a> |
-        <a href="./contact.html">Contact</a>
-    </p>
+        card.appendChild(
+            makeElement("div", "match-teams", match.match || "Fixture")
+        );
 
-    <p>&copy; 2026 SNIPER ODDS</p>
+        card.appendChild(
+            makeElement(
+                "div",
+                "match-time",
+                "Kickoff: " + formatKickoff(match.kickoff)
+            )
+        );
 
-</footer>
+        card.appendChild(
+            makeElement("div", "verified-label", "✓ VERIFIED FREE ANALYSIS")
+        );
 
-</body>
+        const pickBox = makeElement("div", "pick-box");
+
+        pickBox.appendChild(
+            makeElement("div", "pick-label", "FREE PREDICTION")
+        );
+
+        pickBox.appendChild(
+            makeElement("div", "pick-value", match.pick || "Not provided")
+        );
+
+        card.appendChild(pickBox);
+
+        if (
+            match.odds !== null &&
+            match.odds !== undefined &&
+            String(match.odds).trim() !== ""
+        ) {
+            card.appendChild(
+                makeElement("div", "odds-value", "Listed odds: " + match.odds)
+            );
+        }
+
+        if (match.result) {
+            card.appendChild(
+                makeElement("div", "match-time", "Result: " + match.result)
+            );
+        }
+
+        return card;
+    }
+
+    function populateLeagueFilter(matches) {
+        const previousValue = leagueFilter.value;
+        const leagues = Array.from(
+            new Set(
+                matches
+                    .map(function (match) {
+                        return String(match.league || "").trim();
+                    })
+                    .filter(Boolean)
+            )
+        ).sort(function (a, b) {
+            return a.localeCompare(b);
+        });
+
+        leagueFilter.replaceChildren();
+
+        leagueFilter.appendChild(
+            makeElement("option", "", "All leagues")
+        );
+        leagueFilter.options[0].value = "";
+
+        leagues.forEach(function (league) {
+            const option = makeElement("option", "", league);
+            option.value = league;
+            leagueFilter.appendChild(option);
+        });
+
+        if (leagues.includes(previousValue)) {
+            leagueFilter.value = previousValue;
+        }
+    }
+
+    function getFilteredMatches() {
+        const search = searchInput.value.trim().toLowerCase();
+        const selectedLeague = leagueFilter.value;
+
+        return allMatches.filter(function (match) {
+            const searchableText = [
+                match.match,
+                match.league,
+                match.pick
+            ].join(" ").toLowerCase();
+
+            const matchesSearch = !search || searchableText.includes(search);
+            const matchesLeague =
+                !selectedLeague || match.league === selectedLeague;
+
+            return matchesSearch && matchesLeague;
+        });
+    }
+
+    function renderMatches(matches) {
+        gamesContainer.replaceChildren();
+
+        if (!allMatches.length) {
+            showStatus(
+                "No verified free games have been published yet. Please check again later.",
+                "warning"
+            );
+            return;
+        }
+
+        if (!matches.length) {
+            showStatus(
+                "No games match your search or selected league. Try changing your filters.",
+                "warning"
+            );
+            return;
+        }
+
+        /*
+         * Group by Kenya kickoff date and show no more than three
+         * verified games for each date on this public page.
+         */
+        const groups = new Map();
+
+        matches.forEach(function (match) {
+            const dateKey = kenyaDateKey(match.kickoff);
+
+            if (!groups.has(dateKey)) {
+                groups.set(dateKey, []);
+            }
+
+            const dayMatches = groups.get(dateKey);
+
+            if (dayMatches.length < DAILY_LIMIT) {
+                dayMatches.push(match);
+            }
+        });
+
+        let totalShown = 0;
+
+        Array.from(groups.keys()).sort().forEach(function (dateKey) {
+            const dayMatches = groups.get(dateKey);
+
+            if (!dayMatches.length) {
+                return;
+            }
+
+            gamesContainer.appendChild(
+                makeElement(
+                    "h3",
+                    "day-heading",
+                    formatDate(dateKey) + " — " +
+                    dayMatches.length + "/" + DAILY_LIMIT + " free games"
+                )
+            );
+
+            const grid = makeElement("div", "grid");
+
+            dayMatches.forEach(function (match) {
+                grid.appendChild(makeMatchCard(match));
+                totalShown++;
+            });
+
+            gamesContainer.appendChild(grid);
+        });
+
+        if (totalShown > 0) {
+            statusBox.hidden = true;
+        } else {
+            showStatus(
+                "No verified free games are available for these filters.",
+                "warning"
+            );
+        }
+    }
+
+    async function loadFreeAnalysis() {
+        showStatus("Loading published free analysis...");
+
+        try {
+            if (
+                !window.supabase ||
+                typeof window.supabase.createClient !== "function"
+            ) {
+                throw new Error("The Supabase library did not load.");
+            }
+
+            const client = window.supabase.createClient(
+                SUPABASE_URL,
+                SUPABASE_PUBLISHABLE_KEY
+            );
+
+            /*
+             * Only verified rows are eligible.
+             * Future fixtures only; result history is not shown here.
+             */
+            const now = new Date().toISOString();
+
+            const { data, error } = await client
+                .from("free_predictions")
+                .select("id, match, league, pick, odds, kickoff, result, is_verified")
+                .eq("is_verified", true)
+                .gte("kickoff", now)
+                .order("kickoff", { ascending: true })
+                .limit(500);
+
+            if (error) {
+                throw error;
+            }
+
+            allMatches = (data || []).filter(function (match) {
+                return (
+                    match.is_verified === true &&
+                    match.kickoff &&
+                    !Number.isNaN(new Date(match.kickoff).getTime())
+                );
+            });
+
+            populateLeagueFilter(allMatches);
+            renderMatches(getFilteredMatches());
+
+        } catch (error) {
+            console.error("Free Analysis loading error:", error);
+
+            showStatus(
+                "We couldn't load Free Analysis. Please refresh the page. If the problem continues, check the Supabase connection, table columns and public SELECT permissions.",
+                "error"
+            );
+        }
+    }
+
+    searchInput.addEventListener("input", function () {
+        renderMatches(getFilteredMatches());
+    });
+
+    leagueFilter.addEventListener("change", function () {
+        renderMatches(getFilteredMatches());
+    });
+
+    loadFreeAnalysis();
+})();
+</script></body>
 </html>
