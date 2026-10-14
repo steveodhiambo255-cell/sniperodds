@@ -528,18 +528,16 @@
             }
 
             showMessage(
-                data.session
-                    ? "Account created successfully. Redirecting to login..."
-                    : "Account created. Check your email and confirm your address if requested. Redirecting to login...",
-                "success"
-            );
+"REGISTRATION SUCCESSFUL! Please check your email inbox and click the verification link to activate your SNIPER ODDS account. If you cannot find the email, check your spam or junk folder. You will be redirected to the login page in 5 seconds.",
+"success"
+);
 
-            signupButton.textContent = "Account Created";
-            form.reset();
+signupButton.textContent = "Registration Successful";
+form.reset();
 
-            window.setTimeout(function () {
-                window.location.assign(loginUrl);
-            }, 1800);
+window.setTimeout(function () {
+window.location.assign(loginUrl);
+}, 5000);
 
         } catch (error) {
             showMessage(friendlyError(error), "error");
