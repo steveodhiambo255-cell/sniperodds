@@ -1,14 +1,15 @@
 <!DOCTYPE html><html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>My Account | SNIPER ODDS</title>
-  <meta name="description" content="Manage your SNIPER ODDS membership, premium access, referral rewards and prediction history.">  <style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07110d">
+  <title>My Account | SNIPER ODDS</title>
+  <meta name="description" content="Manage your SNIPER ODDS account, membership, premium access and referral rewards.">  <style>
     :root {
       --bg: #07110d;
       --panel: #101d17;
       --panel2: #14251c;
       --green: #32d583;
-      --green-dark: #1e9e60;
       --text: #f2fff7;
       --muted: #a4b9ac;
       --border: #284436;
@@ -16,9 +17,7 @@
       --yellow: #ffd166;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
 
     body {
       margin: 0;
@@ -28,19 +27,13 @@
       line-height: 1.6;
     }
 
-    a {
-      color: var(--green);
-      text-decoration: none;
-    }
-
-    a:hover {
-      text-decoration: underline;
-    }
+    a { color: var(--green); text-decoration: none; }
+    a:hover { text-decoration: underline; }
 
     header {
       background: #0b1711;
       border-bottom: 1px solid var(--border);
-      padding: 17px 5%;
+      padding: 16px 5%;
     }
 
     .header-inner {
@@ -71,33 +64,26 @@
     nav {
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
       flex-wrap: wrap;
       font-size: 13px;
     }
 
-    nav a {
-      color: var(--text);
-    }
+    nav a { color: var(--text); }
 
     main {
       width: min(1100px, 92%);
       margin: 30px auto 55px;
     }
 
-    .welcome {
-      margin-bottom: 24px;
-    }
+    .welcome { margin-bottom: 24px; }
 
     .welcome h1 {
       font-size: clamp(27px, 5vw, 38px);
       margin: 0 0 5px;
     }
 
-    .welcome p,
-    .muted {
-      color: var(--muted);
-    }
+    .welcome p, .muted { color: var(--muted); }
 
     .grid {
       display: grid;
@@ -113,14 +99,8 @@
       min-width: 0;
     }
 
-    .card h2 {
-      font-size: 19px;
-      margin: 0 0 14px;
-    }
-
-    .wide {
-      grid-column: 1 / -1;
-    }
+    .card h2 { font-size: 19px; margin: 0 0 14px; }
+    .wide { grid-column: 1 / -1; }
 
     .label {
       display: block;
@@ -129,10 +109,7 @@
       margin-top: 13px;
     }
 
-    .value {
-      overflow-wrap: anywhere;
-      font-weight: 700;
-    }
+    .value { overflow-wrap: anywhere; font-weight: 700; }
 
     .badge {
       display: inline-block;
@@ -144,15 +121,9 @@
       color: var(--yellow);
     }
 
-    .badge.active {
-      color: #07110d;
-      background: var(--green);
-    }
-
-    .badge.error {
-      color: #fff;
-      background: #8c3030;
-    }
+    .badge.active { color: #07110d; background: var(--green); }
+    .badge.error { color: #fff; background: #8c3030; }
+    .badge.admin { color: #07110d; background: #ffd166; }
 
     .btn {
       display: inline-flex;
@@ -168,12 +139,10 @@
       cursor: pointer;
       margin: 8px 7px 0 0;
       text-decoration: none;
+      font-family: inherit;
     }
 
-    .btn:hover {
-      background: #65e9a3;
-      text-decoration: none;
-    }
+    .btn:hover { background: #65e9a3; text-decoration: none; }
 
     .btn.secondary {
       color: var(--text);
@@ -181,15 +150,22 @@
       border-color: var(--border);
     }
 
-    .btn.secondary:hover {
-      border-color: var(--green);
-    }
+    .btn.secondary:hover { border-color: var(--green); }
+
+    button:disabled { opacity: .6; cursor: not-allowed; }
 
     .status-message {
       font-size: 13px;
       color: var(--muted);
       margin-top: 12px;
       overflow-wrap: anywhere;
+    }
+
+    .error-text { color: var(--red) !important; }
+
+    .admin-panel {
+      border-color: #8a7133;
+      background: linear-gradient(135deg, #282416, #101d17);
     }
 
     .referral-box {
@@ -228,19 +204,14 @@
       color: var(--green);
     }
 
-    .stat span {
-      color: var(--muted);
-      font-size: 11px;
-    }
+    .stat span { color: var(--muted); font-size: 11px; }
 
-    .table-wrap {
-      overflow-x: auto;
-    }
+    .table-wrap { overflow-x: auto; }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 470px;
+      min-width: 450px;
       font-size: 13px;
     }
 
@@ -248,11 +219,10 @@
       padding: 11px 9px;
       border-bottom: 1px solid var(--border);
       text-align: left;
+      overflow-wrap: anywhere;
     }
 
-    th {
-      color: var(--green);
-    }
+    th { color: var(--green); }
 
     footer {
       padding: 25px 5%;
@@ -262,40 +232,19 @@
       text-align: center;
     }
 
-    footer a {
-      margin: 0 7px;
-    }
+    footer a { margin: 0 7px; }
 
-    .hidden {
-      display: none !important;
-    }
-
-    .error-text {
-      color: var(--red);
-    }
+    .hidden { display: none !important; }
 
     @media (max-width: 700px) {
-      .grid {
-        grid-template-columns: 1fr;
-      }
-
-      .wide {
-        grid-column: auto;
-      }
-
-      nav {
-        gap: 11px;
-      }
-
-      .card {
-        padding: 18px;
-      }
+      .grid { grid-template-columns: 1fr; }
+      .wide { grid-column: auto; }
+      nav { gap: 11px; }
+      .card { padding: 18px; }
     }
 
     @media (max-width: 380px) {
-      .stats {
-        grid-template-columns: 1fr;
-      }
+      .stats { grid-template-columns: 1fr; }
     }
   </style></head><body>
 <header>
@@ -303,13 +252,14 @@
     <a class="brand" href="./index.html">
       SNIPER ODDS
       <small>FOOTBALL INTELLIGENCE</small>
-    </a><nav>
+    </a><nav aria-label="Main navigation">
   <a href="./index.html">Home</a>
   <a href="./analysis.html">Free Analysis</a>
   <a href="./subscription.html">Plans</a>
   <a href="./results.html">Results &amp; History</a>
   <a href="./contact.html">Contact</a>
   <a href="./login.html" id="loginLink">Login</a>
+  <a href="./admin.html" id="adminLink" class="hidden">🛡️ Admin Dashboard</a>
   <button class="btn secondary hidden" id="logoutButton" type="button">Logout</button>
 </nav>
 
@@ -321,7 +271,7 @@
     <p id="pageMessage" class="status-message" role="status" aria-live="polite">
       Loading your account...
     </p>
-  </section>  <div id="accountContent" class="grid hidden"><section class="card">
+  </section>  <div id="accountContent" class="grid hidden"><section class="card" id="accountDetailsCard">
   <h2>👤 Account Details</h2>
 
   <span class="label">Full name</span>
@@ -331,28 +281,45 @@
   <div class="value" id="memberEmail">—</div>
 
   <span class="label">Account status</span>
-  <div class="value"><span class="badge active">Signed in</span></div>
+  <div class="value" id="accountStatus">
+    <span class="badge active">Signed in</span>
+  </div>
 
   <a href="./reset-password.html" class="btn secondary">Change Password</a>
 </section>
 
-<section class="card">
+<section class="card" id="membershipCard">
   <h2>💳 My Membership</h2>
 
   <span class="label">Current plan</span>
-  <div class="value" id="memberPlan">Free</div>
+  <div class="value" id="memberPlan">Checking...</div>
 
   <span class="label">Premium status</span>
   <div id="membershipBadge"><span class="badge">Checking...</span></div>
 
   <span class="label">Access expiry</span>
-  <div class="value" id="membershipExpiry">—</div>
+  <div class="value" id="membershipExpiry">Checking...</div>
 
   <p class="muted" id="membershipMessage">
-    Your membership information is being checked.
+    Checking your membership.
   </p>
 
-  <a href="./subscription.html" class="btn">View Premium Plans</a>
+  <a href="./subscription.html" id="upgradeButton" class="btn">
+    View Premium Plans
+  </a>
+</section>
+
+<section class="card hidden" id="adminCard">
+  <h2>🛡️ Administrator Control</h2>
+  <p class="muted">
+    Your administrator role has been verified by Supabase. Administrator
+    privileges are separate from paid membership.
+  </p>
+  <a href="./admin.html" class="btn">Open Admin Dashboard</a>
+  <p class="status-message">
+    If the dashboard denies access, its own authorization and database
+    policies must also be checked.
+  </p>
 </section>
 
 <section class="card">
@@ -365,13 +332,11 @@
 
 <section class="card">
   <h2>🔒 Premium Analysis</h2>
-  <p class="muted" id="premiumMessage">
-    Checking your premium access...
-  </p>
+  <p class="muted" id="premiumMessage">Checking your access...</p>
   <a href="./premium_analysis.html" id="premiumButton" class="btn hidden">
     Open Premium Analysis
   </a>
-  <a href="./subscription.html" id="upgradeButton" class="btn">
+  <a href="./subscription.html" id="premiumUpgradeButton" class="btn">
     Unlock Premium
   </a>
 </section>
@@ -398,23 +363,17 @@
 <section class="card wide">
   <h2>🎁 Referral Rewards</h2>
   <p class="muted">
-    Share your referral link. A referral qualifies only after the required
-    subscription payment has been successfully verified.
+    A referral qualifies only after the required subscription payment has
+    been successfully verified.
   </p>
 
   <div class="referral-box">
     <span class="label">Your referral code</span>
     <div id="referralCode" class="referral-code">Loading...</div>
 
-    <button type="button" id="copyCodeButton" class="btn secondary">
-      Copy Code
-    </button>
-    <button type="button" id="copyLinkButton" class="btn">
-      Copy Referral Link
-    </button>
-    <button type="button" id="shareButton" class="btn secondary">
-      Share Link
-    </button>
+    <button type="button" id="copyCodeButton" class="btn secondary">Copy Code</button>
+    <button type="button" id="copyLinkButton" class="btn">Copy Referral Link</button>
+    <button type="button" id="shareButton" class="btn secondary">Share Link</button>
 
     <div class="status-message" id="referralMessage" role="status" aria-live="polite">
       Loading referral information...
@@ -442,8 +401,8 @@
     <p>Weekly Pass: 3 successful qualifying referrals earn 7 premium days.</p>
     <p>Monthly Pass: 1 successful qualifying referral earns 7 premium days.</p>
     <p class="muted">
-      Rewards depend on verified qualifying payments and the referral system's
-      recorded status. Registering alone does not qualify a referral.
+      Registering alone does not qualify a referral. Rewards depend on
+      verified qualifying payments and recorded reward status.
     </p>
   </div>
 
@@ -451,16 +410,10 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr>
-          <th>Date</th>
-          <th>Status</th>
-          <th>Plan</th>
-        </tr>
+        <tr><th>Date</th><th>Status</th><th>Plan</th></tr>
       </thead>
       <tbody id="referralRows">
-        <tr>
-          <td colspan="3">Loading referral activity...</td>
-        </tr>
+        <tr><td colspan="3">Loading referral activity...</td></tr>
       </tbody>
     </table>
   </div>
@@ -469,16 +422,10 @@
   <div class="table-wrap">
     <table>
       <thead>
-        <tr>
-          <th>Date</th>
-          <th>Reward</th>
-          <th>Status</th>
-        </tr>
+        <tr><th>Date</th><th>Reward</th><th>Status</th></tr>
       </thead>
       <tbody id="rewardRows">
-        <tr>
-          <td colspan="3">Loading reward history...</td>
-        </tr>
+        <tr><td colspan="3">Loading reward history...</td></tr>
       </tbody>
     </table>
   </div>
@@ -504,23 +451,22 @@
   const SUPABASE_KEY = "sb_publishable_3uoDL_R8ylwHmHiJLTGenA_geIrsFxW";
 
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-
-  const $ = (id) => document.getElementById(id);
+  const $ = id => document.getElementById(id);
 
   let currentUser = null;
+  let isAdmin = false;
   let referralCodeValue = "";
   let referralUrlValue = "";
 
   function setMessage(id, message, isError = false) {
-    const element = $(id);
-    if (!element) return;
-    element.textContent = message;
-    element.classList.toggle("error-text", isError);
+    const el = $(id);
+    if (!el) return;
+    el.textContent = message;
+    el.classList.toggle("error-text", isError);
   }
 
   function safeDate(value) {
     if (!value) return "—";
-
     const date = new Date(value);
     if (Number.isNaN(date.getTime())) return "—";
 
@@ -544,19 +490,13 @@
       .replace(/\b\w/g, letter => letter.toUpperCase());
   }
 
-  function safeCell(value) {
-    const cell = document.createElement("td");
-    cell.textContent = textValue(value);
-    return cell;
-  }
-
   function addTableRow(tbody, values) {
     const row = document.createElement("tr");
-
     values.forEach(value => {
-      row.appendChild(safeCell(value));
+      const cell = document.createElement("td");
+      cell.textContent = textValue(value);
+      row.appendChild(cell);
     });
-
     tbody.appendChild(row);
   }
 
@@ -576,26 +516,50 @@
         field.style.opacity = "0";
         document.body.appendChild(field);
         field.select();
-
         const copied = document.execCommand("copy");
         field.remove();
-
-        if (!copied) throw new Error("Copy was not available.");
+        if (!copied) throw new Error("Copy unavailable");
       }
-
       setMessage(messageId, successMessage);
-    } catch (error) {
-      setMessage(messageId, "Copy failed. Please select and copy the text manually.", true);
+    } catch (_) {
+      setMessage(messageId, "Copy failed. Please copy the text manually.", true);
     }
+  }
+
+  async function verifyAdmin() {
+    /*
+      The RPC must check auth.uid() against public.admin_users.
+      Failure means the page does not grant administrator status.
+    */
+    try {
+      const { data, error } = await db.rpc("is_admin");
+      if (error) {
+        console.error("Admin verification failed:", error.message);
+        return false;
+      }
+      return data === true;
+    } catch (error) {
+      console.error("Admin verification failed:", error);
+      return false;
+    }
+  }
+
+  function showAdminUI() {
+    $("adminLink").classList.remove("hidden");
+    $("adminCard").classList.remove("hidden");
+
+    $("accountStatus").replaceChildren();
+    const badge = document.createElement("span");
+    badge.className = "badge admin";
+    badge.textContent = "ADMIN";
+    $("accountStatus").appendChild(badge);
   }
 
   async function loadAccount() {
     const { data, error } = await db.auth.getSession();
-
     if (error) throw error;
 
     const session = data.session;
-
     if (!session || !session.user) {
       window.location.replace("./login.html");
       return;
@@ -608,23 +572,64 @@
     $("accountContent").classList.remove("hidden");
 
     const metadata = currentUser.user_metadata || {};
-
     $("memberName").textContent = textValue(
       metadata.full_name || metadata.name,
       "Member"
     );
-
     $("memberEmail").textContent = textValue(currentUser.email);
 
-    await Promise.allSettled([
+    isAdmin = await verifyAdmin();
+
+    if (isAdmin) {
+      showAdminUI();
+    }
+
+    const results = await Promise.allSettled([
       loadMembership(),
       loadReferrals()
     ]);
 
-    setMessage("pageMessage", "Your account is ready.");
+    results.forEach(result => {
+      if (result.status === "rejected") {
+        console.error("Account section failed:", result.reason);
+      }
+    });
+
+    setMessage(
+      "pageMessage",
+      isAdmin
+        ? "Your account is ready. Administrator status verified."
+        : "Your account is ready."
+    );
   }
 
   async function loadMembership() {
+    /*
+      Admin status is separate from paid subscription status.
+      The admin badge is not a claim that a paid plan was purchased.
+    */
+    if (isAdmin) {
+      $("memberPlan").textContent = "Administrator";
+      $("membershipExpiry").textContent = "Administrator role — no subscription expiry";
+
+      $("membershipBadge").replaceChildren();
+      const adminBadge = document.createElement("span");
+      adminBadge.className = "badge admin";
+      adminBadge.textContent = "ADMIN";
+      $("membershipBadge").appendChild(adminBadge);
+
+      $("membershipMessage").textContent =
+        "Administrator role verified. Paid membership is tracked separately.";
+
+      $("premiumMessage").textContent =
+        "Administrator verified. Premium access still depends on the database policies protecting premium predictions.";
+
+      $("premiumButton").classList.remove("hidden");
+      $("premiumUpgradeButton").classList.add("hidden");
+      $("upgradeButton").classList.add("hidden");
+      return;
+    }
+
     const { data, error } = await db
       .from("subscriptions")
       .select("plan,status,expires_at,started_at,created_at")
@@ -635,20 +640,26 @@
       .limit(1);
 
     if (error) {
-      $("membershipBadge").innerHTML = "";
+      $("membershipBadge").replaceChildren();
       const badge = document.createElement("span");
-      badge.className = "badge";
+      badge.className = "badge error";
       badge.textContent = "Unable to verify";
       $("membershipBadge").appendChild(badge);
 
       $("memberPlan").textContent = "Not verified";
       $("membershipExpiry").textContent = "—";
+      $("membershipMessage").textContent =
+        "We couldn't verify your membership. Refresh or contact support.";
       $("premiumMessage").textContent =
-        "We couldn't verify your membership. Please refresh or contact support.";
+        "Premium access could not be verified. Please try again later.";
       $("premiumButton").classList.add("hidden");
-      $("upgradeButton").classList.remove("hidden");
+      $("premiumUpgradeButton").classList.remove("hidden");
 
-      setMessage("membershipMessage", "Membership check failed. No access is granted by this page.", true);
+      setMessage(
+        "pageMessage",
+        "Membership verification failed. No additional access was granted.",
+        true
+      );
       return;
     }
 
@@ -658,7 +669,7 @@
       $("memberPlan").textContent = "Free";
       $("membershipExpiry").textContent = "No active subscription";
 
-      $("membershipBadge").innerHTML = "";
+      $("membershipBadge").replaceChildren();
       const badge = document.createElement("span");
       badge.className = "badge";
       badge.textContent = "Free Member";
@@ -666,11 +677,11 @@
 
       $("membershipMessage").textContent =
         "Choose a plan to access premium analysis.";
-
       $("premiumMessage").textContent =
         "Premium Analysis is locked because no active subscription was found.";
 
       $("premiumButton").classList.add("hidden");
+      $("premiumUpgradeButton").classList.remove("hidden");
       $("upgradeButton").classList.remove("hidden");
       return;
     }
@@ -678,7 +689,7 @@
     $("memberPlan").textContent = cleanPlanName(subscription.plan);
     $("membershipExpiry").textContent = safeDate(subscription.expires_at);
 
-    $("membershipBadge").innerHTML = "";
+    $("membershipBadge").replaceChildren();
     const badge = document.createElement("span");
     badge.className = "badge active";
     badge.textContent = "Premium Active";
@@ -686,11 +697,11 @@
 
     $("membershipMessage").textContent =
       "Your active subscription has been found.";
-
     $("premiumMessage").textContent =
       "Your subscription is active. Open Premium Analysis to view available verified predictions.";
 
     $("premiumButton").classList.remove("hidden");
+    $("premiumUpgradeButton").classList.add("hidden");
     $("upgradeButton").classList.add("hidden");
   }
 
@@ -702,28 +713,19 @@
     referralRows.replaceChildren();
     rewardRows.replaceChildren();
 
-    /*
-      Referral functions and column names depend on the database schema.
-      This page uses the existing RPC and columns from the current project.
-      A visible error is shown if the database schema or permissions differ.
-    */
-
     const codeResult = await db.rpc("generate_referral_code");
 
     if (codeResult.error) {
       codeElement.textContent = "Unavailable";
       setMessage(
         "referralMessage",
-        "We couldn't load your referral code: " + codeResult.error.message,
+        "Couldn't load referral code: " + codeResult.error.message,
         true
       );
     } else {
       let code = codeResult.data;
 
-      if (Array.isArray(code)) {
-        code = code.length ? code[0] : "";
-      }
-
+      if (Array.isArray(code)) code = code.length ? code[0] : "";
       if (code && typeof code === "object") {
         code = code.referral_code || code.code || "";
       }
@@ -739,11 +741,7 @@
       if (referralCodeValue) {
         setMessage("referralMessage", "Your referral code is ready to share.");
       } else {
-        setMessage(
-          "referralMessage",
-          "The referral-code function did not return a code. Please contact support.",
-          true
-        );
+        setMessage("referralMessage", "No referral code was returned.", true);
       }
     }
 
@@ -758,11 +756,8 @@
 
     if (referralsResult.error) {
       addTableRow(referralRows, [
-        "Unavailable",
-        "Could not load",
-        referralsResult.error.message
+        "Unavailable", "Could not load", referralsResult.error.message
       ]);
-
       setMessage(
         "referralMessage",
         "Referral activity could not be loaded: " + referralsResult.error.message,
@@ -801,18 +796,14 @@
 
     if (rewardsResult.error) {
       addTableRow(rewardRows, [
-        "Unavailable",
-        rewardsResult.error.message,
-        "—"
+        "Unavailable", rewardsResult.error.message, "—"
       ]);
-
+      $("earnedDays").textContent = "—";
       setMessage(
         "referralMessage",
         "Reward history could not be loaded: " + rewardsResult.error.message,
         true
       );
-
-      $("earnedDays").textContent = "—";
       return;
     }
 
@@ -822,12 +813,12 @@
       addTableRow(rewardRows, ["—", "No rewards recorded", "—"]);
     } else {
       rewards.forEach(reward => {
-        const rewardText = reward.reward_days !== null &&
-          reward.reward_days !== undefined
-          ? String(reward.reward_days) + " premium day(s)"
-          : reward.amount !== null && reward.amount !== undefined
-            ? String(reward.amount)
-            : "Reward";
+        const rewardText =
+          reward.reward_days !== null && reward.reward_days !== undefined
+            ? String(reward.reward_days) + " premium day(s)"
+            : reward.amount !== null && reward.amount !== undefined
+              ? String(reward.amount)
+              : "Reward";
 
         addTableRow(rewardRows, [
           safeDate(reward.created_at),
@@ -839,31 +830,22 @@
 
     const earnedDaysTotal = rewards.reduce((total, reward) => {
       const status = String(reward.status || "").toLowerCase();
+      const eligible = [
+        "", "earned", "active", "applied", "completed", "success", "successful"
+      ].includes(status);
 
-      if (status && !["earned", "active", "applied", "completed", "success", "successful"].includes(status)) {
-        return total;
-      }
-
-      return total + (Number(reward.reward_days) || 0);
+      return eligible ? total + (Number(reward.reward_days) || 0) : total;
     }, 0);
 
     $("earnedDays").textContent = String(earnedDaysTotal);
   }
 
   $("copyCodeButton").addEventListener("click", () => {
-    copyText(
-      referralCodeValue,
-      "referralMessage",
-      "Referral code copied."
-    );
+    copyText(referralCodeValue, "referralMessage", "Referral code copied.");
   });
 
   $("copyLinkButton").addEventListener("click", () => {
-    copyText(
-      referralUrlValue,
-      "referralMessage",
-      "Referral link copied."
-    );
+    copyText(referralUrlValue, "referralMessage", "Referral link copied.");
   });
 
   $("shareButton").addEventListener("click", async () => {
@@ -885,12 +867,12 @@
         await copyText(
           referralUrlValue,
           "referralMessage",
-          "Sharing is unavailable on this browser, so the referral link was copied."
+          "Sharing is unavailable. Referral link copied instead."
         );
       }
     } catch (error) {
       if (error.name !== "AbortError") {
-        setMessage("Sharing failed. Try copying your referral link instead.", true);
+        setMessage("Sharing failed. Try copying the referral link.", true);
       }
     }
   });
@@ -920,7 +902,7 @@
     console.error("Account loading error:", error);
     setMessage(
       "pageMessage",
-      "We couldn't load your account. Please sign in again or contact support.",
+      "We couldn't load your account. Please refresh or sign in again.",
       true
     );
   });
