@@ -2,850 +2,641 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07130e">
-  <title>Premium Analysis | SNIPER ODDS</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#07130e">
+<title>Premium Analysis | SNIPER ODDS</title>
 
-  <style>
-    :root {
-      --bg: #07130e;
-      --panel: #102219;
-      --panel2: #142b1e;
-      --green: #32d583;
-      --green-dark: #159957;
-      --text: #f1fff6;
-      --muted: #a6b9ad;
-      --border: rgba(255,255,255,.09);
-      --red: #ff7777;
-      --yellow: #ffd166;
-    }
-
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-    }
-
-    body {
-      background: var(--bg);
-      color: var(--text);
-      font-family: Arial, Helvetica, sans-serif;
-      min-height: 100vh;
-      line-height: 1.6;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    button, input, select {
-      font: inherit;
-    }
-
-    header {
-      background: #0b1b12;
-      border-bottom: 1px solid var(--border);
-      padding: 15px 5%;
-      position: sticky;
-      top: 0;
-      z-index: 10;
-    }
-
-    .nav {
-      max-width: 1150px;
-      margin: auto;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      flex-wrap: wrap;
-    }
-
-    .brand {
-      font-size: 21px;
-      font-weight: 900;
-      letter-spacing: 1px;
-      color: var(--green);
-    }
-
-    .brand small {
-      display: block;
-      color: var(--muted);
-      font-size: 9px;
-      letter-spacing: 3px;
-    }
-
-    .nav-links {
-      display: flex;
-      gap: 16px;
-      align-items: center;
-      flex-wrap: wrap;
-      font-size: 13px;
-    }
-
-    .nav-links a {
-      color: var(--muted);
-    }
-
-    .nav-links a:hover {
-      color: var(--green);
-    }
-
-    .logout {
-      border: 1px solid var(--green);
-      color: var(--green);
-      background: transparent;
-      padding: 7px 12px;
-      border-radius: 7px;
-      cursor: pointer;
-    }
-
-    main {
-      width: 92%;
-      max-width: 1050px;
-      margin: 35px auto;
-    }
-
-    .hero {
-      text-align: center;
-      padding: 32px 15px;
-      background: linear-gradient(145deg, #123322, #0b1b12);
-      border: 1px solid var(--border);
-      border-radius: 18px;
-      margin-bottom: 22px;
-    }
-
-    .eyebrow {
-      color: var(--green);
-      font-size: 11px;
-      font-weight: bold;
-      letter-spacing: 3px;
-      margin-bottom: 9px;
-    }
-
-    h1 {
-      font-size: clamp(27px, 5vw, 42px);
-      line-height: 1.2;
-      margin-bottom: 10px;
-    }
-
-    .hero p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .status {
-      padding: 15px;
-      border-radius: 12px;
-      background: var(--panel);
-      border: 1px solid var(--border);
-      margin-bottom: 20px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
-
-    .status-label {
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .status-value {
-      color: var(--green);
-      font-weight: bold;
-    }
-
-    .panel {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      padding: 23px;
-      border-radius: 14px;
-      margin-bottom: 20px;
-    }
-
-    .panel h2 {
-      font-size: 19px;
-      margin-bottom: 8px;
-    }
-
-    .panel p {
-      color: var(--muted);
-      font-size: 14px;
-    }
-
-    .message {
-      padding: 13px;
-      margin-top: 14px;
-      border-radius: 8px;
-      background: var(--panel2);
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .error {
-      color: var(--red);
-    }
-
-    .success {
-      color: var(--green);
-    }
-
-    .btn {
-      display: inline-block;
-      padding: 11px 17px;
-      border-radius: 8px;
-      border: none;
-      background: var(--green);
-      color: #06130b;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 14px;
-    }
-
-    .btn:hover {
-      background: #62eaa4;
-    }
-
-    .btn-secondary {
-      background: transparent;
-      color: var(--green);
-      border: 1px solid var(--green);
-    }
-
-    .toolbar {
-      display: grid;
-      grid-template-columns: 1fr 190px;
-      gap: 12px;
-      margin: 20px 0;
-    }
-
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border-radius: 8px;
-      border: 1px solid var(--border);
-      background: #0b1b12;
-      color: var(--text);
-      outline: none;
-    }
-
-    input:focus, select:focus {
-      border-color: var(--green);
-    }
-
-    .date-heading {
-      color: var(--green);
-      font-size: 15px;
-      margin: 25px 0 12px;
-      padding-bottom: 8px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .match-card {
-      background: var(--panel);
-      border: 1px solid var(--border);
-      border-radius: 13px;
-      padding: 18px;
-      margin-bottom: 13px;
-    }
-
-    .match-top {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      flex-wrap: wrap;
-      margin-bottom: 14px;
-    }
-
-    .market {
-      color: var(--green);
-      font-size: 11px;
-      font-weight: bold;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-    }
-
-    .verified {
-      color: var(--green);
-      font-size: 11px;
-    }
-
-    .teams {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 12px;
-    }
-
-    .prediction-box {
-      background: #0b1b12;
-      border: 1px solid rgba(50,213,131,.2);
-      border-radius: 9px;
-      padding: 13px;
-      margin-bottom: 12px;
-    }
-
-    .prediction-box small {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-      margin-bottom: 4px;
-    }
-
-    .prediction {
-      color: var(--green);
-      font-weight: bold;
-      font-size: 17px;
-    }
-
-    .details {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-
-    .detail {
-      background: var(--panel2);
-      border-radius: 8px;
-      padding: 10px;
-    }
-
-    .detail small {
-      display: block;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .detail strong {
-      font-size: 14px;
-    }
-
-    .analysis {
-      color: #d1e3d7;
-      font-size: 13px;
-      white-space: pre-wrap;
-      overflow-wrap: anywhere;
-    }
-
-    .empty {
-      text-align: center;
-      padding: 35px 15px;
-      color: var(--muted);
-      background: var(--panel);
-      border-radius: 12px;
-    }
-
-    footer {
-      text-align: center;
-      padding: 25px 12px;
-      color: var(--muted);
-      font-size: 12px;
-      border-top: 1px solid var(--border);
-      margin-top: 40px;
-    }
-
-    .hidden {
-      display: none !important;
-    }
-
-    @media (max-width: 600px) {
-      header {
-        padding: 12px 4%;
-      }
-
-      .nav {
-        align-items: flex-start;
-      }
-
-      .nav-links {
-        gap: 11px;
-        font-size: 12px;
-      }
-
-      main {
-        margin-top: 20px;
-      }
-
-      .toolbar {
-        grid-template-columns: 1fr;
-      }
-
-      .panel {
-        padding: 17px;
-      }
-
-      .teams {
-        font-size: 16px;
-      }
-    }
-  </style>
+<style>
+:root {
+  --bg:#07130e;
+  --panel:#102219;
+  --panel2:#142b1e;
+  --green:#32d583;
+  --text:#f1fff6;
+  --muted:#a6b9ad;
+  --border:rgba(255,255,255,.09);
+  --red:#ff7777;
+}
+* {box-sizing:border-box;margin:0;padding:0}
+body {
+  background:var(--bg);
+  color:var(--text);
+  font-family:Arial,Helvetica,sans-serif;
+  min-height:100vh;
+  line-height:1.6;
+}
+a {color:inherit;text-decoration:none}
+button,input,select {font:inherit}
+header {
+  background:#0b1b12;
+  border-bottom:1px solid var(--border);
+  padding:15px 5%;
+  position:sticky;
+  top:0;
+  z-index:10;
+}
+.nav {
+  max-width:1150px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:15px;
+  flex-wrap:wrap;
+}
+.brand {
+  font-size:21px;
+  font-weight:900;
+  letter-spacing:1px;
+  color:var(--green);
+}
+.brand small {
+  display:block;
+  color:var(--muted);
+  font-size:9px;
+  letter-spacing:3px;
+}
+.nav-links {
+  display:flex;
+  gap:16px;
+  align-items:center;
+  flex-wrap:wrap;
+  font-size:13px;
+}
+.nav-links a {color:var(--muted)}
+.nav-links a:hover {color:var(--green)}
+.logout {
+  border:1px solid var(--green);
+  color:var(--green);
+  background:transparent;
+  padding:7px 12px;
+  border-radius:7px;
+  cursor:pointer;
+}
+main {
+  width:92%;
+  max-width:1050px;
+  margin:35px auto;
+}
+.hero {
+  text-align:center;
+  padding:32px 15px;
+  background:linear-gradient(145deg,#123322,#0b1b12);
+  border:1px solid var(--border);
+  border-radius:18px;
+  margin-bottom:22px;
+}
+.eyebrow {
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
+  letter-spacing:3px;
+  margin-bottom:9px;
+}
+h1 {
+  font-size:clamp(27px,5vw,42px);
+  line-height:1.2;
+  margin-bottom:10px;
+}
+.hero p,.panel p {color:var(--muted);font-size:14px}
+.status {
+  padding:15px;
+  border-radius:12px;
+  background:var(--panel);
+  border:1px solid var(--border);
+  margin-bottom:20px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.status-label {color:var(--muted);font-size:12px}
+.status-value {color:var(--green);font-weight:bold}
+.panel {
+  background:var(--panel);
+  border:1px solid var(--border);
+  padding:23px;
+  border-radius:14px;
+  margin-bottom:20px;
+}
+.panel h2 {font-size:19px;margin-bottom:8px}
+.message {
+  padding:13px;
+  margin-top:14px;
+  border-radius:8px;
+  background:var(--panel2);
+  color:var(--muted);
+  font-size:13px;
+}
+.error {color:var(--red)}
+.btn {
+  display:inline-block;
+  padding:11px 17px;
+  border-radius:8px;
+  border:none;
+  background:var(--green);
+  color:#06130b;
+  font-weight:bold;
+  cursor:pointer;
+  margin-top:14px;
+}
+.toolbar {
+  display:grid;
+  grid-template-columns:1fr 190px;
+  gap:12px;
+  margin:20px 0;
+}
+input,select {
+  width:100%;
+  padding:12px;
+  border-radius:8px;
+  border:1px solid var(--border);
+  background:#0b1b12;
+  color:var(--text);
+  outline:none;
+}
+input:focus,select:focus {border-color:var(--green)}
+.date-heading {
+  color:var(--green);
+  font-size:15px;
+  margin:25px 0 12px;
+  padding-bottom:8px;
+  border-bottom:1px solid var(--border);
+}
+.match-card {
+  background:var(--panel);
+  border:1px solid var(--border);
+  border-radius:13px;
+  padding:18px;
+  margin-bottom:13px;
+}
+.match-top {
+  display:flex;
+  justify-content:space-between;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-bottom:14px;
+}
+.market {
+  color:var(--green);
+  font-size:11px;
+  font-weight:bold;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+.verified {color:var(--green);font-size:11px}
+.teams {font-size:18px;font-weight:bold;margin-bottom:12px}
+.prediction-box {
+  background:#0b1b12;
+  border:1px solid rgba(50,213,131,.2);
+  border-radius:9px;
+  padding:13px;
+  margin-bottom:12px;
+}
+.prediction-box small {
+  display:block;
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:4px;
+}
+.prediction {color:var(--green);font-weight:bold;font-size:17px}
+.details {
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+  margin-bottom:12px;
+}
+.detail {
+  background:var(--panel2);
+  border-radius:8px;
+  padding:10px;
+  overflow-wrap:anywhere;
+}
+.detail small {display:block;color:var(--muted);font-size:11px}
+.detail strong {font-size:14px}
+.analysis {
+  color:#d1e3d7;
+  font-size:13px;
+  white-space:pre-wrap;
+  overflow-wrap:anywhere;
+}
+.empty {
+  text-align:center;
+  padding:35px 15px;
+  color:var(--muted);
+  background:var(--panel);
+  border-radius:12px;
+}
+footer {
+  text-align:center;
+  padding:25px 12px;
+  color:var(--muted);
+  font-size:12px;
+  border-top:1px solid var(--border);
+  margin-top:40px;
+}
+.hidden {display:none!important}
+@media(max-width:600px) {
+  header {padding:12px 4%}
+  .nav {align-items:flex-start}
+  .nav-links {gap:11px;font-size:12px}
+  main {margin-top:20px}
+  .toolbar {grid-template-columns:1fr}
+  .panel {padding:17px}
+  .teams {font-size:16px}
+}
+</style>
 </head>
 
 <body>
 
 <header>
-  <nav class="nav">
-    <a href="index.html" class="brand">
-      SNIPER ODDS
-      <small>FOOTBALL INTELLIGENCE</small>
-    </a>
-
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="account.html" class="auth-only">Account</a>
-      <a href="subscription.html" class="auth-only">Plans</a>
-      <a href="results.html" class="auth-only">Results</a>
-      <a href="contact.html">Contact</a>
-      <button class="logout auth-only" id="logoutBtn">Logout</button>
-    </div>
-  </nav>
+<nav class="nav">
+<a href="index.html" class="brand">
+SNIPER ODDS
+<small>FOOTBALL INTELLIGENCE</small>
+</a>
+<div class="nav-links">
+<a href="index.html">Home</a>
+<a href="account.html">Account</a>
+<a href="subscription.html">Plans</a>
+<a href="results.html">Results</a>
+<a href="contact.html">Contact</a>
+<button class="logout" id="logoutBtn">Logout</button>
+</div>
+</nav>
 </header>
 
 <main>
 
-  <section class="hero">
-    <div class="eyebrow">PREMIUM FOOTBALL INTELLIGENCE</div>
-    <h1>Premium Analysis</h1>
-    <p>Detailed match insights, statistics and premium selections.</p>
-  </section>
+<section class="hero">
+<div class="eyebrow">PREMIUM FOOTBALL INTELLIGENCE</div>
+<h1>Premium Analysis</h1>
+<p>Detailed match insights, statistics and premium selections.</p>
+</section>
 
-  <section class="status">
-    <div>
-      <div class="status-label">Welcome</div>
-      <strong id="userName">Verifying account...</strong>
-    </div>
-    <div>
-      <div class="status-label">Access status</div>
-      <strong class="status-value" id="accessStatus">Checking...</strong>
-    </div>
-  </section>
+<section class="status">
+<div>
+<div class="status-label">Welcome</div>
+<strong id="userName">Verifying account...</strong>
+</div>
+<div>
+<div class="status-label">Access status</div>
+<strong class="status-value" id="accessStatus">Checking...</strong>
+</div>
+</section>
 
-  <section id="loadingPanel" class="panel">
-    <h2>Verifying access</h2>
-    <p id="loadingMessage">Please wait while we securely verify your account.</p>
-  </section>
+<section id="loadingPanel" class="panel">
+<h2>Verifying access</h2>
+<p id="loadingMessage">Please wait while we verify your account.</p>
+</section>
 
-  <section id="loginPanel" class="panel hidden">
-    <h2>Login required</h2>
-    <p>Please sign in to access premium football analysis.</p>
-    <a class="btn" href="login.html">Login to your account</a>
-  </section>
+<section id="loginPanel" class="panel hidden">
+<h2>Login required</h2>
+<p>Please sign in to access premium analysis.</p>
+<a class="btn" href="login.html">Login to your account</a>
+</section>
 
-  <section id="subscriptionPanel" class="panel hidden">
-    <h2>Premium membership required</h2>
-    <p>
-      Your account does not currently have an active premium subscription.
-      Choose a plan to unlock premium analysis.
-    </p>
-    <a class="btn" href="subscription.html">View Premium Plans</a>
-  </section>
+<section id="subscriptionPanel" class="panel hidden">
+<h2>Premium membership required</h2>
+<p>Your account does not currently have an active premium subscription.</p>
+<a class="btn" href="subscription.html">View Premium Plans</a>
+</section>
 
-  <section id="errorPanel" class="panel hidden">
-    <h2 class="error">Unable to load premium analysis</h2>
-    <p id="errorMessage">Something went wrong. Please try again.</p>
-    <button class="btn" id="retryBtn">Try Again</button>
-  </section>
+<section id="errorPanel" class="panel hidden">
+<h2 class="error">Unable to load premium analysis</h2>
+<p id="errorMessage">Something went wrong.</p>
+<button class="btn" id="retryBtn">Try Again</button>
+</section>
 
-  <section id="predictionsPanel" class="hidden">
-    <div class="panel">
-      <h2>Premium Match Selections</h2>
-      <p>
-        Access verified premium selections and their supporting analysis.
-      </p>
-      <div id="predictionCount" class="message">
-        Loading available predictions...
-      </div>
-    </div>
+<section id="predictionsPanel" class="hidden">
+<div class="panel">
+<h2>Premium Match Selections</h2>
+<p>Access verified premium selections and supporting analysis.</p>
+<div id="predictionCount" class="message">Loading predictions...</div>
+</div>
 
-    <div class="toolbar">
-      <input
-        type="search"
-        id="searchInput"
-        placeholder="Search teams, players or predictions..."
-        aria-label="Search premium analysis"
-      >
+<div class="toolbar">
+<input type="search" id="searchInput"
+placeholder="Search teams, players or predictions..."
+aria-label="Search premium analysis">
+<select id="marketFilter" aria-label="Filter by market">
+<option value="">All markets</option>
+</select>
+</div>
 
-      <select id="marketFilter" aria-label="Filter by market">
-        <option value="">All markets</option>
-      </select>
-    </div>
-
-    <div id="predictionsContainer"></div>
-  </section>
+<div id="predictionsContainer"></div>
+</section>
 
 </main>
 
 <footer>
-  <p><strong>SNIPER ODDS</strong> — Football Analysis • Statistics • Insights</p>
-  <p>Predictions are uncertain and are not guaranteed outcomes. Gamble responsibly.</p>
+<p><strong>SNIPER ODDS</strong> — Football Analysis • Statistics • Insights</p>
+<p>Predictions are uncertain and are not guaranteed outcomes. Gamble responsibly.</p>
 </footer>
 
-<!-- Load your Supabase configuration first -->
+<!-- IMPORTANT: Load scripts in this exact order -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="config.js"></script>
 <script src="auth.js"></script>
 
 <script>
-  // ============================================
-  // PREMIUM ANALYSIS - ACCESS AND DATA MANAGEMENT
-  // ============================================
+"use strict";
 
-  const elements = {
-    userName: document.getElementById("userName"),
-    accessStatus: document.getElementById("accessStatus"),
-    loadingPanel: document.getElementById("loadingPanel"),
-    loadingMessage: document.getElementById("loadingMessage"),
-    loginPanel: document.getElementById("loginPanel"),
-    subscriptionPanel: document.getElementById("subscriptionPanel"),
-    errorPanel: document.getElementById("errorPanel"),
-    errorMessage: document.getElementById("errorMessage"),
-    predictionsPanel: document.getElementById("predictionsPanel"),
-    predictionsContainer: document.getElementById("predictionsContainer"),
-    predictionCount: document.getElementById("predictionCount"),
-    searchInput: document.getElementById("searchInput"),
-    marketFilter: document.getElementById("marketFilter"),
-    logoutBtn: document.getElementById("logoutBtn"),
-    retryBtn: document.getElementById("retryBtn")
-  };
+const sb = window.sb;
 
-  let currentUser = null;
-  let isAdministrator = false;
-  let allPredictions = [];
+const elements = {
+  userName:document.getElementById("userName"),
+  accessStatus:document.getElementById("accessStatus"),
+  loadingPanel:document.getElementById("loadingPanel"),
+  loadingMessage:document.getElementById("loadingMessage"),
+  loginPanel:document.getElementById("loginPanel"),
+  subscriptionPanel:document.getElementById("subscriptionPanel"),
+  errorPanel:document.getElementById("errorPanel"),
+  errorMessage:document.getElementById("errorMessage"),
+  predictionsPanel:document.getElementById("predictionsPanel"),
+  predictionsContainer:document.getElementById("predictionsContainer"),
+  predictionCount:document.getElementById("predictionCount"),
+  searchInput:document.getElementById("searchInput"),
+  marketFilter:document.getElementById("marketFilter"),
+  logoutBtn:document.getElementById("logoutBtn"),
+  retryBtn:document.getElementById("retryBtn")
+};
 
-  function showOnly(panel) {
-    [
-      elements.loadingPanel,
-      elements.loginPanel,
-      elements.subscriptionPanel,
-      elements.errorPanel,
-      elements.predictionsPanel
-    ].forEach(item => item.classList.add("hidden"));
+let currentUser = null;
+let isAdministrator = false;
+let allPredictions = [];
 
-    if (panel) panel.classList.remove("hidden");
+function showOnly(panel) {
+  [
+    elements.loadingPanel,
+    elements.loginPanel,
+    elements.subscriptionPanel,
+    elements.errorPanel,
+    elements.predictionsPanel
+  ].forEach(item => item.classList.add("hidden"));
+
+  if(panel) panel.classList.remove("hidden");
+}
+
+function setStatus(message) {
+  elements.accessStatus.textContent = message;
+}
+
+function showError(message) {
+  elements.errorMessage.textContent = message;
+  setStatus("Access error");
+  showOnly(elements.errorPanel);
+}
+
+async function verifyLogin() {
+  const {data,error} = await sb.auth.getUser();
+
+  if(error) throw error;
+
+  if(!data.user) {
+    currentUser = null;
+    elements.userName.textContent = "Guest";
+    setStatus("Not signed in");
+    showOnly(elements.loginPanel);
+    return false;
   }
 
-  function setStatus(message) {
-    elements.accessStatus.textContent = message;
+  currentUser = data.user;
+
+  const metadata = currentUser.user_metadata || {};
+  elements.userName.textContent =
+    metadata.full_name ||
+    metadata.name ||
+    currentUser.email ||
+    "Member";
+
+  return true;
+}
+
+async function verifyAdministrator() {
+  const {data,error} = await sb.rpc("is_admin");
+
+  if(error) {
+    console.error("Administrator verification:",error);
+    throw new Error("Administrator verification failed: " + error.message);
   }
 
-  function showError(message) {
-    elements.errorMessage.textContent = message;
-    setStatus("Access error");
-    showOnly(elements.errorPanel);
-  }
+  isAdministrator = data === true;
+  return isAdministrator;
+}
 
-  // ---------- Login verification ----------
-
-  async function verifyLogin() {
-    const { data, error } = await sb.auth.getUser();
-
-    if (error || !data.user) {
-      currentUser = null;
-      elements.userName.textContent = "Guest";
-      setStatus("Not signed in");
-      showOnly(elements.loginPanel);
-      return false;
-    }
-
-    currentUser = data.user;
-
-    const metadata = currentUser.user_metadata || {};
-    elements.userName.textContent =
-      metadata.full_name ||
-      metadata.name ||
-      currentUser.email ||
-      "Member";
-
+async function verifySubscription() {
+  if(isAdministrator) {
+    setStatus("Administrator Access");
     return true;
   }
 
-  // ---------- Administrator verification ----------
+  const {data,error} = await sb
+    .from("subscriptions")
+    .select("plan,status,expires_at")
+    .eq("user_id",currentUser.id)
+    .eq("status","active")
+    .gt("expires_at",new Date().toISOString())
+    .order("expires_at",{ascending:false})
+    .limit(1);
 
-  async function verifyAdministrator() {
-    if (!currentUser) return false;
-
-    const { data, error } = await sb.rpc("is_admin");
-
-    if (error) {
-      console.error("Administrator verification:", error);
-      throw new Error(
-        "Administrator privileges could not be verified. Please try again."
-      );
-    }
-
-    isAdministrator = data === true;
-    return isAdministrator;
+  if(error) {
+    console.error("Subscription verification:",error);
+    throw new Error("Subscription verification failed: " + error.message);
   }
 
-  // ---------- Subscription verification ----------
-
-  async function verifySubscription() {
-    if (!currentUser) return false;
-
-    // Administrators do not need a paid subscription.
-    if (isAdministrator) {
-      setStatus("Administrator Access");
-      return true;
-    }
-
-    const { data, error } = await sb
-      .from("subscriptions")
-      .select("plan, status, expires_at")
-      .eq("user_id", currentUser.id)
-      .eq("status", "active")
-      .gt("expires_at", new Date().toISOString())
-      .order("expires_at", { ascending: false })
-      .limit(1);
-
-    if (error) {
-      console.error("Subscription verification:", error);
-      throw new Error(
-        "We could not verify your subscription. Please try again."
-      );
-    }
-
-    if (!data || data.length === 0) {
-      elements.subscriptionPanel.classList.remove("hidden");
-      setStatus("Subscription inactive");
-      showOnly(elements.subscriptionPanel);
-      return false;
-    }
-
-    setStatus("Premium Active");
-    return true;
+  if(!data || data.length === 0) {
+    setStatus("Subscription inactive");
+    showOnly(elements.subscriptionPanel);
+    return false;
   }
 
-  // ---------- Load premium predictions ----------
+  setStatus("Premium Active");
+  return true;
+}
 
-  async function loadPredictions() {
-    elements.predictionCount.textContent =
-      "Loading verified premium predictions...";
+async function loadPredictions() {
+  elements.predictionCount.textContent = "Loading verified predictions...";
 
-    const { data, error } = await sb
-      .from("premium_predictions")
-      .select(
-        "id, match_date, home_team, away_team, market, player, prediction, odds, analysis, is_verified, created_at"
-      )
-      .eq("is_verified", true)
-      .order("match_date", { ascending: true })
-      .order("created_at", { ascending: false });
+  const {data,error} = await sb
+    .from("premium_predictions")
+    .select("id,match_date,home_team,away_team,market,player,prediction,odds,analysis,is_verified,created_at")
+    .eq("is_verified",true)
+    .order("match_date",{ascending:true})
+    .order("created_at",{ascending:false});
 
-    if (error) {
-      console.error("Premium predictions error:", error);
-      throw new Error(
-        "Premium analysis could not be loaded. Please check your database access policies."
-      );
-    }
-
-    allPredictions = data || [];
-
-    populateMarketFilter();
-    renderPredictions();
+  if(error) {
+    console.error("Premium predictions:",error);
+    throw new Error("Could not load premium predictions: " + error.message);
   }
 
-  // ---------- Date formatting ----------
+  allPredictions = data || [];
+  populateMarketFilter();
+  renderPredictions();
+}
 
-  function formatDate(value) {
-    if (!value) return "Date not specified";
+function escapeHTML(value) {
+  return String(value ?? "").replace(/[&<>"']/g,character => ({
+    "&":"&amp;",
+    "<":"&lt;",
+    ">":"&gt;",
+    '"':"&quot;",
+    "'":"&#039;"
+  })[character]);
+}
 
-    const date = new Date(value + "T00:00:00");
+function formatDate(value) {
+  if(!value) return "Date not specified";
 
-    if (Number.isNaN(date.getTime())) return value;
+  const date = new Date(value + "T00:00:00");
 
-    return date.toLocaleDateString("en-KE", {
-      day: "numeric",
-      month: "long",
-      year: "numeric"
-    });
-  }
+  if(Number.isNaN(date.getTime())) return value;
 
-  function escapeHTML(value) {
-    return String(value ?? "").replace(/[&<>"']/g, character => ({
-      "&": "&amp;",
-      "<": "&lt;",
-      ">": "&gt;",
-      '"': "&quot;",
-      "'": "&#039;"
-    })[character]);
-  }
+  return date.toLocaleDateString("en-KE",{
+    day:"numeric",
+    month:"long",
+    year:"numeric"
+  });
+}
 
-  // ---------- Market filter ----------
+function populateMarketFilter() {
+  const markets = [
+    ...new Set(allPredictions.map(item => item.market).filter(Boolean))
+  ].sort();
 
-  function populateMarketFilter() {
-    const markets = [
-      ...new Set(
-        allPredictions
-          .map(item => item.market)
-          .filter(Boolean)
-      )
-    ].sort();
+  elements.marketFilter.innerHTML = '<option value="">All markets</option>';
 
-    elements.marketFilter.innerHTML =
-      '<option value="">All markets</option>';
+  markets.forEach(market => {
+    const option = document.createElement("option");
+    option.value = market;
+    option.textContent = market;
+    elements.marketFilter.appendChild(option);
+  });
+}
 
-    markets.forEach(market => {
-      const option = document.createElement("option");
-      option.value = market;
-      option.textContent = market;
-      elements.marketFilter.appendChild(option);
-    });
-  }
+function renderPredictions() {
+  const search = elements.searchInput.value.trim().toLowerCase();
+  const selectedMarket = elements.marketFilter.value;
 
-  // ---------- Render prediction cards ----------
+  const filtered = allPredictions.filter(item => {
+    const searchable = [
+      item.home_team,item.away_team,item.market,
+      item.player,item.prediction,item.analysis
+    ].join(" ").toLowerCase();
 
-  function renderPredictions() {
-    const search = elements.searchInput.value
-      .trim()
-      .toLowerCase();
-
-    const selectedMarket = elements.marketFilter.value;
-
-    const filtered = allPredictions.filter(item => {
-      const searchable = [
-        item.home_team,
-        item.away_team,
-        item.market,
-        item.player,
-        item.prediction,
-        item.analysis
-      ].join(" ").toLowerCase();
-
-      const matchesSearch = searchable.includes(search);
-
-      const matchesMarket =
-        !selectedMarket || item.market === selectedMarket;
-
-      return matchesSearch && matchesMarket;
-    });
-
-    elements.predictionCount.textContent =
-      `${filtered.length} premium prediction(s) available`;
-
-    if (filtered.length === 0) {
-      elements.predictionsContainer.innerHTML = `
-        <div class="empty">
-          <h3>No premium predictions found</h3>
-          <p>Try another search or check back later for new analysis.</p>
-        </div>
-      `;
-      return;
-    }
-
-    // Group predictions by match date.
-    const groups = {};
-
-    filtered.forEach(item => {
-      const date = item.match_date || "Date not specified";
-
-      if (!groups[date]) groups[date] = [];
-
-      groups[date].push(item);
-    });
-
-    let html = "";
-
-    Object.keys(groups).sort().forEach(date => {
-      html += `
-        <h3 class="date-heading">
-          ${escapeHTML(formatDate(date))}
-        </h3>
-      `;
-
-      groups[date].forEach(item => {
-        html += `
-          <article class="match-card">
-            <div class="match-top">
-              <span class="market">
-                ${escapeHTML(item.market || "Match Analysis")}
-              </span>
-              <span class="verified">✓ Verified Premium</span>
-            </div>
-
-            <div class="teams">
-              ${escapeHTML(item.home_team || "Home Team")}
-              <span style="color:#a6b9ad;">vs</span>
-              ${escapeHTML(item.away_team || "Away Team")}
-            </div>
-
-            <div class="prediction-box">
-              <small>PREMIUM SELECTION</small>
-              <div class="prediction">
-                ${escapeHTML(item.prediction || "Not specified")}
-              </div>
-            </div>
-
-            <div class="details">
-              <div class="detail">
-                <small>Odds</small>
-                <strong>${escapeHTML(item.odds ?? "N/A")}</strong>
-              </div>
-
-              <div class="detail">
-                <small>Player</small>
-                <strong>${escapeHTML(item.player || "N/A")}</strong>
-              </div>
-            </div>
-
-            <div class="analysis">
-              ${escapeHTML(item.analysis || "No additional analysis provided.")}
-            </div>
-          </article>
-        `;
-      });
-    });
-
-    elements.predictionsContainer.innerHTML = html;
-  }
-
-  // ---------- Initialize page ----------
-
-  async function initializePremiumPage() {
-    showOnly(elements.loadingPanel);
-    elements.loadingMessage.textContent =
-      "Verifying your login and access permissions...";
-
-    try {
-      const loggedIn = await verifyLogin();
-
-      if (!loggedIn) return;
-
-      await verifyAdministrator();
-
-      const hasAccess = await verifySubscription();
-
-      if (!hasAccess) return;
-
-      if (isAdministrator) {
-        setStatus("Administrator Access");
-      }
-
-      showOnly(elements.predictionsPanel);
-
-      await loadPredictions();
-
-    } catch (error) {
-      console.error(error);
-      showError(error.message || "An unexpected error occurred.");
-    }
-  }
-
-  // ---------- Event listeners ----------
-
-  elements.searchInput.addEventListener("input", renderPredictions);
-
-  elements.marketFilter.addEventListener("change", renderPredictions);
-
-  elements.retryBtn.addEventListener("click", initializePremiumPage);
-
-  elements.logoutBtn.addEventListener("click", async () => {
-    await logOut();
+    return searchable.includes(search) &&
+      (!selectedMarket || item.market === selectedMarket);
   });
 
-  // Start page.
-  initializePremiumPage();
+  elements.predictionCount.textContent =
+    filtered.length + " premium prediction(s) available";
+
+  if(filtered.length === 0) {
+    elements.predictionsContainer.innerHTML = `
+      <div class="empty">
+        <h3>No premium predictions found</h3>
+        <p>Try another search or check back later.</p>
+      </div>`;
+    return;
+  }
+
+  const groups = {};
+
+  filtered.forEach(item => {
+    const date = item.match_date || "Date not specified";
+    if(!groups[date]) groups[date] = [];
+    groups[date].push(item);
+  });
+
+  let html = "";
+
+  Object.keys(groups).sort().forEach(date => {
+    html += `<h3 class="date-heading">${escapeHTML(formatDate(date))}</h3>`;
+
+    groups[date].forEach(item => {
+      html += `
+        <article class="match-card">
+          <div class="match-top">
+            <span class="market">${escapeHTML(item.market || "Match Analysis")}</span>
+            <span class="verified">✓ Verified Premium</span>
+          </div>
+
+          <div class="teams">
+            ${escapeHTML(item.home_team || "Home Team")}
+            <span style="color:#a6b9ad">vs</span>
+            ${escapeHTML(item.away_team || "Away Team")}
+          </div>
+
+          <div class="prediction-box">
+            <small>PREMIUM SELECTION</small>
+            <div class="prediction">${escapeHTML(item.prediction || "Not specified")}</div>
+          </div>
+
+          <div class="details">
+            <div class="detail">
+              <small>Odds</small>
+              <strong>${escapeHTML(item.odds ?? "N/A")}</strong>
+            </div>
+            <div class="detail">
+              <small>Player</small>
+              <strong>${escapeHTML(item.player || "N/A")}</strong>
+            </div>
+          </div>
+
+          <div class="analysis">${escapeHTML(item.analysis || "No additional analysis provided.")}</div>
+        </article>`;
+    });
+  });
+
+  elements.predictionsContainer.innerHTML = html;
+}
+
+async function initializePremiumPage() {
+  showOnly(elements.loadingPanel);
+  elements.loadingMessage.textContent = "Verifying your account...";
+
+  try {
+    if(!sb || !sb.auth) {
+      throw new Error("Supabase is not connected. Check config.js.");
+    }
+
+    const loggedIn = await verifyLogin();
+    if(!loggedIn) return;
+
+    await verifyAdministrator();
+
+    const hasAccess = await verifySubscription();
+    if(!hasAccess) return;
+
+    if(isAdministrator) setStatus("Administrator Access");
+
+    showOnly(elements.predictionsPanel);
+    await loadPredictions();
+
+  } catch(error) {
+    console.error(error);
+    showError(error.message || "Unexpected error occurred.");
+  }
+}
+
+elements.searchInput.addEventListener("input",renderPredictions);
+elements.marketFilter.addEventListener("change",renderPredictions);
+elements.retryBtn.addEventListener("click",initializePremiumPage);
+
+elements.logoutBtn.addEventListener("click",async () => {
+  try {
+    const {error} = await sb.auth.signOut();
+    if(error) throw error;
+    window.location.href = "login.html";
+  } catch(error) {
+    showError("Logout failed: " + error.message);
+  }
+});
+
+initializePremiumPage();
 </script>
 
 </body>
